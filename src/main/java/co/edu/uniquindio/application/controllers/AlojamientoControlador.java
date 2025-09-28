@@ -32,9 +32,8 @@ public class AlojamientoControlador {
 
     @GetMapping
     public ResponseEntity<RespuestaDTO<Page<ItemAlojamientoDTO>>> buscarAlojamientos(@ParameterObject Pageable pageable, @ParameterObject AlojamientoFiltroDTO filtro) throws Exception {
-        List<ItemAlojamientoDTO> alojamientos = alojamientoServicio.obtenerAlojamiento(filtro);
-        Page<ItemAlojamientoDTO> page = new PageImpl<>(alojamientos, pageable, alojamientos.size());
-        return ResponseEntity.ok(new RespuestaDTO<>(false, page));
+        Page<ItemAlojamientoDTO> alojamientos = alojamientoServicio.obtenerAlojamiento(filtro, pageable);
+        return ResponseEntity.ok(new RespuestaDTO<>(false, alojamientos));
     }
 
     @GetMapping("/{id}")
@@ -45,8 +44,8 @@ public class AlojamientoControlador {
 
     @PutMapping("/{id}")
     public ResponseEntity<RespuestaDTO<String>> editarAlojamiento(@PathVariable Long id, @Valid @RequestBody EdicionAlojamientoDTO dto) throws Exception {
-        
-        return ResponseEntity.ok(new RespuestaDTO<>(false, "Método de edición no implementado"));
+        alojamientoServicio.editar(id, dto);
+        return ResponseEntity.ok(new RespuestaDTO<>(false, "Alojamiento actualizado exitosamente"));
     }
 
     @DeleteMapping("/{id}")

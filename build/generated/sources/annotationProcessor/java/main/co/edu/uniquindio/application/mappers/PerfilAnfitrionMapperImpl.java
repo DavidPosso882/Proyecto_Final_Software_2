@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-09-26T00:29:41-0500",
-    comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.14.jar, environment: Java 21.0.8 (Ubuntu)"
+    date = "2025-09-27T16:05:04-0500",
+    comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.14.jar, environment: Java 21.0.8 (Eclipse Adoptium)"
 )
 @Component
 public class PerfilAnfitrionMapperImpl implements PerfilAnfitrionMapper {
@@ -23,9 +23,6 @@ public class PerfilAnfitrionMapperImpl implements PerfilAnfitrionMapper {
 
         PerfilAnfitrion perfilAnfitrion = new PerfilAnfitrion();
 
-        if ( dto.id() != null ) {
-            perfilAnfitrion.setId( Long.parseLong( dto.id() ) );
-        }
         perfilAnfitrion.setSobreMi( dto.sobreMi() );
 
         return perfilAnfitrion;
@@ -51,12 +48,6 @@ public class PerfilAnfitrionMapperImpl implements PerfilAnfitrionMapper {
             return;
         }
 
-        if ( dto.id() != null ) {
-            entity.setId( Long.parseLong( dto.id() ) );
-        }
-        else {
-            entity.setId( null );
-        }
         entity.setSobreMi( dto.sobreMi() );
     }
 }

@@ -10,7 +10,7 @@ public record CreacionReservaDTO(
         @NotNull
         Long alojamientoId,
         @NotNull
-        Long usuarioId,
+        String usuarioId,
         @NotNull @Future
         LocalDate fechaEntrada,
         @NotNull @Future

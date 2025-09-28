@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Programación Avanzada | Guías y material de clase del espacio académico Programación Avanzada.</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Programación Avanzada" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Guías y material de clase del espacio académico Programación Avanzada." />
+<meta property="og:description" content="Guías y material de clase del espacio académico Programación Avanzada." />
+<link rel="canonical" href="https://caflorezvi.github.io/guias-programacion-avanzada/8.bases-datos-sql.html" />
+<meta property="og:url" content="https://caflorezvi.github.io/guias-programacion-avanzada/8.bases-datos-sql.html" />
+<meta property="og:site_name" content="Programación Avanzada" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Programación Avanzada" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Guías y material de clase del espacio académico Programación Avanzada.","headline":"Programación Avanzada","url":"https://caflorezvi.github.io/guias-programacion-avanzada/8.bases-datos-sql.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/guias-programacion-avanzada/assets/css/style.css?v=c3259212e988779fc0ba117e46f85e317e455832">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/guias-programacion-avanzada/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://caflorezvi.github.io/guias-programacion-avanzada/">Programación Avanzada</a></h1>
+      
+
+      <!-- Aquí cargamos Mermaid.js -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+
+<script> document.addEventListener("DOMContentLoaded", function() { mermaid.initialize({ startOnLoad: true }); }); </script>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Programa de Ingeniería de Sistemas y Computación
+Universidad del Quindío
+
+Título: Sentencias básicas en SQL
+Duración estimada: 120
+Docentes: Carlos Andrés Florez, Christian Andrés Candela
+Guía: 08
+</code></pre></div></div>
+
+<h1 id="sentencias-básicas-en-sql">Sentencias básicas en SQL</h1>
+
+<h2 id="-objetivo">🎯 Objetivo</h2>
+<p>Conocer los conceptos básicos del lenguaje SQL, esencial en las bases de datos relacionales.</p>
+
+<hr />
+
+<h2 id="conceptos-básicos">Conceptos Básicos</h2>
+<ul>
+  <li><strong>MariaDB:</strong> Sistema de gestión de bases de datos relacional, derivado de MySQL, que utiliza SQL como lenguaje de consulta. Es de código abierto y se utiliza ampliamente en aplicaciones web.</li>
+  <li><strong>Diagrama entidad-relación (ER):</strong> Representación gráfica de las entidades y sus relaciones en una base de datos.</li>
+  <li><strong>Interfaz de línea de comandos:</strong> Interfaz de texto que permite interactuar con el sistema operativo y ejecutar comandos SQL directamente.</li>
+</ul>
+
+<hr />
+
+<h2 id="contextualización-teórica">Contextualización Teórica</h2>
+
+<p>Una <strong>base de datos</strong> es un conjunto de datos estructurados que se almacenan y gestionan de manera eficiente. Hay dos tipos principales de bases de datos: las bases de datos relacionales y las bases de datos no relacionales. En este documento nos enfocaremos en las <strong>bases de datos relacionales</strong>, que utilizan tablas para representar los datos y sus relaciones.</p>
+
+<p><strong>SQL</strong> (Structured Query Language) es un lenguaje diseñado para administrar y recuperar información de sistemas de gestión de bases de datos relacionales, como por ejemplo MariaDB o MySQL.</p>
+
+<p>Las bases de datos relacionales se organizan en dos marcadas secciones: el <strong>esquema</strong> y <strong>los datos</strong> (o instancias). El esquema es la definición de la estructura de la base de datos y principalmente almacena los siguientes datos:</p>
+
+<ul>
+  <li>El nombre de cada tabla.</li>
+  <li>Las columnas de cada tabla (cada columna tiene un nombre, un tipo de dato y puede tener restricciones).</li>
+  <li>La relación de cada columna con otras tablas.</li>
+</ul>
+
+<p>Existen dos subconjuntos de sentencias SQL, uno para la definición del esquema de la base de datos que se llama <strong>DDL</strong> y otro para la manipulación de los datos (o instancias) que se llama <strong>DML</strong>.</p>
+
+<h3 id="lenguaje-de-definición-de-datos-ddl">Lenguaje de definición de datos (DDL)</h3>
+<p>Es un conjunto de instrucciones para trabajar con el esquema. Principalmente:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">CREATE &lt;algo&gt;</code></li>
+  <li><code class="language-plaintext highlighter-rouge">ALTER &lt;algo&gt; &lt;cómo&gt;</code></li>
+  <li><code class="language-plaintext highlighter-rouge">DROP &lt;algo&gt;</code></li>
+</ul>
+
+<h3 id="lenguaje-de-manipulación-de-datos-dml">Lenguaje de manipulación de datos (DML)</h3>
+<p>Es un conjunto de instrucciones para trabajar con los datos. Principalmente:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">SELECT &lt;campos&gt; FROM &lt;tabla&gt; WHERE &lt;condiciones&gt;</code></li>
+  <li><code class="language-plaintext highlighter-rouge">INSERT INTO &lt;tabla&gt; (&lt;campo1&gt;, ...) VALUES (&lt;valor1&gt;,...)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">UPDATE &lt;tabla&gt; SET &lt;campo&gt; = &lt;valor&gt; WHERE &lt;condición&gt;</code></li>
+  <li><code class="language-plaintext highlighter-rouge">DELETE FROM &lt;tabla&gt; WHERE &lt;condición&gt;</code></li>
+</ul>
+
+<hr />
+
+<h2 id="procedimiento">Procedimiento</h2>
+
+<p>Una tienda requiere un sistema de información que le permita gestionar la información de sus productos, clientes y transacciones:</p>
+<ul>
+  <li>De cada producto se debe almacenar su código, nombre, precio, unidades y tipo</li>
+  <li>De cada transacción se debe registrar su código, el cliente que realiza la compra, el (o los) productos que compra, fecha de compra y pago</li>
+  <li>Del pago se debe registrar su fecha, total pagado, estado del pago y método de pago</li>
+  <li>Por último, del cliente se requiere su cédula, nombre, email y teléfono</li>
+</ul>
+
+<h3 id="1-diseñar-el-diagrama-entidad-relación">1. Diseñar el diagrama entidad relación</h3>
+
+<p>Modelar todos los datos del problema.</p>
+
+<div class="mermaid" style="text-align: center;">
+erDiagram
+    customer {
+        varchar id_number PK
+        varchar name
+        varchar email
+        varchar phone_number
+    }
+    
+    product {
+        varchar id PK
+        varchar name
+        int quantity
+        float price
+        int type_id FK
+    }
+    
+    product_type {
+        int id PK
+        varchar name
+    }
+    
+    order {
+        int id PK
+        date created_at
+        int payment_id FK
+        int customer_id FK
+    }
+    
+    order_item {
+        int id PK
+        int order_id FK
+        varchar product_id FK
+        int quantity
+        float price
+    }
+    
+    payment {
+        int id PK
+        date created_at
+        float amount
+        varchar payment_method
+        varchar status
+    }
+
+    customer ||--o{ order : ""
+    product_type ||--o{ product : ""
+    order ||--o{ order_item : ""
+    product ||--o{ order_item : ""
+    payment ||--|| order : ""
+</div>
+
+<h3 id="2-crear-la-base-de-datos">2. Crear la base de datos</h3>
+
+<p>Ingresar al cliente de base de datos (monitor si es por <code class="language-plaintext highlighter-rouge">CLI</code>), crear la base de datos <code class="language-plaintext highlighter-rouge">tienda</code> y acceder a ella:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>mariadb <span class="nt">-u</span> root <span class="nt">-p</span>
+</code></pre></div></div>
+<p>Al ingresar la contraseña, debe aparecer el prompt de MariaDB, y debe ejecutar los siguientes comandos:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">create</span> <span class="k">database</span> <span class="n">tienda</span><span class="p">;</span>
+<span class="n">use</span> <span class="n">tienda</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>A continuación, se crean algunas tablas a manera de ejemplo:</p>
+
+<h3 id="3-crear-tabla-customer">3. Crear tabla <code class="language-plaintext highlighter-rouge">customer</code></h3>
+
+<p>Se recomienda crear primero las tablas que no dependen de otra tabla. Cada tabla debe tener una llave primaria (<strong>Primary key</strong>) que identifica cada registro como único dentro de la tabla:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">create</span> <span class="k">table</span> <span class="n">customer</span><span class="p">(</span>
+    <span class="n">id_number</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+    <span class="n">name</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> <span class="k">not</span> <span class="k">null</span><span class="p">,</span>
+    <span class="n">email</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="k">not</span> <span class="k">null</span> <span class="k">unique</span><span class="p">,</span>
+    <span class="n">phone_number</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">12</span><span class="p">),</span>
+    <span class="k">primary</span> <span class="k">key</span> <span class="p">(</span><span class="n">id_number</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div></div>
+<p>Para mostrar la estructura de la tabla, se puede usar:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">describe</span> <span class="n">customer</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="4-crear-tabla-product_type">4. Crear tabla <code class="language-plaintext highlighter-rouge">product_type</code></h3>
+
+<p>La llave primaria será un campo autoincrementable de tipo <code class="language-plaintext highlighter-rouge">int</code>:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">create</span> <span class="k">table</span> <span class="n">product_type</span><span class="p">(</span>
+    <span class="n">id</span> <span class="nb">int</span> <span class="n">auto_increment</span><span class="p">,</span>
+    <span class="n">name</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> <span class="k">not</span> <span class="k">null</span><span class="p">,</span>
+    <span class="k">primary</span> <span class="k">key</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="5-crear-tabla-product">5. Crear tabla <code class="language-plaintext highlighter-rouge">product</code></h3>
+<p>Esta tabla depende de <code class="language-plaintext highlighter-rouge">product_type</code> mediante una llave foránea (<strong>Foreign Key</strong>). La llave foránea identifica una columna en una tabla hija que se refiere a una columna en otra tabla:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">create</span> <span class="k">table</span> <span class="n">product</span><span class="p">(</span>
+    <span class="n">id</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+    <span class="n">name</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> <span class="k">not</span> <span class="k">null</span><span class="p">,</span>
+    <span class="n">price</span> <span class="nb">float</span> <span class="k">not</span> <span class="k">null</span><span class="p">,</span>
+    <span class="n">quantity</span> <span class="nb">int</span> <span class="k">not</span> <span class="k">null</span><span class="p">,</span>
+    <span class="n">type_id</span> <span class="nb">int</span> <span class="k">not</span> <span class="k">null</span><span class="p">,</span>
+    <span class="k">primary</span> <span class="k">key</span> <span class="p">(</span><span class="n">id</span><span class="p">),</span>
+    <span class="k">foreign</span> <span class="k">key</span> <span class="p">(</span><span class="n">type_id</span><span class="p">)</span> <span class="k">references</span> <span class="n">product_type</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>⚠️ IMPORTANTE:</strong> Las llaves foráneas deben ser del mismo tipo de dato y misma longitud que la llave primaria que referencian.</p>
+</blockquote>
+
+<h3 id="6-comandos-adicionales">6. Comandos adicionales</h3>
+<p>Una vez definida la estructura, se pueden usar:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">DROP</code> para borrar tablas, usando: <code class="language-plaintext highlighter-rouge">DROP TABLE nombre_tabla;</code></li>
+  <li><code class="language-plaintext highlighter-rouge">ALTER</code> para modificarlas, por ejemplo, para agregar una columna: <code class="language-plaintext highlighter-rouge">ALTER TABLE nombre_tabla ADD COLUMN nombre_columna tipo_dato;</code></li>
+</ul>
+
+<h3 id="7-insertar-clientes">7. Insertar clientes</h3>
+<p>Para ingresar registros se usa <code class="language-plaintext highlighter-rouge">INSERT INTO</code>:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">insert</span> <span class="k">into</span> <span class="n">customer</span> <span class="k">values</span> <span class="p">(</span><span class="nv">"123"</span><span class="p">,</span> <span class="nv">"Pepito"</span><span class="p">,</span> <span class="nv">"pepe@mail.com"</span><span class="p">,</span> <span class="nv">"7827827"</span><span class="p">);</span>
+<span class="k">insert</span> <span class="k">into</span> <span class="n">customer</span><span class="p">(</span><span class="n">id_number</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">email</span><span class="p">)</span> <span class="k">values</span> <span class="p">(</span><span class="nv">"124"</span><span class="p">,</span> <span class="nv">"Juanita"</span><span class="p">,</span> <span class="nv">"juana@mail.com"</span><span class="p">);</span>
+<span class="k">insert</span> <span class="k">into</span> <span class="n">customer</span> <span class="k">values</span> <span class="p">(</span><span class="nv">"125"</span><span class="p">,</span> <span class="nv">"Pablo"</span><span class="p">,</span> <span class="nv">"pablo@mail.com"</span><span class="p">,</span> <span class="nv">"7901234"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="8-consultar-registros">8. Consultar registros</h3>
+<p>La sentencia <code class="language-plaintext highlighter-rouge">SELECT</code> permite obtener registros:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">customer</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="9-actualizar-y-eliminar-registros">9. Actualizar y eliminar registros</h3>
+<p>Ejemplo para actualizar el teléfono de un cliente:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">update</span> <span class="n">customer</span> <span class="k">set</span> <span class="n">phone_number</span> <span class="o">=</span> <span class="nv">"7500000"</span> <span class="k">where</span> <span class="n">id_number</span> <span class="o">=</span> <span class="nv">"124"</span><span class="p">;</span>
+<span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">customer</span><span class="p">;</span> 
+</code></pre></div></div>
+
+<p>Ejemplo para eliminar un cliente:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">delete</span> <span class="k">from</span> <span class="n">customer</span> <span class="k">where</span> <span class="n">id_number</span> <span class="o">=</span> <span class="nv">"125"</span><span class="p">;</span>
+<span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">customer</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="10-insertar-tipos-de-productos">10. Insertar tipos de productos</h3>
+<p>Solo se define el nombre, el código es autoincrementable:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">insert</span> <span class="k">into</span> <span class="n">product_type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">values</span> <span class="p">(</span><span class="nv">"Tecnología"</span><span class="p">);</span>
+<span class="k">insert</span> <span class="k">into</span> <span class="n">product_type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">values</span> <span class="p">(</span><span class="nv">"Electrodoméstico"</span><span class="p">);</span>
+<span class="k">insert</span> <span class="k">into</span> <span class="n">product_type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">values</span> <span class="p">(</span><span class="nv">"Deporte"</span><span class="p">);</span>
+</code></pre></div></div>
+<p>Para consultar los tipos de productos:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">product_type</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="11-insertar-productos">11. Insertar productos</h3>
+<p>Deben existir tipos de productos previamente registrados:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">insert</span> <span class="k">into</span> <span class="n">product</span> <span class="k">values</span> <span class="p">(</span><span class="nv">"a12"</span><span class="p">,</span> <span class="nv">"Teclado gamer"</span><span class="p">,</span> <span class="mi">300000</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="k">insert</span> <span class="k">into</span> <span class="n">product</span> <span class="k">values</span> <span class="p">(</span><span class="nv">"b43"</span><span class="p">,</span> <span class="nv">"Nintendo Switch OLED"</span><span class="p">,</span> <span class="mi">1500000</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="k">insert</span> <span class="k">into</span> <span class="n">product</span> <span class="k">values</span> <span class="p">(</span><span class="nv">"h62"</span><span class="p">,</span> <span class="nv">"Tenis Adidas"</span><span class="p">,</span> <span class="mi">450000</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>El último número de cada <code class="language-plaintext highlighter-rouge">insert</code> corresponde al <code class="language-plaintext highlighter-rouge">type_id</code>, que debe coincidir con un <code class="language-plaintext highlighter-rouge">id</code> existente en la tabla <code class="language-plaintext highlighter-rouge">product_type</code>.</p>
+
+<h3 id="12-usar-join-para-relacionar-tablas">12. Usar JOIN para relacionar tablas</h3>
+<p>La instrucción <code class="language-plaintext highlighter-rouge">JOIN</code> permite mezclar tablas para completar información:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- JOIN básico (mezcla todos los registros)</span>
+<span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">product</span> <span class="k">join</span> <span class="n">product_type</span><span class="p">;</span>
+
+<span class="c1">-- JOIN con restricción usando ON</span>
+<span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">product</span> <span class="n">p</span> <span class="k">join</span> <span class="n">product_type</span> <span class="n">t</span> <span class="k">on</span> <span class="n">p</span><span class="p">.</span><span class="n">type_id</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="n">id</span><span class="p">;</span>
+
+<span class="c1">-- JOIN seleccionando campos específicos</span>
+<span class="k">select</span> <span class="n">p</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">price</span><span class="p">,</span> <span class="n">t</span><span class="p">.</span><span class="n">name</span> <span class="k">as</span> <span class="k">type</span> <span class="k">from</span> <span class="n">product</span> <span class="n">p</span> <span class="k">join</span> <span class="n">product_type</span> <span class="n">t</span> <span class="k">on</span> <span class="n">p</span><span class="p">.</span><span class="n">type_id</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="n">id</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="13-herramientas-con-gui-para-bases-de-datos">13. Herramientas con GUI para bases de datos</h3>
+<p>Existen diversas herramientas con interfaz gráfica que facilitan la gestión de bases de datos, tales como:</p>
+
+<ul>
+  <li><strong>MySQL Workbench</strong>: Permite diseñar, modelar y gestionar bases de datos MySQL.</li>
+  <li><strong>Outerbase</strong>: Herramienta de administración para bases de datos de diferentes motores.</li>
+  <li><strong>HeidiSQL</strong>: Ligera y fácil de usar, ideal para gestionar bases de datos MySQL y MariaDB.</li>
+</ul>
+
+<p>Si lo desea, puede explorar estas herramientas para facilitar su trabajo con bases de datos. Se recomienda <strong>Outerbase</strong> por su simplicidad y versatilidad.</p>
+
+<h3 id="14-diagrama-entidad-relación-proyecto-final">14. Diagrama entidad-relación proyecto final</h3>
+
+<p>Diseñe para el proyecto final del espacio académico un diagrama entidad-relación que incluya las tablas y relaciones necesarias.</p>
+
+<hr />
+
+<h2 id="tarea">Tarea</h2>
+
+<ol>
+  <li>
+    <p>Añada una llave foránea en la tabla cliente para que quede guardado en qué ciudad vive.</p>
+  </li>
+  <li>
+    <p>Añada un campo en la tabla producto para que tenga una descripción. Este campo debe ser de tipo <code class="language-plaintext highlighter-rouge">TEXT</code> (no <code class="language-plaintext highlighter-rouge">VARCHAR</code>) ya que la descripción puede ser tan extensa como el usuario decida.</p>
+  </li>
+  <li>
+    <p>Investigar cómo se representan las tablas y sus relaciones en Java usando JPA (Java Persistence API) en un proyecto Spring Boot.</p>
+  </li>
+</ol>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>

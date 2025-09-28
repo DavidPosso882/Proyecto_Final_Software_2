@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Programación Avanzada | Guías y material de clase del espacio académico Programación Avanzada.</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Programación Avanzada" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Guías y material de clase del espacio académico Programación Avanzada." />
+<meta property="og:description" content="Guías y material de clase del espacio académico Programación Avanzada." />
+<link rel="canonical" href="https://caflorezvi.github.io/guias-programacion-avanzada/5.controladores-rest-SpringBoot.html" />
+<meta property="og:url" content="https://caflorezvi.github.io/guias-programacion-avanzada/5.controladores-rest-SpringBoot.html" />
+<meta property="og:site_name" content="Programación Avanzada" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Programación Avanzada" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Guías y material de clase del espacio académico Programación Avanzada.","headline":"Programación Avanzada","url":"https://caflorezvi.github.io/guias-programacion-avanzada/5.controladores-rest-SpringBoot.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/guias-programacion-avanzada/assets/css/style.css?v=c3259212e988779fc0ba117e46f85e317e455832">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/guias-programacion-avanzada/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://caflorezvi.github.io/guias-programacion-avanzada/">Programación Avanzada</a></h1>
+      
+
+      <!-- Aquí cargamos Mermaid.js -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+
+<script> document.addEventListener("DOMContentLoaded", function() { mermaid.initialize({ startOnLoad: true }); }); </script>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Programa de Ingeniería de Sistemas y Computación
+Universidad del Quindío
+
+Título: Implementación de Controladores REST en Spring Boot
+Duración estimada: 120
+Docentes: Carlos Andrés Florez, Christian Andrés Candela
+Guía: 05
+</code></pre></div></div>
+<h1 id="controladores-rest-en-spring-boot">Controladores REST en Spring Boot</h1>
+
+<h2 id="-objetivo">🎯 Objetivo</h2>
+<p>Implementar una API REST utilizando <strong>Spring Boot</strong>, basada en un diseño previo realizado con <strong>OpenAPI</strong>. Los estudiantes aprenderán a traducir un diseño de API en una implementación funcional en Java, aplicando principios de programación empresarial y buenas prácticas de desarrollo.</p>
+
+<hr />
+
+<h2 id="conceptos-básicos">Conceptos Básicos</h2>
+<p>Antes de iniciar con el diseño, es importante comprender algunos conceptos fundamentales:</p>
+
+<h4 id="1-rest-representational-state-transfer">1. REST (Representational State Transfer)</h4>
+<p>Estilo arquitectónico basado en principios como:</p>
+<ul>
+  <li>Separación cliente-servidor.</li>
+  <li>Uso de recursos identificados por URIs.</li>
+  <li>Uso de métodos HTTP estándar (GET, POST, PUT, DELETE, PATCH, etc.).</li>
+  <li>Implementación de respuestas sin estado (<strong>stateless</strong>).</li>
+  <li>Cacheabilidad y escalabilidad.</li>
+</ul>
+
+<p><strong>Referencia:</strong> Fielding, R. T. (2000). <em>Architectural Styles and the Design of Network-based Software Architectures</em>. University of California, Irvine.</p>
+
+<h4 id="2-http-hypertext-transfer-protocol">2. HTTP (Hypertext Transfer Protocol)</h4>
+<p>Protocolo de comunicación para la transferencia de datos en la web. Define métodos estándar como:</p>
+<ul>
+  <li><strong>GET</strong>: Obtener información.</li>
+  <li><strong>POST</strong>: Crear un nuevo recurso.</li>
+  <li><strong>PUT</strong>: Actualizar un recurso existente.</li>
+  <li><strong>PATCH</strong>: Actualizar parcialmente un recurso.</li>
+  <li><strong>DELETE</strong>: Eliminar un recurso.</li>
+</ul>
+
+<p><strong>Referencia:</strong> RFC 7231 - <em>Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content</em>. <a href="https://tools.ietf.org/html/rfc7231">IETF RFC 7231</a>.</p>
+
+<h4 id="3-openapi">3. OpenAPI</h4>
+<p>Especificación abierta para describir APIs RESTful, permitiendo generar documentación interactiva, facilitar la integración con herramientas de prueba y mejorar la interoperabilidad.</p>
+
+<p><strong>Referencia:</strong> OpenAPI Initiative. (2023). <em>OpenAPI Specification</em>. <a href="https://www.openapis.org/">OpenAPI Docs</a>.</p>
+
+<hr />
+
+<h2 id="contextualización-teórica">Contextualización Teórica</h2>
+
+<h3 id="diseño-de-apis-y-documentación-con-openapi">Diseño de APIs y Documentación con OpenAPI</h3>
+<p>La documentación de APIs es crucial para garantizar que los desarrolladores puedan entender y utilizar los servicios web de manera efectiva. <strong>OpenAPI</strong> permite:</p>
+<ul>
+  <li>Generar documentación interactiva (Swagger UI).</li>
+  <li>Facilitar la integración con herramientas de prueba como Postman.</li>
+  <li>Mejorar la interoperabilidad entre sistemas heterogéneos.</li>
+</ul>
+
+<h4 id="herramientas-para-documentación-y-pruebas-de-apis">Herramientas para Documentación y Pruebas de APIs</h4>
+<ul>
+  <li><strong>Swagger UI:</strong> Interfaz interactiva para explorar y probar APIs.</li>
+  <li><strong>Postman:</strong> Herramienta para realizar pruebas y validar respuestas.</li>
+  <li><strong>Insomnia:</strong> Alternativa ligera para pruebas de APIs.</li>
+</ul>
+
+<h3 id="api-rest-en-spring-boot">API REST en Spring Boot</h3>
+<p>Spring Boot facilita la creación de APIs REST mediante la utilización de anotaciones y convenciones que simplifican el desarrollo. Algunas características clave incluyen:</p>
+<ul>
+  <li><strong>Controladores REST:</strong> Clases anotadas con <code class="language-plaintext highlighter-rouge">@RestController</code> que manejan las solicitudes HTTP.</li>
+  <li><strong>Serialización/Deserialización:</strong> Conversión automática entre objetos Java y JSON/XML.</li>
+  <li><strong>Manejo de Errores:</strong> Respuestas de error estandarizadas mediante <code class="language-plaintext highlighter-rouge">@RestControllerAdvice</code>.</li>
+  <li><strong>Validación de Datos:</strong> Uso de anotaciones como <code class="language-plaintext highlighter-rouge">@Valid</code> para validar los datos de entrada.</li>
+</ul>
+
+<h3 id="arquitectura-de-una-aplicación-rest">Arquitectura de una Aplicación REST</h3>
+
+<p>La arquitectura típica de una aplicación REST en Spring Boot puede dividirse en varias capas, cada una con responsabilidades específicas. A continuación se presenta un diagrama que ilustra estas capas y sus interacciones:</p>
+
+<div class="mermaid" style="text-align: center;">
+graph TB
+    subgraph "Presentation Layer"
+        CA[📱 Client Application<br />Web/Mobile Interface]
+    end
+    
+    subgraph "API Layer"
+        C[🎯 Controller<br />Request Mapping<br />Response Handling]
+    end
+    
+    subgraph "Business Layer"
+        S[⚙️ Service<br />Business Logic<br />Data Processing]
+    end
+    
+    subgraph "Data Access Layer"
+        R[🗃️ Repository<br />Database Interactions<br />Query Management]
+        M[📋 Model/Entity<br />Data Access Objects<br />Domain Objects]
+    end
+    
+    subgraph "Storage Layer"
+        DB[(🗄️ Database<br />Persistent Storage)]
+    end
+    
+    %% Connections with labeled arrows
+    CA &lt;==&gt; |HTTP/REST APIs<br />JSON Requests| C
+    C &lt;==&gt; |Method Calls<br />DTOs| S
+    S &lt;==&gt; |Repository Pattern<br />Business Entities| R
+    R &lt;==&gt; |ORM/SQL<br />Entity Mapping| M
+    M &lt;==&gt; |Database Queries<br />CRUD Operations| DB
+    
+    %% Styling
+    classDef clientLayer fill:#FF6B6B,stroke:#E55555,stroke-width:2px,color:#fff
+    classDef apiLayer fill:#4ECDC4,stroke:#45B7B8,stroke-width:2px,color:#fff
+    classDef businessLayer fill:#45B7D1,stroke:#3498DB,stroke-width:2px,color:#fff
+    classDef dataLayer fill:#96CEB4,stroke:#74B9FF,stroke-width:2px,color:#fff
+    classDef storageLayer fill:#FFEAA7,stroke:#FDCB6E,stroke-width:2px,color:#2d3436
+    
+    class CA clientLayer
+    class C apiLayer
+    class S businessLayer
+    class R,M dataLayer
+    class DB storageLayer
+</div>
+
+<p>El proceso de petición desde el cliente a los servicios del backend (Spring Boot) <strong>sigue el modelo de arquitectura Cliente-Servidor</strong> y se basa en el <strong>protocolo HTTP</strong> (o HTTPS). Aquí hay un resumen general del proceso:</p>
+
+<ul>
+  <li>
+    <p>Un cliente (como un navegador web o una aplicación móvil) inicia una solicitud enviando una petición HTTP al servidor Spring Boot.</p>
+  </li>
+  <li>
+    <p>En el servidor Spring Boot, las peticiones son manejadas por controladores. Los controladores están anotados con <code class="language-plaintext highlighter-rouge">@Controller</code>, <code class="language-plaintext highlighter-rouge">@RestController</code> u otras anotaciones específicas de Spring.</p>
+  </li>
+  <li>
+    <p>El controlador realiza las operaciones necesarias en función de la lógica de negocio. Puede interactuar con servicios, acceder a bases de datos, realizar operaciones y preparar datos para enviar como respuesta.</p>
+  </li>
+  <li>
+    <p>Generación de la respuesta: Una vez que el controlador ha completado su lógica, genera una respuesta. La respuesta generada por el controlador se envía de vuelta al cliente a través del protocolo HTTP.</p>
+  </li>
+  <li>
+    <p>El cliente (por ejemplo, un navegador web o una aplicación móvil) recibe la respuesta y realiza acciones según la lógica de la aplicación.</p>
+  </li>
+</ul>
+
+<p>En esta guía nos <strong>enfocaremos en la implementación de los controladores REST</strong> y la configuración de las rutas para manejar las solicitudes HTTP.</p>
+
+<p><strong>Referencias:</strong></p>
+
+<ul>
+  <li><a href="https://spring.io/guides/gs/rest-service">Documentación de Spring Boot sobre REST</a></li>
+  <li><a href="https://jakarta.ee/specifications/bean-validation/3.0/apidocs/jakarta/validation/constraints/package-summary">Documentación de la API de Jakarta Bean Validation 3.0</a></li>
+  <li><a href="https://jakarta.ee/learn/docs/jakartaee-tutorial/current/beanvalidation/bean-validation/bean-validation.html">Introducción a la Validación de Beans en Jakarta EE</a></li>
+  <li><a href="https://jakarta.ee/specifications/bean-validation/3.0/jakarta-bean-validation-spec-3.0">Especificación de Jakarta Bean Validation 3.0</a></li>
+</ul>
+
+<hr />
+
+<h2 id="procedimiento">Procedimiento</h2>
+
+<p>Continuaremos trabajando en el proyecto final del espacio académico que iniciamos en las guías anteriores. Si no ha completado la guía anterior, por favor hágalo antes de continuar con esta.</p>
+
+<h3 id="1-configuración-inicial">1. Configuración inicial</h3>
+
+<p>Asegúrese que tiene las siguientes dependencias añadidas en el archivo <code class="language-plaintext highlighter-rouge">build.gradle</code> del proyecto de Spring Boot:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">implementation</span> <span class="s1">'org.springframework.boot:spring-boot-starter-web'</span>
+<span class="n">implementation</span> <span class="s1">'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9'</span>
+</code></pre></div></div>
+
+<h3 id="2-crear-un-controlador-simple">2. Crear un controlador simple</h3>
+
+<p>Cree una clase que se llame <code class="language-plaintext highlighter-rouge">GreetingController</code>. Para esto primero cree un paquete que se llame <code class="language-plaintext highlighter-rouge">co.edu.uniquindio.application.controllers</code>. A esta clase añádale la anotación <code class="language-plaintext highlighter-rouge">@RestController</code>. Y haga que quede así:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">co.edu.uniquindio.application.controllers</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.GetMapping</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.PathVariable</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RequestMapping</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RestController</span><span class="o">;</span>
+
+<span class="nd">@RestController</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/greeting"</span><span class="o">)</span> <span class="c1">// Prefijo común para todas las rutas del controlador</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GreetingController</span> <span class="o">{</span>
+
+    <span class="nd">@GetMapping</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">greet</span><span class="o">(){</span>
+        <span class="k">return</span> <span class="s">"Hola, bienvenido a la aplicación"</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@GetMapping</span><span class="o">(</span><span class="s">"/{name}"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">greetName</span><span class="o">(</span><span class="nd">@PathVariable</span> <span class="nc">String</span> <span class="n">name</span><span class="o">){</span>
+        <span class="k">return</span> <span class="s">"Hola %s, bienvenido a la aplicación"</span><span class="o">.</span><span class="na">formatted</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Con base en el código anterior, podemos destacar lo siguiente:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">@RestController</code>: Indica que esta clase es un controlador REST, lo que significa que manejará solicitudes HTTP y devolverá respuestas en formato de texto o JSON.</li>
+  <li><code class="language-plaintext highlighter-rouge">@RequestMapping("/greeting")</code> para que todas las rutas comiencen con <code class="language-plaintext highlighter-rouge">/greeting</code>. Esto permite que las rutas queden más organizadas y evitamos posibles conflictos con otras rutas en la aplicación.</li>
+  <li><code class="language-plaintext highlighter-rouge">@GetMapping</code>: Especifica que los métodos dentro del controlador responderán a solicitudes <strong>HTTP GET</strong>.</li>
+</ul>
+
+<p>El primer método se “activa” cuando un cliente hace una solicitud GET a la raíz del controlador (<code class="language-plaintext highlighter-rouge">/greeting</code>). Por ejemplo: <code class="language-plaintext highlighter-rouge">http://localhost:8080/greeting</code> Devuelve el mensaje: “Hola, bienvenido a la aplicación”.</p>
+
+<p>El segundo método se “activa” cuando un cliente hace una solicitud GET a la raíz del controlador (<code class="language-plaintext highlighter-rouge">/greeting</code>), con un parámetro en la URL. Por ejemplo: <code class="language-plaintext highlighter-rouge">http://localhost:8080/greeting/Carlos</code> Devuelve el mensaje “Hola Carlos, bienvenido a la aplicación”.</p>
+
+<blockquote>
+  <p><strong>⚠️ NOTA:</strong> El puerto por defecto es el 8080, pero puede variar según la configuración del proyecto en el archivo <code class="language-plaintext highlighter-rouge">application.properties</code>.</p>
+</blockquote>
+
+<h3 id="3-crear-archivo-de-pruebas-http">3. Crear archivo de pruebas HTTP</h3>
+
+<p>Para probar estas peticiones se recomienda crear un archivo en la carpeta <code class="language-plaintext highlighter-rouge">test/resources</code> que se llame por ejemplo <code class="language-plaintext highlighter-rouge">greeting.http</code> y puede quedar así:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">### Saludo</span>
+GET http://localhost:8080/greeting
+
+<span class="c">### Saludo con un nombre dado como parámetro</span>
+GET http://localhost:8080/greeting/Carlos
+</code></pre></div></div>
+
+<h3 id="4-probar-las-rutas">4. Probar las rutas</h3>
+
+<p>Pruebe cada ruta (para esto el servidor debe estar en ejecución). También puede acceder a las rutas desde su navegador web.</p>
+
+<h3 id="5-crear-usercontroller">5. Crear <code class="language-plaintext highlighter-rouge">UserController</code></h3>
+
+<p>Cree una nueva clase que se llame <code class="language-plaintext highlighter-rouge">UserController</code>. En el paquete <code class="language-plaintext highlighter-rouge">co.edu.uniquindio.application.controllers</code>. A esta clase añádale la anotación <code class="language-plaintext highlighter-rouge">@RestController</code>. Así:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">co.edu.uniquindio.application.controllers</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RestController</span><span class="o">;</span>
+
+<span class="nd">@RestController</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserController</span> <span class="o">{</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="6-configurar-endpoint">6. Configurar endpoint</h3>
+
+<p>Adicione a dicha clase la url (endpoint) que reconocerá el controlador para dar respuesta a las peticiones HTTP. Agregue lo siguiente debajo de <code class="language-plaintext highlighter-rouge">@RestController</code>:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/api/users"</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>Esto significa que cuando se pida la url <code class="language-plaintext highlighter-rouge">http://localhost:8080/api/users</code> será el controlador REST que estamos programando quien responda ante las peticiones realizadas.</p>
+
+<h3 id="7-crear-métodos-crud">7. Crear métodos CRUD</h3>
+
+<p>Cree un método para cada servicio de negocio de los usuarios que sea pertinente para la API. A manera de ejemplo se hará el controlador implementando solamente los métodos para hacer un CRUD básico en la entidad. Estos métodos se deben crear en la clase <code class="language-plaintext highlighter-rouge">UserController</code>:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">create</span><span class="o">(</span><span class="nc">CreateUserDTO</span> <span class="n">userDTO</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">edit</span><span class="o">(</span><span class="nc">EditUserDTO</span> <span class="n">userDTO</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">delete</span><span class="o">(</span><span class="nc">String</span> <span class="n">id</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="nc">UserDTO</span> <span class="nf">get</span><span class="o">(</span><span class="nc">String</span> <span class="n">id</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">UserDTO</span><span class="o">&gt;</span> <span class="nf">listAll</span><span class="o">(){</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>⚠️ NOTA:</strong> Cada método del controlador debe corresponderse con un servicio de usuarios, manteniendo coherencia en el nombre, el tipo de retorno, las excepciones y los parámetros. Para el intercambio de información en la API, es necesario utilizar DTOs que encapsulen los datos tanto de entrada como de salida. Estos DTOs deben ubicarse en el paquete <code class="language-plaintext highlighter-rouge">co.edu.uniquindio.application.dto</code>.</p>
+</blockquote>
+
+<p>Un <strong>DTO (Data Transfer Object)</strong> es un objeto diseñado para transportar datos entre diferentes capas o componentes de una aplicación. Su objetivo principal es encapsular la información que se intercambia, evitando exponer directamente la estructura interna de las entidades o modelos principales del sistema.</p>
+
+<h3 id="8-crear-dtos-con-records">8. Crear DTOs con records</h3>
+
+<p>Cree los DTOs con los atributos correspondientes para cada método del CRUD. Un DTO es una clase que encapsula la información necesaria para cada requisito específico de la aplicación, separando la lógica de negocio de la estructura de los datos que se intercambian entre el cliente y el servidor.</p>
+
+<p>Dado que los DTO son objetos que no tienen lógica y solo sirven para encapsular atributos, podemos hacer uso de los <code class="language-plaintext highlighter-rouge">record</code> de Java, entonces, por ejemplo el DTO <code class="language-plaintext highlighter-rouge">CreateUserDTO</code> se puede crear así:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">co.edu.uniquindio.application.dto</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="n">record</span> <span class="nf">CreateUserDTO</span><span class="o">(</span>
+    <span class="nc">String</span> <span class="n">name</span><span class="o">,</span>
+    <span class="nc">String</span> <span class="n">phone</span><span class="o">,</span>
+    <span class="nc">String</span> <span class="n">email</span><span class="o">,</span>
+    <span class="nc">String</span> <span class="n">password</span><span class="o">,</span>
+    <span class="nc">String</span> <span class="n">photoUrl</span><span class="o">,</span>
+    <span class="nc">LocalDate</span> <span class="n">dateBirth</span><span class="o">,</span>
+    <span class="nc">Role</span> <span class="n">role</span>
+<span class="o">)</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Para más información sobre DTO y los <code class="language-plaintext highlighter-rouge">record</code> de Java:</p>
+<ul>
+  <li><a href="https://www.arquitecturajava.com/java-record-class-y-jdk-14/">Java Record Class y JDK 14</a></li>
+  <li><a href="https://www.arquitecturajava.com/data-transfer-object-dto-un-concepto-clave/">Data Transfer Object DTO</a></li>
+  <li><a href="https://reactiveprogramming.io/blog/es/patrones-arquitectonicos/dto">Patrones Arquitectónicos - DTO</a></li>
+</ul>
+
+<h3 id="9-agregar-validaciones-a-dtos">9. Agregar validaciones a DTOs</h3>
+
+<p>Es necesario realizar validaciones sobre cada uno de los atributos de los DTOs que se utilizan para registrar o actualizar información en el backend (por ejemplo, en una base de datos). Con estas validaciones aplicadas, el DTO <code class="language-plaintext highlighter-rouge">CreateUserDTO</code> quedaría de la siguiente manera:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">co.edu.uniquindio.application.dto</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">co.edu.uniquindio.application.model.Role</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">jakarta.validation.constraints.Email</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">jakarta.validation.constraints.NotBlank</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">jakarta.validation.constraints.NotNull</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">jakarta.validation.constraints.Past</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.hibernate.validator.constraints.Length</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.time.LocalDate</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="n">record</span> <span class="nf">CreateUserDTO</span><span class="o">(</span>
+        <span class="nd">@NotBlank</span> <span class="nd">@Length</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">100</span><span class="o">)</span> <span class="nc">String</span> <span class="n">name</span><span class="o">,</span>
+        <span class="nd">@Length</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">10</span><span class="o">)</span> <span class="nc">String</span> <span class="n">phone</span><span class="o">,</span>
+        <span class="nd">@NotBlank</span> <span class="nd">@Length</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">50</span><span class="o">)</span> <span class="nd">@Email</span> <span class="nc">String</span> <span class="n">email</span><span class="o">,</span>
+        <span class="nd">@NotBlank</span> <span class="nd">@Length</span><span class="o">(</span><span class="n">min</span> <span class="o">=</span> <span class="mi">7</span><span class="o">,</span> <span class="n">max</span> <span class="o">=</span> <span class="mi">20</span><span class="o">)</span> <span class="nc">String</span> <span class="n">password</span><span class="o">,</span>
+        <span class="nd">@Length</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">300</span><span class="o">)</span> <span class="nc">String</span> <span class="n">photoUrl</span><span class="o">,</span>
+        <span class="nd">@NotNull</span> <span class="nd">@Past</span> <span class="nc">LocalDate</span> <span class="n">dateBirth</span><span class="o">,</span>
+        <span class="nd">@NotNull</span> <span class="nc">Role</span> <span class="n">role</span>
+<span class="o">)</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>El DTO debe tener las validaciones pertinentes para garantizar una buena integridad de los datos. Todos los DTO que represente un objeto que será guardado en la base de datos debe tener las validaciones.</p>
+
+<p>Para más información sobre las anotaciones de validaciones:</p>
+<ul>
+  <li><a href="https://jakarta.ee/specifications/bean-validation/3.0/apidocs/jakarta/validation/constraints/package-summary">Documentación de la API de Jakarta Bean Validation 3.0</a></li>
+  <li><a href="https://jakarta.ee/learn/docs/jakartaee-tutorial/current/beanvalidation/bean-validation/bean-validation.html">Introducción a la Validación de Beans en Jakarta EE</a></li>
+  <li><a href="https://jakarta.ee/specifications/bean-validation/3.0/jakarta-bean-validation-spec-3.0">Especificación de Jakarta Bean Validation 3.0</a></li>
+</ul>
+
+<h3 id="10-crear-edituserdto-y-userdto">10. Crear <code class="language-plaintext highlighter-rouge">EditUserDTO</code> y <code class="language-plaintext highlighter-rouge">UserDTO</code></h3>
+
+<p>Cree el DTO <code class="language-plaintext highlighter-rouge">EditUserDTO</code> con las validaciones pertinentes. Adicionalmente, cree el DTO <code class="language-plaintext highlighter-rouge">UserDTO</code>, el cual será utilizado para devolver información al cliente. Dado que este último DTO es una respuesta generada por el backend, no requiere validaciones, ya que los datos ya fueron previamente procesados y verificados.</p>
+
+<p>El record <code class="language-plaintext highlighter-rouge">EditUserDTO</code>, puede estructurarse de la siguiente manera (se asume que el usuario no puede modificar su correo electrónico ni su contraseña; para cambiar la contraseña, deberá utilizar otro mecanismo):</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">co.edu.uniquindio.application.dto</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">co.edu.uniquindio.application.model.Role</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">jakarta.validation.constraints.NotBlank</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">jakarta.validation.constraints.NotNull</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">jakarta.validation.constraints.Past</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.hibernate.validator.constraints.Length</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.time.LocalDate</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="n">record</span> <span class="nf">EditUserDTO</span><span class="o">(</span>
+        <span class="nd">@NotBlank</span> <span class="nd">@Length</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">100</span><span class="o">)</span> <span class="nc">String</span> <span class="n">name</span><span class="o">,</span>
+        <span class="nd">@Length</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">10</span><span class="o">)</span> <span class="nc">String</span> <span class="n">phone</span><span class="o">,</span>
+        <span class="nd">@Length</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">300</span><span class="o">)</span> <span class="nc">String</span> <span class="n">photoUrl</span><span class="o">,</span>
+        <span class="nd">@NotNull</span> <span class="nd">@Past</span> <span class="nc">LocalDate</span> <span class="n">dateBirth</span><span class="o">,</span>
+        <span class="nd">@NotNull</span> <span class="nc">Role</span> <span class="n">role</span>
+<span class="o">)</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>El record <code class="language-plaintext highlighter-rouge">UserDTO</code> puede quedar así:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">co.edu.uniquindio.application.dto</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">co.edu.uniquindio.application.model.Role</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="n">record</span> <span class="nf">UserDTO</span><span class="o">(</span>
+        <span class="nc">String</span> <span class="n">id</span><span class="o">,</span>
+        <span class="nc">String</span> <span class="n">name</span><span class="o">,</span>
+        <span class="nc">String</span> <span class="n">email</span><span class="o">,</span>
+        <span class="nc">String</span> <span class="n">photoUrl</span><span class="o">,</span>
+        <span class="nc">Role</span> <span class="n">role</span>
+<span class="o">)</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>⚠️ <strong>IMPORTANTE:</strong> Recuerde que los DTOs son objetos simples que no contienen lógica de negocio. Y claramente cada DTO es diferente según el contexto en el que se utilice.</p>
+</blockquote>
+
+<h3 id="11-agregar-anotaciones-http-a-métodos">11. Agregar anotaciones HTTP a métodos</h3>
+
+<p>Como se explicó previamente, a cada método de <code class="language-plaintext highlighter-rouge">UserController</code> se le debe añadir una anotación de acuerdo al método HTTP que deba dar respuesta. Para obtener se usa GET, para guardar o registrar se usa POST, para borrar DELETE y para modificar PUT.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@PostMapping</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">create</span><span class="o">(</span><span class="nc">CreateUserDTO</span> <span class="n">userDTO</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+<span class="o">}</span>
+
+<span class="nd">@PutMapping</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">edit</span><span class="o">(</span><span class="nc">EditUserDTO</span> <span class="n">userDTO</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+<span class="o">}</span>
+
+<span class="nd">@DeleteMapping</span><span class="o">(</span><span class="s">"/{id}"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">delete</span><span class="o">(</span><span class="nc">String</span> <span class="n">id</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+<span class="o">}</span>
+
+<span class="nd">@GetMapping</span><span class="o">(</span><span class="s">"/{id}"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">UserDTO</span> <span class="nf">get</span><span class="o">(</span><span class="nc">String</span> <span class="n">id</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="nd">@GetMapping</span>
+<span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">UserDTO</span><span class="o">&gt;</span> <span class="nf">listAll</span><span class="o">(){</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="12-configurar-parámetros-de-entrada">12. Configurar parámetros de entrada</h3>
+
+<p>Algunos métodos necesitan información que puede venir por la url o en el cuerpo de la petición. Para esos casos se debe indicar explícitamente como va a llegar dicha información. Si es por la url se debe usar la anotación <code class="language-plaintext highlighter-rouge">@PathVariable</code> y si es dentro del cuerpo de la petición se usa <code class="language-plaintext highlighter-rouge">@RequestBody</code>, para este último caso se recomienda que vaya acompañado de la anotación <code class="language-plaintext highlighter-rouge">@Valid</code> (para que tenga en cuenta las anotaciones de validación de los atributos de los DTO).</p>
+
+<p>Por ejemplo, si se desea obtener la información completa de un objeto, lo más natural es enviar su identificador (<code class="language-plaintext highlighter-rouge">id</code>) y, con base en ese valor, retornar el resto de los datos. En este caso, el identificador puede enviarse en la URL. En cambio, para registrar un usuario es necesario proporcionar todos los datos que se quieren almacenar; por lo tanto, lo ideal es incluir esta información en el cuerpo de la petición.</p>
+
+<p>Se puede implementar cada uno de los métodos del controlador REST haciendo uso de las anotaciones correspondientes, así:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@PostMapping</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">create</span><span class="o">(</span><span class="nd">@Valid</span> <span class="nd">@RequestBody</span> <span class="nc">CreateUserDTO</span> <span class="n">userDTO</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+    
+<span class="o">}</span>
+
+<span class="nd">@PutMapping</span><span class="o">(</span><span class="s">"/{id}"</span><span class="o">)</span> <span class="c1">// Debe coincidir con el nombre del parámetro (id)</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">edit</span><span class="o">(</span><span class="nd">@PathVariable</span> <span class="nc">String</span> <span class="n">id</span><span class="o">,</span> <span class="nd">@Valid</span> <span class="nd">@RequestBody</span> <span class="nc">EditUserDTO</span> <span class="n">userDTO</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+
+<span class="o">}</span>
+
+<span class="nd">@DeleteMapping</span><span class="o">(</span><span class="s">"/{id}"</span><span class="o">)</span> <span class="c1">// Debe coincidir con el nombre del parámetro (id)</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">delete</span><span class="o">(</span><span class="nd">@PathVariable</span> <span class="nc">String</span> <span class="n">id</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+    
+<span class="o">}</span>
+
+<span class="nd">@GetMapping</span><span class="o">(</span><span class="s">"/{id}"</span><span class="o">)</span> <span class="c1">// Debe coincidir con el nombre del parámetro (id)</span>
+<span class="kd">public</span> <span class="nc">UserDTO</span> <span class="nf">get</span><span class="o">(</span><span class="nd">@PathVariable</span> <span class="nc">String</span> <span class="n">id</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="nd">@GetMapping</span>
+<span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">UserDTO</span><span class="o">&gt;</span> <span class="nf">listAll</span><span class="o">(){</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>⚠️ <strong>Importante:</strong> Los métodos del controlador no deben contener lógica de negocio; su función es únicamente invocar los métodos definidos en la capa de servicios y transferirles los parámetros correspondientes. En una próxima guía se implementará la lógica de negocio en los servicios.</p>
+</blockquote>
+
+<h3 id="13-implementar-responseentity">13. Implementar <code class="language-plaintext highlighter-rouge">ResponseEntity</code></h3>
+
+<p>Como vimos en los métodos anteriores, algunos devuelven <code class="language-plaintext highlighter-rouge">void</code>, mientras que otros pueden lanzar excepciones al realizar operaciones de consulta, registro, u otras similares. Lo ideal es brindar siempre retroalimentación al usuario: informar cuando todo funciona correctamente y también cuando ocurre algún error. Para lograrlo, se puede utilizar el objeto <code class="language-plaintext highlighter-rouge">ResponseEntity</code>.</p>
+
+<p>Por ejemplo, para la creación de una nueva cuenta de usuario podemos modificarlo de la siguiente manera para que siempre haya una respuesta:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@PostMapping</span>
+<span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">ResponseDTO</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;&gt;</span> <span class="nf">create</span><span class="o">(</span><span class="nd">@Valid</span> <span class="nd">@RequestBody</span> <span class="nc">CreateUserDTO</span> <span class="n">userDTO</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+    <span class="c1">//Lógica para crear el usuario</span>
+    <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">status</span><span class="o">(</span><span class="nc">HttpStatus</span><span class="o">.</span><span class="na">CREATED</span><span class="o">).</span><span class="na">body</span><span class="o">(</span><span class="k">new</span> <span class="nc">ResponseDTO</span><span class="o">&lt;&gt;(</span><span class="kc">false</span><span class="o">,</span> <span class="s">"El registro ha sido exitoso"</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>El objeto <code class="language-plaintext highlighter-rouge">ResponseEntity</code> nos permite asignar un código de respuesta (<code class="language-plaintext highlighter-rouge">status</code>) y un contenido (<code class="language-plaintext highlighter-rouge">body</code>), para este caso estamos devolviendo un mensaje en formato JSON. El objetivo del DTO <code class="language-plaintext highlighter-rouge">ResponseDTO</code> es que todas las respuestas del servidor tengan <strong>la misma estructura</strong>.</p>
+
+<h3 id="14-crear-responsedto">14. Crear ResponseDTO</h3>
+
+<p>Cree <code class="language-plaintext highlighter-rouge">ResponseDTO</code> en el paquete <code class="language-plaintext highlighter-rouge">co.edu.uniquindio.application.dto</code> así:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">co.edu.uniquindio.application.dto</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="n">record</span> <span class="nc">ResponseDTO</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;(</span>
+    <span class="kt">boolean</span> <span class="n">error</span><span class="o">,</span>
+    <span class="no">T</span> <span class="n">content</span>
+<span class="o">)</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Este <code class="language-plaintext highlighter-rouge">record</code> tiene un atributo de tipo <code class="language-plaintext highlighter-rouge">boolean</code> que indica si hay error o no, y otro atributo de tipo <code class="language-plaintext highlighter-rouge">T</code> (genérico) que representará la respuesta como tal. Eso implica que el contenido de la respuesta puede tomar el valor que se requiera: un <code class="language-plaintext highlighter-rouge">String</code>, un objeto, una lista, etc.</p>
+
+<h3 id="15-completar-métodos-con-responseentity">15. Completar métodos con ResponseEntity</h3>
+
+<p>En este otro ejemplo, si existe el codigo de la cuenta de usuario retornamos el detalle de la misma, este detalle está en el objeto <code class="language-plaintext highlighter-rouge">UserDTO</code>:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@GetMapping</span><span class="o">(</span><span class="s">"/{id}"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">ResponseDTO</span><span class="o">&lt;</span><span class="nc">UserDTO</span><span class="o">&gt;&gt;</span> <span class="nf">get</span><span class="o">(</span><span class="nd">@PathVariable</span> <span class="nc">String</span> <span class="n">id</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+    <span class="c1">//Lógica para consular el usuario</span>
+    <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">ok</span><span class="o">(</span><span class="k">new</span> <span class="nc">ResponseDTO</span><span class="o">&lt;&gt;(</span><span class="kc">false</span><span class="o">,</span> <span class="kc">null</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Este sería el código para eliminar la cuenta de un usuario con el ajuste indicado anteriormente:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@DeleteMapping</span><span class="o">(</span><span class="s">"/{id}"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">ResponseDTO</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;&gt;</span> <span class="nf">delete</span><span class="o">(</span><span class="nd">@PathVariable</span> <span class="nc">String</span> <span class="n">id</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+    <span class="c1">//Lógica para eliminar el usuario</span>
+    <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">ok</span><span class="o">(</span><span class="k">new</span> <span class="nc">ResponseDTO</span><span class="o">&lt;&gt;(</span><span class="kc">false</span><span class="o">,</span> <span class="s">"El usuario ha sido eliminado"</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Este sería el código para listar todas las cuentas de los usuarios:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@GetMapping</span>
+<span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">ResponseDTO</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">UserDTO</span><span class="o">&gt;&gt;&gt;</span> <span class="nf">listAll</span><span class="o">(){</span>
+    <span class="c1">//Lógica para consultar todos los usuarios</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">UserDTO</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+    <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">ok</span><span class="o">(</span><span class="k">new</span> <span class="nc">ResponseDTO</span><span class="o">&lt;&gt;(</span><span class="kc">false</span><span class="o">,</span> <span class="n">list</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Y finalmente, este sería el método de editar la información de la cuenta de un usuario:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@PutMapping</span><span class="o">(</span><span class="s">"/{id}"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">ResponseDTO</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;&gt;</span> <span class="nf">edit</span><span class="o">(</span><span class="nd">@PathVariable</span> <span class="nc">String</span> <span class="n">id</span><span class="o">,</span> <span class="nd">@Valid</span> <span class="nd">@RequestBody</span> <span class="nc">EditUserDTO</span> <span class="n">userDTO</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+    <span class="c1">//Lógica para editar el usuario</span>
+    <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">ok</span><span class="o">(</span><span class="k">new</span> <span class="nc">ResponseDTO</span><span class="o">&lt;&gt;(</span><span class="kc">false</span><span class="o">,</span> <span class="s">"El usuario ha sido actualizado"</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Códigos de estado HTTP: <a href="https://developer.mozilla.org/es/docs/Web/HTTP/Status">HTTP Status Codes - MDN</a></p>
+
+<h3 id="16-manejo-de-excepciones">16. Manejo de excepciones</h3>
+
+<p>El manejo de las excepciones se debe programar en una nueva clase a la que llamaremos <code class="language-plaintext highlighter-rouge">RestExceptionHandler</code>. Básicamente esta clase mostrará un mensaje de error personalizado al usuario según el tipo de excepción que arroje el servicio (cualquier servicio).</p>
+
+<p>Dentro del paquete <code class="language-plaintext highlighter-rouge">co.edu.uniquindio.application.exceptions</code> cree la clase <code class="language-plaintext highlighter-rouge">RestExceptionHandler</code> con la anotación <code class="language-plaintext highlighter-rouge">@RestControllerAdvice</code> así:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">co.edu.uniquindio.application.exceptions</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">co.edu.uniquindio.application.dto.ResponseDTO</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">co.edu.uniquindio.application.dto.ValidationDTO</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.http.ResponseEntity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.validation.BindingResult</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.validation.FieldError</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.MethodArgumentNotValidException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.ExceptionHandler</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RestControllerAdvice</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.servlet.resource.NoResourceFoundException</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="nd">@RestControllerAdvice</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RestExceptionHandler</span> <span class="o">{</span>
+
+    <span class="nd">@ExceptionHandler</span><span class="o">(</span><span class="nc">NoResourceFoundException</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">ResponseDTO</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;&gt;</span> <span class="nf">noResourceFoundExceptionHandler</span><span class="o">(</span><span class="nc">NoResourceFoundException</span> <span class="n">ex</span><span class="o">){</span>
+        <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">status</span><span class="o">(</span><span class="mi">404</span><span class="o">).</span><span class="na">body</span><span class="o">(</span> <span class="k">new</span> <span class="nc">ResponseDTO</span><span class="o">&lt;&gt;(</span><span class="kc">true</span><span class="o">,</span> <span class="s">"El recurso solicitado no existe"</span><span class="o">)</span> <span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@ExceptionHandler</span><span class="o">(</span><span class="nc">Exception</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">ResponseDTO</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;&gt;</span> <span class="nf">generalExceptionHandler</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">){</span>
+        <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">internalServerError</span><span class="o">().</span><span class="na">body</span><span class="o">(</span> <span class="k">new</span> <span class="nc">ResponseDTO</span><span class="o">&lt;&gt;(</span><span class="kc">true</span><span class="o">,</span> <span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">())</span> <span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@ExceptionHandler</span><span class="o">(</span><span class="nc">MethodArgumentNotValidException</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">ResponseDTO</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">ValidationDTO</span><span class="o">&gt;&gt;&gt;</span> <span class="nf">validationExceptionHandler</span> <span class="o">(</span> <span class="nc">MethodArgumentNotValidException</span> <span class="n">ex</span> <span class="o">)</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">ValidationDTO</span><span class="o">&gt;</span> <span class="n">errors</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+        <span class="nc">BindingResult</span> <span class="n">results</span> <span class="o">=</span> <span class="n">ex</span><span class="o">.</span><span class="na">getBindingResult</span><span class="o">();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="nc">FieldError</span> <span class="nl">e:</span> <span class="n">results</span><span class="o">.</span><span class="na">getFieldErrors</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">errors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span> <span class="k">new</span> <span class="nc">ValidationDTO</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getField</span><span class="o">(),</span> <span class="n">e</span><span class="o">.</span><span class="na">getDefaultMessage</span><span class="o">())</span> <span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">badRequest</span><span class="o">().</span><span class="na">body</span><span class="o">(</span> <span class="k">new</span> <span class="nc">ResponseDTO</span><span class="o">&lt;&gt;(</span><span class="kc">true</span><span class="o">,</span> <span class="n">errors</span><span class="o">)</span> <span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Cada método de la clase <code class="language-plaintext highlighter-rouge">RestExceptionHandler</code> responde a una excepción que puede ser arrojada en cualquier momento por cualquier servicio de negocio. Para diferenciar cada método se hace uso de la anotación <code class="language-plaintext highlighter-rouge">@ExceptionHandler</code>. Acá una breve descripción de cada una:</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">NoResourceFoundException</code>:</strong> Excepción que se lanza cuando se trata de acceder a un recurso que no existe.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">Exception</code>:</strong> Excepción general de Java. Lo ideal es tener excepciones propias para cada tipo de error y no ponerle a todas las excepciones simplemente <code class="language-plaintext highlighter-rouge">Exception</code>.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">MethodArgumentNotValidException</code>:</strong> Excepción que se lanza cuando no se cumple alguna validación puesta en los DTO (<code class="language-plaintext highlighter-rouge">@NotNull</code>, <code class="language-plaintext highlighter-rouge">@Email</code>, <code class="language-plaintext highlighter-rouge">@Max</code>, etc..). Para este caso debe crear un nuevo DTO con el nombre: <code class="language-plaintext highlighter-rouge">ValidationDTO</code>, este record debe debe tener dos <code class="language-plaintext highlighter-rouge">String</code>: field y message.</li>
+</ul>
+
+<h3 id="17-crear-archivo-de-pruebas-para-usuarios">17. Crear archivo de pruebas para usuarios</h3>
+
+<p>Pruebe cada ruta, para esto, cree un nuevo archivo en la carpeta <code class="language-plaintext highlighter-rouge">test/resources</code> que se llame <code class="language-plaintext highlighter-rouge">users.http</code> y que tenga lo siguiente:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">### Obtener todos los usuarios</span>
+GET http://localhost:8080/api/users
+
+<span class="c">### Obtener un usuario por id (cambie 1 por el id del usuario que desea obtener)</span>
+GET http://localhost:8080/api/users/1
+
+<span class="c">### Crear un usuario</span>
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+<span class="o">{</span>
+  <span class="s2">"name"</span>: <span class="s2">"Carlos"</span>,
+  <span class="s2">"phone"</span>: <span class="s2">"121212"</span>,
+  <span class="s2">"email"</span>: <span class="s2">"carlos@email.com"</span>,
+  <span class="s2">"password"</span>: <span class="s2">"12345678"</span>,
+  <span class="s2">"photoUrl"</span>: <span class="s2">""</span>,
+  <span class="s2">"dateBirth"</span>: <span class="s2">"2000-08-22"</span>,
+  <span class="s2">"role"</span>: <span class="s2">"USER"</span>
+<span class="o">}</span>
+
+<span class="c">### Actualizar un usuario (cambie 1 por el id del usuario que desea actualizar)</span>
+PUT http://localhost:8080/api/users/1
+Content-Type: application/json
+
+<span class="o">{</span>
+  <span class="s2">"name"</span>: <span class="s2">"Carlos"</span>,
+  <span class="s2">"phone"</span>: <span class="s2">"333333"</span>,
+  <span class="s2">"photoUrl"</span>: <span class="s2">"mi foto"</span>,
+  <span class="s2">"dateBirth"</span>: <span class="s2">"2000-08-22"</span>,
+  <span class="s2">"role"</span>: <span class="s2">"USER"</span>
+<span class="o">}</span>
+
+<span class="c">### Eliminar un usuario (cambie 1 por el id del usuario que desea eliminar)</span>
+DELETE http://localhost:8080/api/users/1
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>⚠️ Importante:</strong> Al probar cada ruta, asegúrese de que el servidor esté en ejecución y de que los datos de prueba estén configurados correctamente. Aún no hay una funcionalidad implementada para manejar los datos pero puede observar las respuestas que genera el servidor.</p>
+</blockquote>
+
+<h3 id="18-implementar-filtros-con-requestparam">18. Implementar filtros con <code class="language-plaintext highlighter-rouge">@RequestParam</code></h3>
+
+<p>Modifique el método <code class="language-plaintext highlighter-rouge">listAll</code> de la clase <code class="language-plaintext highlighter-rouge">UserController</code> para que permita obtener usuarios filtrados por su nombre y por su teléfono (ambos opcionales). En este caso, se aconseja hacer algo así:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@GetMapping</span>
+<span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">ResponseDTO</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">UserDTO</span><span class="o">&gt;&gt;&gt;</span> <span class="nf">listAll</span><span class="o">(</span>
+        <span class="nd">@RequestParam</span><span class="o">(</span><span class="n">required</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span> <span class="nc">String</span> <span class="n">name</span><span class="o">,</span>
+        <span class="nd">@RequestParam</span><span class="o">(</span><span class="n">required</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span> <span class="nc">String</span> <span class="n">phone</span>
+<span class="o">)</span> <span class="o">{</span>
+    <span class="c1">//Lógica para consultar todos los usuarios con filtros</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">UserDTO</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+    <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">ok</span><span class="o">(</span><span class="k">new</span> <span class="nc">ResponseDTO</span><span class="o">&lt;&gt;(</span><span class="kc">false</span><span class="o">,</span> <span class="n">list</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>La anotación <code class="language-plaintext highlighter-rouge">@RequestParam</code> se usa para enviar parámetros por la url a la petición. En este caso, estas peticiones son válidas:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">### Obtener todos los usuarios que tienen un nombre dado</span>
+GET http://localhost:8080/api/users?name<span class="o">=</span>Carlos
+
+<span class="c">### Obtener todos los usuarios cuyo teléfono es 1234567</span>
+GET http://localhost:8080/api/users?phone<span class="o">=</span>1234567
+
+<span class="c">### Obtener todos los usuarios cuyo teléfono es 1234567 y su nombre es Carlos</span>
+GET http://localhost:8080/api/users?phone<span class="o">=</span>1234567&amp;name<span class="o">=</span>Carlos
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>NOTA:</strong> Se recomienda crear un DTO cuando se requieren múltiples filtros y utilizar <code class="language-plaintext highlighter-rouge">@ModelAttribute</code> en lugar de <code class="language-plaintext highlighter-rouge">@RequestParam</code> individuales, esto para mantener un código más limpio y organizado.</p>
+</blockquote>
+
+<h3 id="19-crear-controlador-de-alojamientos">19. Crear controlador de alojamientos</h3>
+
+<p>Cree una nueva clase y programe un nuevo <code class="language-plaintext highlighter-rouge">@RestController</code> para manejar la parte de los alojamientos del proyecto final (puede empezar con el CRUD). Consulte las buenas prácticas para crear las rutas y los códigos de respuesta. Y haga el respectivo archivo de pruebas (<code class="language-plaintext highlighter-rouge">.http</code>).</p>
+
+<h3 id="20-programar-todos-los-restcontrollers">20. Programar todos los RestControllers</h3>
+
+<p>Programe los demás <code class="language-plaintext highlighter-rouge">@RestController</code> para todos requerimientos del proyecto final. Consulte las buenas prácticas para crear las rutas y los códigos de respuesta.</p>
+
+<h3 id="21-métodos-de-prueba">21. Métodos de prueba</h3>
+
+<p>Para probar los diferentes métodos de los controladores podemos hacerlo de muchas maneras, en esta guía creamos archivos de prueba (<code class="language-plaintext highlighter-rouge">.http</code>) para cada uno de los métodos, pero también se pueden utilizar herramientas como Postman, Insomnia o Swagger.</p>
+
+<h3 id="22-guardar-los-cambios-en-git">22. Guardar los cambios en Git</h3>
+
+<p>Asegúrese de guardar todos los cambios realizados en el proyecto utilizando Git. Cree un commit con un mensaje descriptivo y luego haga push a su repositorio remoto.</p>
+
+<hr />
+
+<h2 id="para-la-próxima-clase">Para la próxima clase</h2>
+
+<ul>
+  <li>¿Qué otras herramientas sirven para probar APIs? Investigue cómo utilizar Postman o Insomnia para probar las APIs que ha creado.</li>
+  <li>Profundice en el concepto de DTO (Data Transfer Object) y su importancia en la comunicación entre capas de la aplicación.</li>
+  <li>Investigue sobre GraphQL, ¿para qué sirve? ¿Qué ventajas y desventajas tiene frente a REST?</li>
+</ul>
+
+<hr />
+
+<h2 id="referencias-bibliográficas">Referencias Bibliográficas</h2>
+
+<ol>
+  <li>Fielding, R. T. (2000). <em>Architectural Styles and the Design of Network-based Software Architectures</em>. University of California, Irvine.</li>
+  <li>RFC 7231 - <em>Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content</em>. <a href="https://tools.ietf.org/html/rfc7231">IETF RFC 7231</a>.</li>
+  <li>OpenAPI Initiative. (2023). <em>OpenAPI Specification</em>. <a href="https://www.openapis.org/">OpenAPI Docs</a>.</li>
+  <li>Richardson, L., &amp; Amundsen, M. (2016). <em>RESTful Web APIs</em>. O’Reilly Media.</li>
+  <li>OWASP. (2021). <em>OWASP Top Ten</em>. <a href="https://owasp.org/www-project-top-ten/">OWASP Docs</a>.</li>
+</ol>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>

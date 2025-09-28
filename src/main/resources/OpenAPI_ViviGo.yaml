@@ -776,11 +776,66 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /usuarios/anfitrion:
+  /usuarios/{id}/anfitrion:
     post:
+      summary: Convertir usuario existente en anfitrión
       tags: [ Usuarios ]
       security:
         - BearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sobreMi:
+                  type: string
+                  description: "Descripción personal del anfitrión"
+                DocumentoLegal:
+                  type: string
+                  description: "Documento legal del anfitrión"
+              required:
+                - sobreMi
+                - DocumentoLegal
+      responses:
+        '200':
+          description: Usuario convertido a anfitrión exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  mensaje:
+                    type: string
+                    example: "Usuario convertido a anfitrión exitosamente"
+        '400':
+          description: Datos inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Usuario no es huésped o no tiene permisos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   # GESTIÓN DE ALOJAMIENTOS
   /alojamientos:

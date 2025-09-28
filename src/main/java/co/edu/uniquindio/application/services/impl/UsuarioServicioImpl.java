@@ -6,9 +6,12 @@ import co.edu.uniquindio.application.exceptions.ValidationException;
 import co.edu.uniquindio.application.exceptions.ValueConflictException;
 import co.edu.uniquindio.application.mappers.UsuarioMapper;
 import co.edu.uniquindio.application.models.entitys.ContrasenaCodigoReinicio;
+import co.edu.uniquindio.application.models.entitys.PerfilAnfitrion;
 import co.edu.uniquindio.application.models.entitys.Usuario;
 import co.edu.uniquindio.application.models.enums.Estado;
+import co.edu.uniquindio.application.models.enums.Rol;
 import co.edu.uniquindio.application.repositories.ContrasenaCodigoReinicioRepositorio;
+import co.edu.uniquindio.application.repositories.PerfilAnfitrionRepositorio;
 import co.edu.uniquindio.application.repositories.UsuarioRepositorio;
 import co.edu.uniquindio.application.services.UsuarioServicio;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     private final UsuarioRepositorio usuarioRepositorio;
     private final UsuarioMapper usuarioMapper;
     private final ContrasenaCodigoReinicioRepositorio contrasenaCodigoReinicioRepositorio;
+    private final PerfilAnfitrionRepositorio perfilAnfitrionRepositorio;
 
 
     @Override
@@ -110,8 +114,25 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public void crearAnfitrion(CreacionAnfitrionDTO dto) throws Exception {
+    public void crearAnfitrion(String usuarioId, CreacionAnfitrionDTO dto) throws Exception {
+        Usuario usuario = obtenerUsuarioId(usuarioId);
 
+        // Validar que es huésped
+        if (!usuario.getRol().equals(Rol.Huesped)) {
+            throw new ValidationException("Solo usuarios con rol Huésped pueden convertirse en Anfitriones");
+        }
+
+        // Actualizar rol a anfitrión
+        usuario.setRol(Rol.Anfitrion);
+        usuarioRepositorio.save(usuario);
+
+        // Crear perfil de anfitrión
+        PerfilAnfitrion perfil = new PerfilAnfitrion(null, dto.sobreMi(), dto.DocumentoLegal(), usuario);
+        perfilAnfitrionRepositorio.save(perfil);
+    
+        // Actualizar la relación bidireccional
+        usuario.setPerfilAnfitrion(perfil);
+        usuarioRepositorio.save(usuario);
     }
 
     public boolean existePorEmail(String email){

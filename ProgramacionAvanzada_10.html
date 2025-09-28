@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Programación Avanzada | Guías y material de clase del espacio académico Programación Avanzada.</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Programación Avanzada" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Guías y material de clase del espacio académico Programación Avanzada." />
+<meta property="og:description" content="Guías y material de clase del espacio académico Programación Avanzada." />
+<link rel="canonical" href="https://caflorezvi.github.io/guias-programacion-avanzada/10.repositorios.html" />
+<meta property="og:url" content="https://caflorezvi.github.io/guias-programacion-avanzada/10.repositorios.html" />
+<meta property="og:site_name" content="Programación Avanzada" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Programación Avanzada" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Guías y material de clase del espacio académico Programación Avanzada.","headline":"Programación Avanzada","url":"https://caflorezvi.github.io/guias-programacion-avanzada/10.repositorios.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/guias-programacion-avanzada/assets/css/style.css?v=12926fa7e43f9584a9f4f82f3d029693a64a6a39">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/guias-programacion-avanzada/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://caflorezvi.github.io/guias-programacion-avanzada/">Programación Avanzada</a></h1>
+      
+
+      <!-- Aquí cargamos Mermaid.js -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+
+<script> document.addEventListener("DOMContentLoaded", function() { mermaid.initialize({ startOnLoad: true }); }); </script>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Programa de Ingeniería de Sistemas y Computación
+Universidad del Quindío
+
+Título: Repositorios en Spring Boot
+Duración estimada: 120
+Docentes: Carlos Andrés Florez, Christian Andrés Candela
+Guía: 10
+</code></pre></div></div>
+
+<h1 id="repositorios-en-spring-boot">Repositorios en Spring Boot</h1>
+
+<h2 id="-objetivo">🎯 Objetivo</h2>
+<p>Comprender qué son los repositorios en Spring Boot, así como su importancia en el acceso y consulta de datos en un proyecto empresarial.</p>
+
+<hr />
+
+<h2 id="conceptos-básicos">Conceptos Básicos</h2>
+<ul>
+  <li><strong>Bases de Datos SQL</strong>: MariaDB como ejemplo principal.</li>
+  <li><strong>Java</strong>: Lenguaje de programación orientado a objetos.</li>
+  <li><strong>Spring Data JPA</strong>: Módulo de Spring para interactuar con bases de datos SQL.</li>
+</ul>
+
+<hr />
+
+<h2 id="contextualización-teórica">Contextualización Teórica</h2>
+
+<p>La capa de persistencia es esencial para modelar los datos de un proyecto de software y gestionar el acceso a la información almacenada en la base de datos. Esta capa depende de los requisitos del negocio, que definen las tablas o colecciones necesarias para almacenar y consultar datos.</p>
+
+<p>En <strong>Spring Boot</strong>, las entidades representan registros en una base de datos SQL (como MariaDB) y se mapean a clases Java. Los repositorios actúan como intermediarios entre la lógica de negocio y la base de datos, proporcionando métodos para operaciones CRUD (Crear, Leer, Actualizar, Eliminar).</p>
+
+<h3 id="qué-es-un-repositorio"><strong>¿Qué es un Repositorio?</strong></h3>
+<p>Un <strong>repositorio</strong> en Spring Boot es una interfaz que abstrae el acceso a datos, permitiendo separar la lógica de negocio de la lógica de acceso a datos. En el contexto de <strong>Spring Data JPA</strong>, los repositorios extienden la interfaz <code class="language-plaintext highlighter-rouge">JpaRepository</code>, que proporciona métodos predefinidos para interactuar con bases de datos SQL.</p>
+
+<h3 id="por-qué-son-importantes-los-repositorios">¿Por qué son importantes los repositorios?</h3>
+
+<ol>
+  <li><strong>Abstracción de la lógica de acceso a datos</strong>: Los repositorios permiten separar la lógica de negocio de la lógica de acceso a datos, lo que facilita el mantenimiento y la escalabilidad del código.</li>
+  <li><strong>Reducción de código repetitivo</strong>: Spring Data JPA proporciona métodos predefinidos (como <code class="language-plaintext highlighter-rouge">save</code>, <code class="language-plaintext highlighter-rouge">findById</code>, <code class="language-plaintext highlighter-rouge">delete</code>, etc.), lo que reduce la necesidad de escribir código repetitivo para operaciones comunes.</li>
+  <li><strong>Facilidad de integración</strong>: Los repositorios se integran con otras capas de la aplicación, como los servicios y controladores, gracias a la inyección de dependencias de Spring.</li>
+</ol>
+
+<h3 id="qué-es-jparepository">¿Qué es <code class="language-plaintext highlighter-rouge">JpaRepository</code>?</h3>
+
+<p><code class="language-plaintext highlighter-rouge">JpaRepository</code> es una interfaz proporcionada por <strong>Spring Data JPA</strong> que extiende de <code class="language-plaintext highlighter-rouge">CrudRepository</code>. Esta interfaz ofrece métodos predefinidos para realizar operaciones CRUD en una base de datos SQL. Al extender esta interfaz, es posible crear repositorios personalizados que hereden estos métodos y agregar consultas específicas según las necesidades del proyecto.</p>
+
+<p>A continuación se listan algunos métodos disponibles en un <code class="language-plaintext highlighter-rouge">JpaRepository</code>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Método</th>
+      <th>Descripción</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">save(objeto)</code></td>
+      <td>Si el registro es nuevo lo guarda en la tabla correspondiente de la base de datos. Si ya existe un registro con el mismo id entonces lo actualiza.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">delete(objeto)</code></td>
+      <td>Elimina un objeto que esté en la base de datos.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">deleteById(id)</code></td>
+      <td>Elimina un objeto que esté en la base de datos dado el id.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">findAll()</code></td>
+      <td>Retorna una lista con todos los registros que están almacenados en una tabla en la base de datos.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">findById(id)</code></td>
+      <td>Retorna un registro que está en la base de datos dado su id.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">count()</code></td>
+      <td>Devuelve la cantidad de registros que tiene una tabla.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">exists(objeto)</code></td>
+      <td>Retorna un boolean indicando si el objeto existe en la base de datos.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">existsById(id)</code></td>
+      <td>Retorna un boolean indicando si el objeto existe en la base de datos dado el id.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="consultas-personalizadas"><strong>Consultas Personalizadas</strong></h3>
+
+<p>Cuando se requieren consultas más específicas, pueden definirse en los repositorio. Spring Data JPA permite inferir consultas automáticamente a partir de nombres de métodos.</p>
+
+<p>Ejemplo:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">&gt;</span> <span class="nf">findUserByEmail</span><span class="o">(</span><span class="nc">String</span> <span class="n">email</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>Por otro lado, las consultas más complejas, pueden ser definidas usando anotaciones como <code class="language-plaintext highlighter-rouge">@Query</code>.</p>
+
+<h3 id="arquitectura-del-acceso-a-la-información-en-spring-boot">Arquitectura del acceso a la información en Spring Boot</h3>
+
+<p>Dentro de la arquitectura de una aplicación Spring Boot, los repositorios forman parte de la capa de persistencia. La estructura típica incluye:</p>
+<ul>
+  <li><strong>Controladores</strong>: Manejan las solicitudes HTTP y dirigen las operaciones a los servicios correspondientes.</li>
+  <li><strong>Servicios</strong>: Contienen la lógica de negocio y utilizan los repositorios para acceder a los datos.</li>
+  <li><strong>Repositorios</strong>: Gestionan el acceso a la base de datos y proporcionan métodos para operaciones CRUD y consultas personalizadas.</li>
+  <li><strong>Entidades</strong>: Representan las tablas en la base de datos y se mapean a clases Java.</li>
+</ul>
+
+<div class="mermaid" style="text-align: center;">
+---
+title: Componentes en Spring Boot
+---
+classDiagram
+    Component &lt;|-- Controller
+    Component &lt;|-- Service
+    Component &lt;|-- Repository
+
+</div>
+
+<p>En la guía anterior se implementaron los <strong>servicios de negocio</strong> usando <code class="language-plaintext highlighter-rouge">@Service</code>, que son los encargados de procesar las reglas del negocio y manejar la lógica empresarial.</p>
+
+<p>En esta guía se implementarán los <strong>repositorios</strong>, que, como se mencionó anteriormente, son los encargados de interactuar con la base de datos para realizar operaciones CRUD y consultas específicas.</p>
+
+<hr />
+
+<h2 id="precauciones-y-recomendaciones">Precauciones y Recomendaciones</h2>
+
+<ul>
+  <li>Recuerde verificar que tiene instalado el JDK de Java (preferiblemente la versión 21).</li>
+  <li>Asegúrese de tener el servidor de base de datos en ejecución.</li>
+  <li>Verifique que las dependencias en el archivo <code class="language-plaintext highlighter-rouge">build.gradle</code> estén correctamente configuradas.</li>
+</ul>
+
+<hr />
+
+<h2 id="evaluación-o-resultado">Evaluación o Resultado</h2>
+
+<p>Se espera que el estudiante logre crear repositorios para acceder a la base de datos, tanto para guardar registros como modificarlos, eliminarlos y consultarlos.</p>
+
+<hr />
+
+<h2 id="procedimiento">Procedimiento</h2>
+
+<p>Continuaremos trabajando en el proyecto final del espacio académico que iniciamos en las guías anteriores. Si no ha completado la guía anterior, por favor hágalo antes de continuar con esta.</p>
+
+<h3 id="1-crear-paquete-de-repositorios">1. Crear paquete de repositorios</h3>
+<p>Cree el paquete <code class="language-plaintext highlighter-rouge">co.edu.uniquindio.application.repositories</code> en la carpeta <code class="language-plaintext highlighter-rouge">main/java</code>.</p>
+
+<h3 id="2-crear-interface-userrepository">2. Crear interface <code class="language-plaintext highlighter-rouge">UserRepository</code></h3>
+<p>Dentro del paquete creado en el punto anterior, cree una interface llamada <code class="language-plaintext highlighter-rouge">UserRepository</code> que extienda de <code class="language-plaintext highlighter-rouge">JpaRepository</code>. Esta interfaz debe tener la anotación <code class="language-plaintext highlighter-rouge">@Repository</code>, así:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">co.edu.uniquindio.application.repositories</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">co.edu.uniquindio.application.model.entity.User</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.data.jpa.repository.JpaRepository</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.stereotype.Repository</span><span class="o">;</span>
+
+<span class="nd">@Repository</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">UserRepository</span> <span class="kd">extends</span> <span class="nc">JpaRepository</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;{</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Tenga en cuenta que <code class="language-plaintext highlighter-rouge">JpaRepository</code> es genérico, por lo que debemos definir:</p>
+<ol>
+  <li>El tipo de dato de la entidad (<code class="language-plaintext highlighter-rouge">User</code>)</li>
+  <li>El tipo de dato de su <code class="language-plaintext highlighter-rouge">@Id</code> (<code class="language-plaintext highlighter-rouge">String</code>)</li>
+</ol>
+
+<p>Por cada <code class="language-plaintext highlighter-rouge">@Entity</code> será necesario crear un repositorio.</p>
+
+<h3 id="3-modificar-el-servicio-de-negocio-userserviceimpl">3. Modificar el Servicio de Negocio <code class="language-plaintext highlighter-rouge">UserServiceImpl</code></h3>
+
+<p>Modifique el Servicio de Negocio <code class="language-plaintext highlighter-rouge">UserServiceImpl</code> para inyectar el repositorio <code class="language-plaintext highlighter-rouge">UserRepository</code>. Ejemplo:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">co.edu.uniquindio.application.services.impl</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">co.edu.uniquindio.application.repositories.UserRepository</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">co.edu.uniquindio.application.services.UserService</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">co.edu.uniquindio.application.mappers.UserMapper</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">lombok.RequiredArgsConstructor</span><span class="o">;</span>
+
+<span class="nd">@Service</span>
+<span class="nd">@RequiredArgsConstructor</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserServiceImpl</span> <span class="kd">implements</span> <span class="nc">UserService</span><span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">UserRepository</span> <span class="n">userRepository</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">UserMapper</span> <span class="n">userMapper</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>El repositorio <code class="language-plaintext highlighter-rouge">UserRepository</code> se inyecta en el servicio de negocio mediante el uso de la anotación <code class="language-plaintext highlighter-rouge">@RequiredArgsConstructor</code> de Lombok, que genera un constructor con los argumentos necesarios para inicializar los campos <code class="language-plaintext highlighter-rouge">final</code>.</p>
+
+<h2 id="4-modificar-los-métodos-del-servicio-de-negocio-userserviceimpl">4. Modificar los métodos del servicio de negocio <code class="language-plaintext highlighter-rouge">UserServiceImpl</code></h2>
+
+<p>Ahora, modifique los métodos del servicio de negocio <code class="language-plaintext highlighter-rouge">UserServiceImpl</code> para utilizar el repositorio <code class="language-plaintext highlighter-rouge">UserRepository</code> en lugar de la lista en memoria.</p>
+
+<p>Borre el map <code class="language-plaintext highlighter-rouge">userStore</code> que se usaba para almacenar los usuarios en memoria y haga las siguientes modificaciones en cada método:</p>
+
+<h3 id="crear-usuario">Crear usuario:</h3>
+
+<p>Para el método <code class="language-plaintext highlighter-rouge">create</code>, utilice el método <code class="language-plaintext highlighter-rouge">save</code> del repositorio para almacenar el usuario en la base de datos. Así:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">create</span><span class="o">(</span><span class="nc">CreateUserDTO</span> <span class="n">userDTO</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="c1">//Validación del email</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">isEmailDuplicated</span><span class="o">(</span><span class="n">userDTO</span><span class="o">.</span><span class="na">email</span><span class="o">())){</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">ValueConflictException</span><span class="o">(</span><span class="s">"El correo electrónico ya está en uso."</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//Transformación del DTO a User</span>
+    <span class="nc">User</span> <span class="n">newUser</span> <span class="o">=</span> <span class="n">userMapper</span><span class="o">.</span><span class="na">toEntity</span><span class="o">(</span><span class="n">userDTO</span><span class="o">);</span>
+    <span class="n">newUser</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="n">encode</span><span class="o">(</span><span class="n">userDTO</span><span class="o">.</span><span class="na">password</span><span class="o">()));</span>
+
+    <span class="c1">//Almacenamiento del usuario</span>
+    <span class="n">userRepository</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">newUser</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">isEmailDuplicated</span><span class="o">(</span><span class="nc">String</span> <span class="n">email</span><span class="o">){</span>
+    <span class="k">return</span> <span class="n">userRepository</span><span class="o">.</span><span class="na">findByEmail</span><span class="o">(</span><span class="n">email</span><span class="o">).</span><span class="na">isPresent</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Tenga en cuenta que es necesario crear el método <code class="language-plaintext highlighter-rouge">findByEmail</code> en el repositorio <code class="language-plaintext highlighter-rouge">UserRepository</code> para validar si el correo electrónico ya está en uso. Cree el método así:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">&gt;</span> <span class="nf">findByEmail</span><span class="o">(</span><span class="nc">String</span> <span class="n">email</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>Dado que la entidad <code class="language-plaintext highlighter-rouge">User</code> tiene un atributo <code class="language-plaintext highlighter-rouge">email</code>, Spring Data JPA infiere automáticamente la consulta necesaria para buscar un usuario por su correo electrónico.</p>
+
+<h3 id="obtener-un-usuario">Obtener un usuario:</h3>
+
+<p>Para el método <code class="language-plaintext highlighter-rouge">get</code>, utilice el método <code class="language-plaintext highlighter-rouge">findById</code> del repositorio para recuperar el usuario de la base de datos. Así:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="nc">UserDTO</span> <span class="nf">get</span><span class="o">(</span><span class="nc">String</span> <span class="n">id</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="c1">//Recuperación del usuario</span>
+    <span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">&gt;</span> <span class="n">userOptional</span> <span class="o">=</span> <span class="n">userRepository</span><span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+
+    <span class="c1">//Validación del usuario</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">userOptional</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="o">(</span><span class="s">"Usuario no encontrado."</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//Transformación del usuario a DTO</span>
+    <span class="k">return</span> <span class="n">userMapper</span><span class="o">.</span><span class="na">toUserDTO</span><span class="o">(</span><span class="n">userOptional</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>El método <code class="language-plaintext highlighter-rouge">findById()</code> siempre retorna un <code class="language-plaintext highlighter-rouge">Optional</code>, que puede contener un objeto o estar vacío. En este caso, se verifica si el usuario existe antes de proceder a mapearlo a un DTO.</p>
+
+<h3 id="eliminar-un-usuario">Eliminar un usuario:</h3>
+
+<p>Para el método <code class="language-plaintext highlighter-rouge">delete</code>, utilice el método <code class="language-plaintext highlighter-rouge">delete</code> o <code class="language-plaintext highlighter-rouge">deleteById</code> del repositorio para eliminar el usuario de la base de datos. Así:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">delete</span><span class="o">(</span><span class="nc">String</span> <span class="n">id</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="c1">//Recuperación del usuario</span>
+    <span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">&gt;</span> <span class="n">userOptional</span> <span class="o">=</span> <span class="n">userRepository</span><span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+    
+    <span class="c1">//Validación del usuario</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">userOptional</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="o">(</span><span class="s">"Usuario no encontrado."</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//Eliminación del usuario</span>
+    <span class="n">userRepository</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">userOptional</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="actualizar-un-usuario">Actualizar un usuario:</h3>
+
+<p>Para el método <code class="language-plaintext highlighter-rouge">update</code>, utilice el método <code class="language-plaintext highlighter-rouge">save</code> del repositorio para actualizar el usuario en la base de datos. Así:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">edit</span><span class="o">(</span><span class="nc">String</span> <span class="n">id</span><span class="o">,</span> <span class="nc">EditUserDTO</span> <span class="n">userDTO</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="c1">//Recuperación del usuario</span>
+    <span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">&gt;</span> <span class="n">userOptional</span> <span class="o">=</span> <span class="n">userRepository</span><span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+
+    <span class="c1">//Validación del usuario</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">userOptional</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="o">(</span><span class="s">"Usuario no encontrado."</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//Se obtiene el usuario que está dentro del Optional</span>
+    <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">userOptional</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+
+    <span class="c1">//Actualización de los datos del usuario</span>
+    <span class="n">user</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="n">userDTO</span><span class="o">.</span><span class="na">name</span><span class="o">());</span>
+    <span class="n">user</span><span class="o">.</span><span class="na">setPhone</span><span class="o">(</span><span class="n">userDTO</span><span class="o">.</span><span class="na">phone</span><span class="o">());</span>
+    <span class="n">user</span><span class="o">.</span><span class="na">setDateBirth</span><span class="o">(</span><span class="n">userDTO</span><span class="o">.</span><span class="na">dateBirth</span><span class="o">());</span>
+    <span class="n">user</span><span class="o">.</span><span class="na">setPhotoUrl</span><span class="o">(</span><span class="n">userDTO</span><span class="o">.</span><span class="na">photoUrl</span><span class="o">());</span>
+
+    <span class="c1">//Almacenamiento del usuario</span>
+    <span class="n">userRepository</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="listar-todos-los-usuarios">Listar todos los usuarios:</h3>
+
+<p>Para el método <code class="language-plaintext highlighter-rouge">listAll</code>, utilice el método <code class="language-plaintext highlighter-rouge">findAll</code> del repositorio para recuperar todos los usuarios de la base de datos. Así:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">UserDTO</span><span class="o">&gt;</span> <span class="nf">listAll</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">userRepository</span><span class="o">.</span><span class="na">findAll</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="nl">userMapper:</span><span class="o">:</span><span class="n">toUserDTO</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">toList</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>⚠️ <strong>Importante:</strong> note que se está haciendo uso del repositorio aun cuando no se posee una implementación concreta del mismo.</p>
+</blockquote>
+
+<h3 id="5-probar-el-servicio-de-negocio-para-usuarios">5. Probar el servicio de negocio para usuarios</h3>
+
+<p>Ejecute su aplicación y verifique su correcto funcionamiento usando herramientas como <a href="https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html">archivos Http Request</a>, <a href="https://gohugo.io/">Hugo</a>, <a href="https://www.postman.com/">Postman</a> o <a href="https://www.soapui.org/">Soap UI</a>.</p>
+
+<p>En este caso se usará archivos <code class="language-plaintext highlighter-rouge">http</code>. Si no lo tiene, cree un archivo llamado <code class="language-plaintext highlighter-rouge">users.http</code> en la carpeta <code class="language-plaintext highlighter-rouge">src/main/resources</code> y agregue el siguiente contenido:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">### Crear un usuario</span>
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+<span class="o">{</span>
+  <span class="s2">"name"</span>: <span class="s2">"Carlos"</span>,
+  <span class="s2">"phone"</span>: <span class="s2">"121212"</span>,
+  <span class="s2">"email"</span>: <span class="s2">"carlos@email.com"</span>,
+  <span class="s2">"password"</span>: <span class="s2">"12345678"</span>,
+  <span class="s2">"photoUrl"</span>: <span class="s2">""</span>,
+  <span class="s2">"dateBirth"</span>: <span class="s2">"2000-08-22"</span>,
+  <span class="s2">"role"</span>: <span class="s2">"GUEST"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Ejecute la petición y verifique que el usuario se haya creado correctamente en la base de datos.</p>
+
+<blockquote>
+  <p>⚠️ <strong>Importante:</strong> Agregue más peticiones en el archivo <code class="language-plaintext highlighter-rouge">users.http</code> para probar los demás métodos del servicio de negocio.</p>
+</blockquote>
+
+<h3 id="6-crear-repositorio-placerepository">6. Crear repositorio <code class="language-plaintext highlighter-rouge">PlaceRepository</code></h3>
+
+<p>Cree repositorio para los alojamientos, (asumiendo que la llave primaria de la entidad <code class="language-plaintext highlighter-rouge">Place</code> es de tipo <code class="language-plaintext highlighter-rouge">Long</code>) el repositorio quedaría así:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">co.edu.uniquindio.application.repositories</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">co.edu.uniquindio.application.model.entity.Place</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.data.jpa.repository.JpaRepository</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.stereotype.Repository</span><span class="o">;</span>
+
+<span class="nd">@Repository</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">PlaceRepository</span> <span class="kd">extends</span> <span class="nc">JpaRepository</span><span class="o">&lt;</span><span class="nc">Place</span><span class="o">,</span> <span class="nc">Long</span><span class="o">&gt;{</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="7-crear-el-resto-de-repositorios">7. Crear el resto de repositorios</h3>
+
+<p>Cree los demás repositorios para las entidades del proyecto final. Debe seguir la misma lógica usada para crear el repositorio del usuario y de los alojamientos.</p>
+
+<h3 id="8-implementar-servicios-de-negocio">8. Implementar servicios de negocio</h3>
+
+<p>Implemente los servicios de negocio para cada uno de sus repositorios de acuerdo con los requerimientos del proyecto final. Por ahora puede implementar los métodos CRUD básicos (Crear, Leer, Actualizar, Eliminar), pero en las próximas guías se implementarán métodos más específicos.</p>
+
+<h3 id="9-crear-controladores-rest-faltantes">9. Crear controladores REST faltantes</h3>
+
+<p>Cree los controladores REST para aquellos servicios de negocio que aún no lo tengan.</p>
+
+<h3 id="10-guardar-cambios-en-git">10. Guardar cambios en Git</h3>
+
+<p>Recuerde hacer commit en su repositorio de Git con todo lo realizado en esta guía.</p>
+
+<hr />
+
+<h2 id="para-la-próxima-clase">Para la próxima clase</h2>
+
+<ul>
+  <li>
+    <p>De ahora en adelante, se trabajará con el modelo de clases del proyecto final. Crear las clases que se mapearán como documentos en la base de datos, incluyendo sus respectivas propiedades e implementar los repositorios correspondientes.</p>
+  </li>
+  <li>
+    <p><strong>Investigar</strong> sobre la inferencia de queries en Spring Boot JPA, a qué se refiere y para qué sirve.</p>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="referencias-bibliográficas">Referencias Bibliográficas</h2>
+
+<ol>
+  <li>MongoDB Inc. “Introduction to MongoDB.” <a href="https://www.mongodb.com">https://www.mongodb.com</a></li>
+  <li>ECMA International. “The JSON Data Interchange Format.” <a href="https://www.json.org">https://www.json.org</a></li>
+  <li>Oracle. “The Java Tutorials.” <a href="https://docs.oracle.com/javase/tutorial/">https://docs.oracle.com/javase/tutorial/</a></li>
+  <li>Spring Team. “Spring Data MongoDB.” <a href="https://spring.io/projects/spring-data-mongodb">https://spring.io/projects/spring-data-mongodb</a></li>
+  <li>Fowler, Martin. “Patterns of Enterprise Application Architecture.” Addison-Wesley, 2002.</li>
+  <li>Spring Team. “Repositories in Spring Data.” <a href="https://docs.spring.io/spring-data/mongodb/reference/repositories.html">https://docs.spring.io/spring-data/mongodb/reference/repositories.html</a></li>
+  <li>Baeldung. “Introduction to Spring Data MongoDB.” <a href="https://www.baeldung.com/spring-data-mongodb">https://www.baeldung.com/spring-data-mongodb</a></li>
+  <li>Spring Team. “Query Methods in Spring Data.” <a href="https://docs.spring.io/spring-data/mongodb/reference/repositories/query-methods-details.html">https://docs.spring.io/spring-data/mongodb/reference/repositories/query-methods-details.html</a></li>
+  <li>Baeldung. “Spring Data MongoDB Queries.” <a href="https://www.baeldung.com/queries-in-spring-data-mongodb">https://www.baeldung.com/queries-in-spring-data-mongodb</a></li>
+  <li>Spring Team. “MongoDB-specific Query Methods.”<a href="https://docs.spring.io/spring-data/mongodb/reference/mongodb/repositories/query-methods.html">https://docs.spring.io/spring-data/mongodb/reference/mongodb/repositories/query-methods.html</a></li>
+</ol>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>

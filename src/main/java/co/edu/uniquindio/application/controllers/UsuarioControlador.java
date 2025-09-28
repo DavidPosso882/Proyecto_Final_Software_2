@@ -3,11 +3,13 @@ package co.edu.uniquindio.application.controllers;
 
 import co.edu.uniquindio.application.dtos.alojamiento.ItemAlojamientoDTO;
 import co.edu.uniquindio.application.dtos.reserva.ItemReservaDTO;
+import co.edu.uniquindio.application.dtos.usuario.CreacionAnfitrionDTO;
 import co.edu.uniquindio.application.dtos.usuario.CreacionUsuarioDTO;
 import co.edu.uniquindio.application.dtos.usuario.EdicionUsuarioDTO;
 import co.edu.uniquindio.application.dtos.RespuestaDTO;
 import co.edu.uniquindio.application.dtos.usuario.CambioContrasenaDTO;
 import co.edu.uniquindio.application.dtos.usuario.UsuarioDTO;
+import co.edu.uniquindio.application.services.AlojamientoServicio;
 import co.edu.uniquindio.application.services.UsuarioServicio;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +25,12 @@ import java.util.List;
 public class UsuarioControlador {
 
     private final UsuarioServicio usuarioServicio;
+    private final AlojamientoServicio alojamientoServicio;
 
-    @PostMapping("/anfitrion")
-    public ResponseEntity<RespuestaDTO<String>> crearAnfitrion(@Valid @RequestBody CreacionUsuarioDTO dto) throws Exception {
-        return ResponseEntity.ok(new RespuestaDTO<>(false, "Se ha creado el anfitrion"));
+    @PostMapping("/{id}/anfitrion")
+    public ResponseEntity<RespuestaDTO<String>> crearAnfitrion(@PathVariable String id, @Valid @RequestBody CreacionAnfitrionDTO dto) throws Exception {
+        usuarioServicio.crearAnfitrion(id, dto);
+        return ResponseEntity.ok(new RespuestaDTO<>(false, "Usuario convertido a anfitrión exitosamente"));
     }
 
     @PutMapping("/{id}")
@@ -55,7 +59,8 @@ public class UsuarioControlador {
 
     @GetMapping("/{id}/alojamientos")
     public ResponseEntity<RespuestaDTO<List<ItemAlojamientoDTO>>> obtenerAlojamientosUsuario(@PathVariable String id) throws Exception {
-        return ResponseEntity.ok(new RespuestaDTO(false, List.of()));
+        List<ItemAlojamientoDTO> alojamientos = alojamientoServicio.obtenerAlojamientoUsuario(id, 0);
+        return ResponseEntity.ok(new RespuestaDTO<>(false, alojamientos));
     }
 
     @GetMapping("/{id}/reservas")

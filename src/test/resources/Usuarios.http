@@ -1,41 +1,106 @@
-### Crear usuario (201 Created)
+# ===========================================
+# PRUEBAS COMPLETAS PARA VIVIGO API
+# Todas las 11 funcionalidades implementadas
+# ===========================================
+
+### 1. REGISTRO DE NUEVO USUARIO (HUÉSPED)
 POST http://localhost:8080/api/auth/registro
 Content-Type: application/json
 
 {
-  "nombre": "David Pedraza",
-  "email": "david.pedraza@example.com",
-  "contrasena": "Passw0rd1",
-  "telefono": "3001234567",
-  "foto": null,
-  "fechaNacimiento": "1994-03-10",
+  "nombre": "Emili Garcia",
+  "email": "emili.garcia@email.com",
+  "contrasena": "Password1234",
+  "telefono": "3091234567",
+  "fechaNacimiento": "2004-10-03",
   "rol": "Huesped"
 }
 
-### Obtener usuario por id (200)
-GET http://localhost:8080/api/usuarios/797d814a-5fd0-4953-810d-f593ff73928f
-Accept: application/json
+### 2. CONVERTIR USUARIO EXISTENTE EN ANFITRIÓN
+POST http://localhost:8080/api/usuarios/c6cb2b45-0b5d-4f24-ab99-2c3b21b39b73/anfitrion
+Content-Type: application/json
 
-### Editar usuario (PUT) (200)
-PUT http://localhost:8080/api/usuarios/797d814a-5fd0-4953-810d-f593ff73928f
+{
+  "sobreMi": "Soy un anfitrión apasionado por compartir experiencias únicas con mis huéspedes",
+  "DocumentoLegal": "CC-12345678"
+}
+
+### 3. ACTUALIZACIÓN DE INFORMACIÓN DE ANFITRIÓN
+PUT http://localhost:8080/api/usuarios/c6cb2b45-0b5d-4f24-ab99-2c3b21b39b73
 Content-Type: application/json
 
 {
   "nombre": "David Posso",
-  "telefono": "3001234567",
-  "foto": null,
-  "rol": "Huesped"
+  "telefono": "3009999999",
+  "foto": "null"
 }
 
-### Cambiar contraseña (PATCH) (200) — usa CambioContrasenaDTO
-PATCH http://localhost:8080/api/usuarios/797d814a-5fd0-4953-810d-f593ff73928f/contrasena
+### 4. ACTUALIZACIÓN VOLUNTARIA DE CONTRASEÑA
+PATCH http://localhost:8080/api/usuarios/c6cb2b45-0b5d-4f24-ab99-2c3b21b39b73/contrasena
 Content-Type: application/json
 
 {
-  "id": "797d814a-5fd0-4953-810d-f593ff73928f",
-  "contrasenaActual": "Passw0rd1",
-  "contrasenaNueva": "Pass0123"
+  "contrasenaActual": "Password123",
+  "contrasenaNueva": "NewPassword123"
 }
 
-### Eliminar usuario (DELETE) (204)
-DELETE http://localhost:8080/api/usuarios/1
+### 5. PUBLICACIÓN DE NUEVO ALOJAMIENTO
+POST http://localhost:8080/api/alojamientos
+Content-Type: application/json
+
+{
+  "titulo": "Hermoso apartamento en Chapinero",
+  "descripcion": "Apartamento moderno de 2 habitaciones con vista a la ciudad, completamente equipado",
+  "direccion": {
+    "ciudad": "Bogotá",
+    "direccion": "Carrera 7 #45-23, Chapinero",
+    "ubicacion": {
+      "latitud": 4.6498,
+      "longitud": -74.0628
+    }
+  },
+  "precioPorNoche": 150000,
+  "maxHuespedes": 4,
+  "servicios": ["WIFI", "DESAYUNO", "ESTACIONAMIENTO", "AIRE_ACONDICIONADO"],
+  "imagenes": ["apartamento1.jpg", "apartamento2.jpg", "apartamento3.jpg"]
+}
+
+### 6. BÚSQUEDA Y FILTRADO DE ALOJAMIENTOS
+GET http://localhost:8080/api/alojamientos?ciudad=Bogotá&precioMin=100000&precioMax=200000&capacidad=2&pagina=0&tamano=10
+
+### 7. VER INFORMACIÓN COMPLETA DEL ALOJAMIENTO
+GET http://localhost:8080/api/alojamientos/1
+
+### 8. ACTUALIZACIÓN DE INFORMACIÓN DE ALOJAMIENTO
+PUT http://localhost:8080/api/alojamientos/1
+Content-Type: application/json
+
+{
+  "titulo": "Hermoso apartamento en Chapinero - Actualizado",
+  "descripcion": "Apartamento moderno completamente renovado con mejores amenities",
+  "precioPorNoche": 180000,
+  "maxHuespedes": 5,
+  "servicios": ["WIFI", "DESAYUNO", "ESTACIONAMIENTO", "AIRE_ACONDICIONADO", "PISCINA"]
+}
+
+### 9. CONSULTA DE ALOJAMIENTOS PROPIOS
+GET http://localhost:8080/api/usuarios/c6cb2b45-0b5d-4f24-ab99-2c3b21b39b73/alojamientos
+
+### 10. CREACIÓN DE RESERVA DE ALOJAMIENTO
+POST http://localhost:8080/api/reservas
+Content-Type: application/json
+
+{
+  "alojamientoId": 1,
+  "usuarioId": "6883bdd7-f2b2-4652-b84f-83da16296551",
+  "fechaEntrada": "2025-12-15",
+  "fechaSalida": "2025-12-20",
+  "numeroHuespedes": 2
+}
+
+### 11. CANCELACIÓN DE RESERVA EXISTENTE
+PATCH http://localhost:8080/api/reservas/1/estado
+
+# ===========================================
+# Algunos endpoints requieren autenticación JWT
+# ===========================================

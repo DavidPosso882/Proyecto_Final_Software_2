@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Programación Avanzada | Guías y material de clase del espacio académico Programación Avanzada.</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Programación Avanzada" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Guías y material de clase del espacio académico Programación Avanzada." />
+<meta property="og:description" content="Guías y material de clase del espacio académico Programación Avanzada." />
+<link rel="canonical" href="https://caflorezvi.github.io/guias-programacion-avanzada/6.servicios-negocio.html" />
+<meta property="og:url" content="https://caflorezvi.github.io/guias-programacion-avanzada/6.servicios-negocio.html" />
+<meta property="og:site_name" content="Programación Avanzada" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Programación Avanzada" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Guías y material de clase del espacio académico Programación Avanzada.","headline":"Programación Avanzada","url":"https://caflorezvi.github.io/guias-programacion-avanzada/6.servicios-negocio.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/guias-programacion-avanzada/assets/css/style.css?v=c3259212e988779fc0ba117e46f85e317e455832">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/guias-programacion-avanzada/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://caflorezvi.github.io/guias-programacion-avanzada/">Programación Avanzada</a></h1>
+      
+
+      <!-- Aquí cargamos Mermaid.js -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+
+<script> document.addEventListener("DOMContentLoaded", function() { mermaid.initialize({ startOnLoad: true }); }); </script>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Programa de Ingeniería de Sistemas y Computación
+Universidad del Quindío
+
+Título: Implementación de Servicios de negocio en Spring Boot
+Duración estimada: 120
+Docentes: Carlos Andrés Florez, Christian Andrés Candela
+Guía: 06
+</code></pre></div></div>
+<h1 id="servicios-de-negocio-en-spring-boot">Servicios de negocio en Spring Boot</h1>
+
+<h2 id="-objetivo">🎯 Objetivo</h2>
+<p>Implementar servicios de negocio en <strong>Spring Boot</strong>. Se explorará la creación de servicios, la lógica de negocio y la validación de datos mediante pruebas unitarias.</p>
+
+<hr />
+
+<h2 id="conceptos-básicos">Conceptos Básicos</h2>
+
+<ul>
+  <li><strong>Spring Boot:</strong> Framework para desarrollar aplicaciones en Java con una configuración mínima.</li>
+  <li><strong>Controladores REST:</strong> Componentes que exponen los servicios de la aplicación para su uso.</li>
+  <li><strong>Servicios de negocio:</strong> Componentes que encapsulan la lógica empresarial y procesan las reglas del negocio.</li>
+  <li><strong>Inyección de dependencias:</strong> Mecanismo para gestionar la creación y administración de componentes.</li>
+  <li><strong>HTTP (Hypertext Transfer Protocol)</strong>  Protocolo de comunicación para la transferencia de datos en la web.</li>
+  <li><strong>OpenAPI</strong>  Especificación abierta para describir APIs RESTful.</li>
+  <li><strong>CRUD (Create, Read, Update, Delete)</strong>  Conjunto de operaciones básicas para manipular datos (crear, leer, actualizar y eliminar).</li>
+</ul>
+
+<hr />
+
+<h2 id="contextualización-teórica">Contextualización Teórica</h2>
+
+<p>Los <strong>servicios de negocio</strong> son la capa de una aplicación responsable de la lógica principal. En Spring Boot, estas clases se identifican con la anotación <code class="language-plaintext highlighter-rouge">@Service</code>, que es una especialización de <code class="language-plaintext highlighter-rouge">@Component</code>. Al marcar una clase con <code class="language-plaintext highlighter-rouge">@Service</code>, le estamos indicando a Spring que debe gestionar esta clase como un <strong>bean</strong> de servicio dentro del contexto de la aplicación. De esta forma, se encapsula la lógica de negocio en un solo lugar y permite que otras partes de la aplicación puedan inyectar y utilizar ese servicio fácilmente.</p>
+
+<p>Aquí hay algunas características clave de los servicios de negocio en el contexto de Spring Boot:</p>
+
+<ul>
+  <li>
+    <p><strong>Lógica de Negocio:</strong> Los servicios de negocio encapsulan la lógica empresarial de la aplicación, implementando operaciones, validaciones y reglas específicas del dominio.</p>
+  </li>
+  <li>
+    <p><strong>Reutilización:</strong> Los servicios de negocio pueden ser diseñados para ser reutilizables en diferentes partes de la aplicación. Esto promueve la modularidad y facilita la gestión de la lógica de negocio.</p>
+  </li>
+  <li>
+    <p><strong>Separación de Responsabilidades:</strong> Spring Boot sigue el principio de separación de responsabilidades, por lo que los servicios de negocio se encargan de la lógica empresarial mientras que otros componentes, como los controladores y las capas de persistencia, se centran en tareas específicas.</p>
+  </li>
+  <li>
+    <p><strong>Inyección de Dependencias:</strong> Spring Boot utiliza la inversión de control (IoC) y la inyección de dependencias para gestionar la creación y administración de componentes. Los servicios de negocio pueden beneficiarse de la inyección de dependencias para obtener fácilmente otras dependencias necesarias.</p>
+  </li>
+  <li>
+    <p><strong>Transacciones:</strong> En aplicaciones empresariales, a menudo es necesario gestionar transacciones. Spring Boot ofrece soporte para la gestión de transacciones, lo que permite que los servicios de negocio participen en transacciones de base de datos de manera coherente.</p>
+  </li>
+</ul>
+
+<h3 id="componentes-en-spring-boot">Componentes en Spring Boot</h3>
+
+<p>En Spring Boot se denomina componente a los elementos que son inicializados y gestionados automáticamente por Spring Boot según su propósito. Los componentes se gestionan mediante anotaciones que indican su función dentro de la aplicación:</p>
+
+<ul>
+  <li><strong>@Component</strong>: Anotación de propósito general que indica que una clase es un componente de Spring.</li>
+  <li><strong>@Repository</strong>: Indica que una clase es un repositorio, es decir, un componente que gestiona el acceso a datos.</li>
+  <li><strong>@Service</strong>: Indica que una clase contiene la lógica de negocio y utiliza repositorios para acceder a los datos.</li>
+  <li><strong>@Controller</strong>: Indica que una clase es un controlador que maneja las solicitudes HTTP y las dirige a los servicios correspondientes.</li>
+</ul>
+
+<div class="mermaid" style="text-align: center;">
+---
+title: Componentes en Spring Boot
+---
+classDiagram
+    Component &lt;|-- Controller
+    Component &lt;|-- Service
+    Component &lt;|-- Repository
+
+</div>
+
+<p>En la guía anterior se implementaron los <strong>controladores REST</strong> usando <code class="language-plaintext highlighter-rouge">@RestController</code>, que son los encargados de recibir las solicitudes HTTP y delegar la lógica de negocio a los servicios correspondientes. No contienen lógica de negocio en sí mismos, lo que permite mantener un código más limpio y fácil de mantener.</p>
+
+<p>En esta guía se implementarán los <strong>servicios de negocio</strong>, que, como se mencionó anteriormente, son los encargados de procesar las reglas del negocio y manejar la lógica empresarial.</p>
+
+<hr />
+
+<h2 id="buenas-prácticas-y-recomendaciones">Buenas Prácticas y Recomendaciones</h2>
+
+<ul>
+  <li>
+    <p><strong>Separación de responsabilidades:</strong> Mantenga la lógica de negocio en los servicios y evite incluirla en los controladores.</p>
+  </li>
+  <li>
+    <p><strong>Uso de excepciones personalizadas:</strong> Cree excepciones específicas para manejar errores en la lógica de negocio.</p>
+  </li>
+  <li>
+    <p><strong>Validaciones en DTOs:</strong> Utilice anotaciones como <code class="language-plaintext highlighter-rouge">@Valid</code> y <code class="language-plaintext highlighter-rouge">@NotNull</code> para garantizar la integridad de los datos de entrada.</p>
+  </li>
+  <li>
+    <p><strong>Estructura modular:</strong> Organice el código en paquetes bien definidos (<code class="language-plaintext highlighter-rouge">controllers</code>, <code class="language-plaintext highlighter-rouge">services</code>, <code class="language-plaintext highlighter-rouge">model</code>, <code class="language-plaintext highlighter-rouge">exceptions</code>).</p>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="procedimiento">Procedimiento</h2>
+
+<p>Continuaremos trabajando en el proyecto final del espacio académico que iniciamos en las guías anteriores. Si no ha completado la guía anterior, por favor hágalo antes de continuar con esta.</p>
+
+<h3 id="1-definición-de-la-estructura-de-user">1. Definición de la estructura de <code class="language-plaintext highlighter-rouge">User</code></h3>
+
+<p>Cree un nuevo paquete con el nombre <code class="language-plaintext highlighter-rouge">model</code> y dentro de él, cree la clase <code class="language-plaintext highlighter-rouge">User</code> con la siguiente estructura:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">co.edu.uniquindio.application.model</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">lombok.Builder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">lombok.Getter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">lombok.Setter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.time.LocalDate</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.time.LocalDateTime</span><span class="o">;</span>
+
+<span class="nd">@Getter</span>
+<span class="nd">@Setter</span>
+<span class="nd">@Builder</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">id</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">phone</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">email</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">password</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">photoUrl</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">LocalDate</span> <span class="n">dateBirth</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">LocalDateTime</span> <span class="n">createdAt</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Role</span> <span class="n">role</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">UserStatus</span> <span class="n">status</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Adicionalmente, cree las enumeraciones <code class="language-plaintext highlighter-rouge">Role</code> y <code class="language-plaintext highlighter-rouge">UserStatus</code> en el paquete <code class="language-plaintext highlighter-rouge">model</code>:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">co.edu.uniquindio.application.model</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">enum</span> <span class="nc">Role</span> <span class="o">{</span>
+    <span class="no">GUEST</span><span class="o">,</span>
+    <span class="no">HOST</span><span class="o">,</span>
+    <span class="no">ADMIN</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">co.edu.uniquindio.application.model</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">enum</span> <span class="nc">UserStatus</span> <span class="o">{</span>
+    <span class="no">ACTIVE</span><span class="o">,</span>
+    <span class="no">INACTIVE</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Recuerde que para evitar escribir código repetido, puede utilizar la biblioteca <a href="https://projectlombok.org/">Lombok</a> para generar automáticamente los métodos <code class="language-plaintext highlighter-rouge">getters</code>, <code class="language-plaintext highlighter-rouge">setters</code>, <code class="language-plaintext highlighter-rouge">equals</code>, <code class="language-plaintext highlighter-rouge">toString</code> y <code class="language-plaintext highlighter-rouge">constructores</code>. Además, Lombok proporciona la anotación <code class="language-plaintext highlighter-rouge">@Builder</code> para facilitar la creación de objetos.</p>
+
+<p>Por ejemplo, para crear un objeto <code class="language-plaintext highlighter-rouge">User</code> usando <code class="language-plaintext highlighter-rouge">@Builder</code>, puede hacerlo de la siguiente manera:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="nc">User</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="s">"1"</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="s">"John Doe"</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">email</span><span class="o">(</span><span class="s">"john.doe@example.com"</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">phone</span><span class="o">(</span><span class="s">"123456789"</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">role</span><span class="o">(</span><span class="nc">Role</span><span class="o">.</span><span class="na">GUEST</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">dateBirth</span><span class="o">(</span><span class="nc">LocalDate</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">1990</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">1</span><span class="o">))</span>
+        <span class="o">.</span><span class="na">photoUrl</span><span class="o">(</span><span class="s">"http://example.com/photo.jpg"</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>⚠️ <strong>Importante:</strong> Asegúrese de tener Lombok configurado en su proyecto ya que vamos a utilizarlo para simplificar la creación de objetos. Para más información acerca de cómo utilizar Lombok, consulte la <a href="https://projectlombok.org/features/all">documentación oficial</a>.</p>
+</blockquote>
+
+<h3 id="2-definición-de-la-interfaz-del-servicio-de-usuarios"><strong>2. Definición de la interfaz del Servicio de Usuarios</strong></h3>
+
+<p>Con el fin de reducir el acoplamiento en los componentes del sistema, es una buena práctica <strong>definir</strong> los métodos de negocio en una interfaz. Cree el paquete <code class="language-plaintext highlighter-rouge">services</code> y dentro de él, la interfaz <code class="language-plaintext highlighter-rouge">UserService</code>.</p>
+
+<p>En esta guía se implementará, a modo de ejemplo, un CRUD de usuarios. Para ello, se requieren los siguientes métodos (en el proyecto final será necesario agregar más según los requerimientos).</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">co.edu.uniquindio.application.services</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">co.edu.uniquindio.application.dto.CreateUserDTO</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">co.edu.uniquindio.application.dto.EditUserDTO</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">co.edu.uniquindio.application.dto.UserDTO</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">UserService</span> <span class="o">{</span>
+
+    <span class="kt">void</span> <span class="nf">create</span><span class="o">(</span><span class="nc">CreateUserDTO</span> <span class="n">userDTO</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">;</span>
+
+    <span class="nc">UserDTO</span> <span class="nf">get</span><span class="o">(</span><span class="nc">String</span> <span class="n">id</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">;</span>
+
+    <span class="kt">void</span> <span class="nf">delete</span><span class="o">(</span><span class="nc">String</span> <span class="n">id</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">;</span>
+
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">UserDTO</span><span class="o">&gt;</span> <span class="nf">listAll</span><span class="o">();</span>
+
+    <span class="kt">void</span> <span class="nf">edit</span><span class="o">(</span><span class="nc">String</span> <span class="n">id</span><span class="o">,</span> <span class="nc">EditUserDTO</span> <span class="n">userDTO</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">;</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Debe haber cierta correspondencia entre los métodos definidos en la interfaz del servicio con los métodos que están en el controlador REST (<code class="language-plaintext highlighter-rouge">UserController</code>), ya que el controlador usa los métodos del servicio para realizar las operaciones.</p>
+
+<p>Como puede ver, algunos métodos tienen un <code class="language-plaintext highlighter-rouge">throws Exception</code>, esto es debido a que siempre debemos validar y capturar las excepciones que puedan aparecer al momento de manipular la base de datos (consultar, insertar, actualizar o eliminar).</p>
+
+<blockquote>
+  <p>⚠️ <strong>Importante:</strong> Es una buena práctica primero definir los servicios por medio de interfaces ya que allí podemos listar todos los requisitos, sus entradas de datos y sus retornos. Básicamente en el interface definimos qué hay <strong>que</strong> hacer pero no el <strong>cómo</strong>.</p>
+</blockquote>
+
+<h3 id="3-implementación-del-servicio-de-usuarios"><strong>3. Implementación del Servicio de Usuarios</strong></h3>
+
+<p>El siguiente paso es implementar la lógica de cada servicio de negocio. Para esto, cree un paquete nuevo dentro del paquete <code class="language-plaintext highlighter-rouge">services</code> que se llame <code class="language-plaintext highlighter-rouge">impl</code> y allí cree la clase <code class="language-plaintext highlighter-rouge">UserServiceImpl</code>. Esta clase debe implementar todos los métodos de la interfaz <code class="language-plaintext highlighter-rouge">UserService</code>. Así debe quedar inicialmente:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">co.edu.uniquindio.application.services.impl</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">co.edu.uniquindio.application.services.UserService</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.stereotype.Service</span><span class="o">;</span>
+
+<span class="nd">@Service</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserServiceImpl</span> <span class="kd">implements</span> <span class="nc">UserService</span> <span class="o">{</span>
+    
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Para simular la persistencia se hará uso de una estructura de almacenamiento en memoria (<code class="language-plaintext highlighter-rouge">Map</code>). Agregue el siguiente atributo a la clase <code class="language-plaintext highlighter-rouge">UserServiceImpl</code>:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">final</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">User</span><span class="o">&gt;</span> <span class="n">userStore</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConcurrentHashMap</span><span class="o">&lt;&gt;();</span>
+</code></pre></div></div>
+
+<p>A continuación se muestra una alternativa de implementación de algunos métodos del CRUD:</p>
+
+<h4 id="crear-un-nuevo-usuario">Crear un nuevo usuario</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">create</span><span class="o">(</span><span class="nc">CreateUserDTO</span> <span class="n">userDTO</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">isEmailDuplicated</span><span class="o">(</span><span class="n">userDTO</span><span class="o">.</span><span class="na">email</span><span class="o">())){</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="o">(</span><span class="s">"El correo electrónico ya está en uso."</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nc">User</span> <span class="n">newUser</span> <span class="o">=</span> <span class="nc">User</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="no">UUID</span><span class="o">.</span><span class="na">randomUUID</span><span class="o">().</span><span class="na">toString</span><span class="o">())</span>
+            <span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="n">userDTO</span><span class="o">.</span><span class="na">name</span><span class="o">())</span>
+            <span class="o">.</span><span class="na">email</span><span class="o">(</span><span class="n">userDTO</span><span class="o">.</span><span class="na">email</span><span class="o">())</span>
+            <span class="o">.</span><span class="na">phone</span><span class="o">(</span><span class="n">userDTO</span><span class="o">.</span><span class="na">phone</span><span class="o">())</span>
+            <span class="o">.</span><span class="na">role</span><span class="o">(</span><span class="n">userDTO</span><span class="o">.</span><span class="na">role</span><span class="o">())</span>
+            <span class="o">.</span><span class="na">dateBirth</span><span class="o">(</span><span class="n">userDTO</span><span class="o">.</span><span class="na">dateBirth</span><span class="o">())</span>
+            <span class="o">.</span><span class="na">photoUrl</span><span class="o">(</span><span class="n">userDTO</span><span class="o">.</span><span class="na">photoUrl</span><span class="o">())</span>
+            <span class="o">.</span><span class="na">password</span><span class="o">(</span><span class="n">userDTO</span><span class="o">.</span><span class="na">password</span><span class="o">())</span>
+            <span class="o">.</span><span class="na">createdAt</span><span class="o">(</span><span class="nc">LocalDateTime</span><span class="o">.</span><span class="na">now</span><span class="o">())</span>
+            <span class="o">.</span><span class="na">status</span><span class="o">(</span><span class="nc">UserStatus</span><span class="o">.</span><span class="na">ACTIVE</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+    <span class="n">userStore</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">newUser</span><span class="o">.</span><span class="na">getId</span><span class="o">(),</span> <span class="n">newUser</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">isEmailDuplicated</span><span class="o">(</span><span class="nc">String</span> <span class="n">email</span><span class="o">){</span>
+    <span class="k">return</span> <span class="n">userStore</span><span class="o">.</span><span class="na">values</span><span class="o">().</span><span class="na">stream</span><span class="o">().</span><span class="na">anyMatch</span><span class="o">(</span>
+            <span class="n">u</span> <span class="o">-&gt;</span> <span class="n">u</span><span class="o">.</span><span class="na">getEmail</span><span class="o">().</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">email</span><span class="o">)</span>
+    <span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Se utiliza un método de apoyo <code class="language-plaintext highlighter-rouge">isEmailDuplicated</code> para verificar si el correo electrónico ya está en uso antes de crear un nuevo usuario. Esto ayuda a mantener la lógica de negocio separada y reutilizable. Se asume que una regla de negocio es que los correos electrónicos deben ser únicos en el sistema.</p>
+
+<p>Dado que la contraseña debe estar cifrada, se debe usar una dependencia que nos ayude con esto, agregue la siguiente dependencia en el archivo <code class="language-plaintext highlighter-rouge">build.gradle</code>:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">implementation</span> <span class="s1">'org.springframework.security:spring-security-crypto'</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>⚠️ <strong>Importante:</strong> No olvide sincronizar Gradle después de agregar la dependencia.</p>
+</blockquote>
+
+<p>Agregue el método <code class="language-plaintext highlighter-rouge">encode</code> en la clase <code class="language-plaintext highlighter-rouge">UserServiceImpl</code> para cifrar la contraseña antes de guardarla:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="nc">String</span> <span class="nf">encode</span><span class="o">(</span><span class="nc">String</span> <span class="n">password</span><span class="o">){</span>
+    <span class="kt">var</span> <span class="n">passwordEncoder</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BCryptPasswordEncoder</span><span class="o">();</span>
+    <span class="k">return</span> <span class="n">passwordEncoder</span><span class="o">.</span><span class="na">encode</span><span class="o">(</span><span class="n">password</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Llame este método en la creación de usuarios, específicamente al asignar la contraseña del nuevo usuario <code class="language-plaintext highlighter-rouge">newUser</code>:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">password</span><span class="o">(</span><span class="n">encode</span><span class="o">(</span><span class="n">userDTO</span><span class="o">.</span><span class="na">password</span><span class="o">()))</span>
+</code></pre></div></div>
+
+<h4 id="obtener-un-usuario">Obtener un usuario</h4>
+
+<p>Se valida que el usuario existe antes de intentar acceder a sus datos, luego se mapean sus atributos a un objeto DTO.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="nc">UserDTO</span> <span class="nf">get</span><span class="o">(</span><span class="nc">String</span> <span class="n">id</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">userStore</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">user</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="o">(</span><span class="s">"Usuario no encontrado."</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">UserDTO</span><span class="o">(</span>
+            <span class="n">user</span><span class="o">.</span><span class="na">getId</span><span class="o">(),</span>
+            <span class="n">user</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span>
+            <span class="n">user</span><span class="o">.</span><span class="na">getPhone</span><span class="o">(),</span>
+            <span class="n">user</span><span class="o">.</span><span class="na">getEmail</span><span class="o">(),</span>
+            <span class="n">user</span><span class="o">.</span><span class="na">getPhotoUrl</span><span class="o">(),</span>
+            <span class="n">user</span><span class="o">.</span><span class="na">getDateBirth</span><span class="o">(),</span>
+            <span class="n">user</span><span class="o">.</span><span class="na">getRole</span><span class="o">()</span>
+    <span class="o">);</span>
+    
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="eliminar-un-usuario">Eliminar un usuario</h4>
+
+<p>Se valida que el usuario existe antes de intentar eliminarlo, luego se procede a eliminarlo.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">delete</span><span class="o">(</span><span class="nc">String</span> <span class="n">id</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">userStore</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">user</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="o">(</span><span class="s">"Usuario no encontrado."</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="n">userStore</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Implemente las demás operaciones del CRUD (Actualizar y Listar usuarios) siguiendo la misma lógica de validación y manejo de excepciones.</p>
+
+<h3 id="4-implementación-de-mappers">4. Implementación de Mappers</h3>
+
+<p>Es posible centralizar la tarea de transformación de los datos mediante la implementación de un <strong>Mapper</strong>.</p>
+
+<p>Los mappers son una herramienta fundamental en el desarrollo de aplicaciones, ya que permiten transformar la forma en que representamos la información en diferentes capas de la aplicación. Su principal función es facilitar la conversión entre las estructuras de datos utilizadas en las solicitudes (DTOs - Data Transfer Objects) y las estructuras de datos que se persisten en la base de datos (entidades) y viceversa.</p>
+
+<p>Para esto, agregue las siguientes dependencias en el archivo <code class="language-plaintext highlighter-rouge">build.gradle</code>:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">implementation</span> <span class="s1">'org.mapstruct:mapstruct:1.6.3'</span>
+<span class="n">annotationProcessor</span> <span class="s1">'org.mapstruct:mapstruct-processor:1.6.3'</span>
+</code></pre></div></div>
+<blockquote>
+  <p>⚠️ <strong>Importante:</strong> No olvide sincronizar Gradle después de agregar la dependencia.</p>
+</blockquote>
+
+<p>Cree un nuevo paquete <code class="language-plaintext highlighter-rouge">mappers</code> en el directorio <code class="language-plaintext highlighter-rouge">src/main/java</code> y dentro de este paquete, cree una interfaz <code class="language-plaintext highlighter-rouge">UserMapper</code>:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">co.edu.uniquindio.application.mappers</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">co.edu.uniquindio.application.dto.CreateUserDTO</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">co.edu.uniquindio.application.dto.UserDTO</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">co.edu.uniquindio.application.model.User</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.mapstruct.Mapper</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.mapstruct.Mapping</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.mapstruct.MappingConstants</span><span class="o">;</span>
+
+<span class="nd">@Mapper</span><span class="o">(</span><span class="n">componentModel</span> <span class="o">=</span> <span class="nc">MappingConstants</span><span class="o">.</span><span class="na">ComponentModel</span><span class="o">.</span><span class="na">SPRING</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">UserMapper</span> <span class="o">{</span>
+
+    <span class="nd">@Mapping</span><span class="o">(</span><span class="n">target</span> <span class="o">=</span> <span class="s">"id"</span><span class="o">,</span> <span class="n">expression</span> <span class="o">=</span> <span class="s">"java(java.util.UUID.randomUUID().toString())"</span><span class="o">)</span>
+    <span class="nd">@Mapping</span><span class="o">(</span><span class="n">target</span> <span class="o">=</span> <span class="s">"status"</span><span class="o">,</span> <span class="n">constant</span> <span class="o">=</span> <span class="s">"ACTIVE"</span><span class="o">)</span>
+    <span class="nd">@Mapping</span><span class="o">(</span><span class="n">target</span> <span class="o">=</span> <span class="s">"createdAt"</span><span class="o">,</span> <span class="n">expression</span> <span class="o">=</span> <span class="s">"java(java.time.LocalDateTime.now())"</span><span class="o">)</span>
+    <span class="nc">User</span> <span class="nf">toEntity</span><span class="o">(</span><span class="nc">CreateUserDTO</span> <span class="n">userDTO</span><span class="o">);</span>
+
+    <span class="nc">UserDTO</span> <span class="nf">toUserDTO</span><span class="o">(</span><span class="nc">User</span> <span class="n">user</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>El método <code class="language-plaintext highlighter-rouge">toEntity</code> convierte un <code class="language-plaintext highlighter-rouge">CreateUserDTO</code> en un objeto <code class="language-plaintext highlighter-rouge">User</code>, generando un ID único, asignando la fecha de creación y estableciendo el estado del usuario como activo.</p>
+
+<p>Ahora, se debe actualizar el servicio de usuarios para utilizar el mapper en lugar de realizar las conversiones manualmente.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">co.edu.uniquindio.application.services.impl</span><span class="o">;</span>
+
+<span class="nd">@Service</span>
+<span class="nd">@RequiredArgsConstructor</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserServiceImpl</span> <span class="kd">implements</span> <span class="nc">UserService</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">UserMapper</span> <span class="n">userMapper</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">User</span><span class="o">&gt;</span> <span class="n">userStore</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConcurrentHashMap</span><span class="o">&lt;&gt;();</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">create</span><span class="o">(</span><span class="nc">CreateUserDTO</span> <span class="n">userDTO</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="c1">//Validación del email</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">isEmailDuplicated</span><span class="o">(</span><span class="n">userDTO</span><span class="o">.</span><span class="na">email</span><span class="o">())){</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="o">(</span><span class="s">"El correo electrónico ya está en uso."</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="c1">//Transformación del DTO a User</span>
+        <span class="nc">User</span> <span class="n">newUser</span> <span class="o">=</span> <span class="n">userMapper</span><span class="o">.</span><span class="na">toEntity</span><span class="o">(</span><span class="n">userDTO</span><span class="o">);</span>
+        <span class="n">newUser</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="n">encode</span><span class="o">(</span><span class="n">userDTO</span><span class="o">.</span><span class="na">password</span><span class="o">()));</span> <span class="c1">//Cifrado de la contraseña</span>
+
+        <span class="c1">//Almacenamiento del usuario</span>
+        <span class="n">userStore</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">newUser</span><span class="o">.</span><span class="na">getId</span><span class="o">(),</span> <span class="n">newUser</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">UserDTO</span> <span class="nf">get</span><span class="o">(</span><span class="nc">String</span> <span class="n">id</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="c1">//Recuperación del usuario</span>
+        <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">userStore</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+
+        <span class="c1">//Validación del usuario</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">user</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="o">(</span><span class="s">"Usuario no encontrado."</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="c1">//Transformación del usuario a DTO</span>
+        <span class="k">return</span> <span class="n">userMapper</span><span class="o">.</span><span class="na">toUserDTO</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Gracias a la implementación de <code class="language-plaintext highlighter-rouge">MapStruct</code>, hemos simplificado significativamente el proceso de mapeo entre nuestros DTOs y entidades. Además con la <strong>inyección de dependencias</strong> de Spring, el uso de mappers se vuelve aún más sencillo y limpio.</p>
+
+<p>El mapper se inyecta automáticamente en el servicio de usuarios, gracias a la anotación <code class="language-plaintext highlighter-rouge">@RequiredArgsConstructor</code> de Lombok, que genera un constructor con los campos <code class="language-plaintext highlighter-rouge">final</code> necesarios para la inyección. Esto elimina la necesidad de escribir código adicional para la inicialización del mapper.</p>
+
+<blockquote>
+  <p><strong>⚠️ Importante</strong>: Asegúrese que los nombres de los atributos que comparten los DTO y las clases del modelo coincidan. Por ejemplo, la clase <code class="language-plaintext highlighter-rouge">User</code> tiene el campo name, email, phone, etc. y el DTO <code class="language-plaintext highlighter-rouge">CreateUserDTO</code> también tiene esos mismos nombres. Esto es necesario para que <code class="language-plaintext highlighter-rouge">MapStruct</code> pueda hacer el mapeo automáticamente.</p>
+</blockquote>
+
+<h3 id="5-implementación-de-operaciones-rest">5. Implementación de Operaciones REST</h3>
+
+<p>Modifique el controlador <code class="language-plaintext highlighter-rouge">UserController</code> para <strong>inyectar</strong> la instancia del servicio de negocio creado anteriormente.</p>
+
+<p><strong>Ejemplo</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RestController</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/users"</span><span class="o">)</span>
+<span class="nd">@RequiredArgsConstructor</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserController</span> <span class="o">{</span>
+   <span class="kd">private</span> <span class="kd">final</span> <span class="nc">UserService</span> <span class="n">userService</span><span class="o">;</span>
+   
+   <span class="c1">// Implementación de métodos</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>⚠️ Nota:</strong> En el código anterior se ha declarado una variable como <code class="language-plaintext highlighter-rouge">final</code> y dicha variable no se ha inicializado, se ha dejado para que <strong>Spring boot</strong> la inicialice de forma automática con una instancia de <code class="language-plaintext highlighter-rouge">UserService</code>. Lo anterior, se hace mediante el constructor de la clase que se ha creado con la anotación <code class="language-plaintext highlighter-rouge">@RequiredArgsConstructor</code> de <strong>Lombok</strong> tal como se mencionó anteriormente.</p>
+</blockquote>
+
+<p>Con este patrón, se garantiza que la instancia de <code class="language-plaintext highlighter-rouge">UserService</code> se inyecte correctamente en el controlador, permitiendo su uso en los métodos de manejo de solicitudes.</p>
+
+<p>Modifique todos los métodos que están en <code class="language-plaintext highlighter-rouge">UserController</code> para que usen <code class="language-plaintext highlighter-rouge">userService</code>, así:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@PostMapping</span>
+<span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">ResponseDTO</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;&gt;</span> <span class="nf">create</span><span class="o">(</span><span class="nd">@Valid</span> <span class="nd">@RequestBody</span> <span class="nc">CreateUserDTO</span> <span class="n">userDTO</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+    <span class="n">userService</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">userDTO</span><span class="o">);</span>
+    <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">status</span><span class="o">(</span><span class="nc">HttpStatus</span><span class="o">.</span><span class="na">CREATED</span><span class="o">).</span><span class="na">body</span><span class="o">(</span><span class="k">new</span> <span class="nc">ResponseDTO</span><span class="o">&lt;&gt;(</span><span class="kc">false</span><span class="o">,</span> <span class="s">"El registro ha sido exitoso"</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="nd">@GetMapping</span><span class="o">(</span><span class="s">"/{id}"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">ResponseDTO</span><span class="o">&lt;</span><span class="nc">UserDTO</span><span class="o">&gt;&gt;</span> <span class="nf">get</span><span class="o">(</span><span class="nd">@PathVariable</span> <span class="nc">String</span> <span class="n">id</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+    <span class="nc">UserDTO</span> <span class="n">userDTO</span> <span class="o">=</span> <span class="n">userService</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+    <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">ok</span><span class="o">(</span><span class="k">new</span> <span class="nc">ResponseDTO</span><span class="o">&lt;&gt;(</span><span class="kc">false</span><span class="o">,</span> <span class="n">userDTO</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="nd">@DeleteMapping</span><span class="o">(</span><span class="s">"/{id}"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">ResponseDTO</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;&gt;</span> <span class="nf">delete</span><span class="o">(</span><span class="nd">@PathVariable</span> <span class="nc">String</span> <span class="n">id</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+    <span class="n">userService</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+    <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">ok</span><span class="o">(</span><span class="k">new</span> <span class="nc">ResponseDTO</span><span class="o">&lt;&gt;(</span><span class="kc">false</span><span class="o">,</span> <span class="s">"El usuario ha sido eliminado"</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="nd">@GetMapping</span>
+<span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">ResponseDTO</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">UserDTO</span><span class="o">&gt;&gt;&gt;</span> <span class="nf">listAll</span><span class="o">(){</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">UserDTO</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">userService</span><span class="o">.</span><span class="na">listAll</span><span class="o">();</span>
+    <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">ok</span><span class="o">(</span><span class="k">new</span> <span class="nc">ResponseDTO</span><span class="o">&lt;&gt;(</span><span class="kc">false</span><span class="o">,</span> <span class="n">list</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="nd">@PutMapping</span><span class="o">(</span><span class="s">"/{id}"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">ResponseDTO</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;&gt;</span> <span class="nf">edit</span><span class="o">(</span><span class="nd">@PathVariable</span> <span class="nc">String</span> <span class="n">id</span><span class="o">,</span> <span class="nd">@Valid</span> <span class="nd">@RequestBody</span> <span class="nc">EditUserDTO</span> <span class="n">userDTO</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+    <span class="n">userService</span><span class="o">.</span><span class="na">edit</span><span class="o">(</span><span class="n">id</span><span class="o">,</span> <span class="n">userDTO</span><span class="o">);</span>
+    <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">ok</span><span class="o">(</span><span class="k">new</span> <span class="nc">ResponseDTO</span><span class="o">&lt;&gt;(</span><span class="kc">false</span><span class="o">,</span> <span class="s">"El usuario ha sido actualizado"</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Los controladores delegan la lógica de negocio a los servicios correspondientes. Esta es una buena práctica que mejora la mantenibilidad y la claridad del código.</p>
+
+<h3 id="6-prueba-de-operaciones">6. Prueba de Operaciones</h3>
+
+<p>Puede usar Postman o Swagger UI para enviar solicitudes a la API. Para esto, primero debe ejecutar el servidor Spring Boot.</p>
+
+<ul>
+  <li>Accede a Swagger UI en: <a href="http://localhost:8080/swagger-ui.html">http://localhost:8080/swagger-ui.html</a>.</li>
+  <li>También puede ejecutar el archivo <code class="language-plaintext highlighter-rouge">users.http</code> creado en la guía anterior para probar las operaciones de creación, consulta, eliminación y actualización de usuarios.</li>
+</ul>
+
+<p>Pruebe todos los endpoints de usuarios, ingrese datos válidos y observe las respuestas del sistema, luego ingrese datos inválidos para verificar el manejo de errores.</p>
+
+<blockquote>
+  <p><strong>⚠️ Nota:</strong> Si intenta registrar dos usuarios con el mismo email podrá ver que se genera una excepción y el sistema retorna un <strong>status code 500</strong>, lo cual no necesariamente es lo que se desea.</p>
+</blockquote>
+
+<h3 id="7-personalizando-excepciones">7. Personalizando Excepciones</h3>
+
+<p>Como buena práctica se sugiere la personalización de las excepciones generadas en los servicios de negocio.</p>
+
+<p><strong>Ejemplo:</strong> Cree esta excepción en un paquete <code class="language-plaintext highlighter-rouge">exceptions</code>:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">co.edu.uniquindio.application.exceptions</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ValueConflictException</span> <span class="kd">extends</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nf">ValueConflictException</span><span class="o">(</span><span class="nc">String</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">message</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Modifique su servicio de negocio <code class="language-plaintext highlighter-rouge">UserServiceImpl</code> para que el método <code class="language-plaintext highlighter-rouge">create</code> en lugar de lanzar una excepción genérica lance <code class="language-plaintext highlighter-rouge">ValueConflictException</code>.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">create</span><span class="o">(</span><span class="nc">CreateUserDTO</span> <span class="n">userDTO</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="c1">//Validación del email</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">isEmailDuplicated</span><span class="o">(</span><span class="n">userDTO</span><span class="o">.</span><span class="na">email</span><span class="o">())){</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">ValueConflictException</span><span class="o">(</span><span class="s">"El correo electrónico ya está en uso."</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//Transformación del DTO a User</span>
+    <span class="nc">User</span> <span class="n">newUser</span> <span class="o">=</span> <span class="n">userMapper</span><span class="o">.</span><span class="na">toEntity</span><span class="o">(</span><span class="n">userDTO</span><span class="o">);</span>
+    <span class="n">newUser</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="n">encode</span><span class="o">(</span><span class="n">userDTO</span><span class="o">.</span><span class="na">password</span><span class="o">()));</span>
+
+    <span class="c1">//Almacenamiento del usuario</span>
+    <span class="n">userStore</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">newUser</span><span class="o">.</span><span class="na">getId</span><span class="o">(),</span> <span class="n">newUser</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Ahora, debe modificar la clase <code class="language-plaintext highlighter-rouge">RestExceptionHandler</code> para manejar la nueva excepción <code class="language-plaintext highlighter-rouge">ValueConflictException</code>. Agregue el siguiente método:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@ExceptionHandler</span><span class="o">(</span><span class="nc">ValueConflictException</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">ResponseDTO</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;&gt;</span> <span class="nf">handleValueConflictException</span><span class="o">(</span><span class="nc">ValueConflictException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nc">ResponseEntity</span><span class="o">.</span><span class="na">status</span><span class="o">(</span><span class="nc">HttpStatus</span><span class="o">.</span><span class="na">CONFLICT</span><span class="o">).</span><span class="na">body</span><span class="o">(</span> <span class="k">new</span> <span class="nc">ResponseDTO</span><span class="o">&lt;&gt;(</span><span class="kc">true</span><span class="o">,</span> <span class="n">ex</span><span class="o">.</span><span class="na">getMessage</span><span class="o">())</span> <span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Con esto, cuando se lance una <code class="language-plaintext highlighter-rouge">ValueConflictException</code>, el sistema responderá con un código de estado <strong>HTTP 409 (Conflict)</strong> y el mensaje de error personalizado.</p>
+
+<p><strong>🚀 Ejecute nuevamente la aplicación e intente registrar dos usuarios con el mismo email para verificar el comportamiento.</strong></p>
+
+<h3 id="8-avance-de-proyecto">8. Avance de proyecto</h3>
+
+<p>Personalice todas las excepciones generadas por sus servicios de negocio para gestionar adecuadamente las respuestas del sistema. Por ejemplo, puede crear una excepción <code class="language-plaintext highlighter-rouge">NotFoundException</code> para manejar casos en los que un recurso no se encuentra.</p>
+
+<p>Además, cree un nuevo servicio para los alojamientos y haga que el controlador correspondiente use este servicio. Asegúrese de seguir las mismas buenas prácticas que se han aplicado en el servicio de usuarios.</p>
+
+<h3 id="9-guardar-cambios-en-git">9. Guardar cambios en Git</h3>
+
+<p>Asegúrese de guardar todos los cambios realizados en su repositorio Git.</p>
+
+<hr />
+
+<h2 id="para-la-próxima-clase">Para la próxima clase</h2>
+
+<p>Para prepararse para las próximas clases, los estudiantes deben investigar sobre:</p>
+
+<ol>
+  <li>Bases de datos relacionales</li>
+  <li>Lenguaje SQL</li>
+  <li>ORM (Object-Relational Mapping)</li>
+</ol>
+
+<hr />
+
+<h2 id="referencias-bibliográficas">Referencias Bibliográficas</h2>
+
+<ul>
+  <li>Spring Boot Documentation: <a href="https://spring.io/projects/spring-boot">https://spring.io/projects/spring-boot</a></li>
+  <li>Postman API Testing: <a href="https://www.postman.com/">https://www.postman.com/</a></li>
+  <li>cURL Command Reference: <a href="https://curl.se/docs/">https://curl.se/docs/</a></li>
+  <li>Mapstruct: <a href="https://mapstruct.org">https://mapstruct.org</a></li>
+  <li>Fowler, M. (2012). <em>Patterns of Enterprise Application Architecture</em>. Addison-Wesley.</li>
+  <li>Newman, S. (2015). <em>Building Microservices: Designing Fine-Grained Systems</em>. O’Reilly Media.</li>
+  <li>Richardson, C. (2018). <em>Microservices Patterns: With examples in Java</em>. Manning Publications.</li>
+</ul>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>

@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-09-26T00:29:41-0500",
-    comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.14.jar, environment: Java 21.0.8 (Ubuntu)"
+    date = "2025-09-27T17:19:11-0500",
+    comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.14.jar, environment: Java 21.0.8 (Eclipse Adoptium)"
 )
 @Component
 public class UsuarioMapperImpl implements UsuarioMapper {
@@ -74,9 +74,15 @@ public class UsuarioMapperImpl implements UsuarioMapper {
             return;
         }
 
+        if ( dto.fechaNacimiento() != null ) {
+            usuario.setFechaNacimiento( dto.fechaNacimiento() );
+        }
+        if ( dto.telefono() != null ) {
+            usuario.setTelefono( dto.telefono() );
+        }
+        if ( dto.foto() != null ) {
+            usuario.setFoto( dto.foto() );
+        }
         usuario.setNombre( dto.nombre() );
-        usuario.setTelefono( dto.telefono() );
-        usuario.setFechaNacimiento( dto.fechaNacimiento() );
-        usuario.setFoto( dto.foto() );
     }
 }
