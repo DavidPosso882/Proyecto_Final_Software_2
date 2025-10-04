@@ -12,14 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AlojamientoRepositorio extends JpaRepository<Alojamiento, Long> {
 
-    @Query("SELECT a FROM Alojamiento a WHERE a.anfitrion.id = :idUser")
-    Page<Alojamiento> getAlojamientos(String idUser, Pageable pageable);
-
-    @Query("SELECT a FROM Alojamiento a WHERE " +
-           "(:ciudad IS NULL OR LOWER(a.direccion.ciudad) LIKE LOWER(CONCAT('%', :ciudad, '%'))) AND " +
-           "(:precioMin IS NULL OR a.precioPorNoche >= :precioMin) AND " +
-           "(:precioMax IS NULL OR a.precioPorNoche <= :precioMax) AND " +
-           "(:capacidad IS NULL OR a.maxHuespedes >= :capacidad) AND " +
-           "a.estado = 'ACTIVO'")
-    Page<Alojamiento> buscarConFiltros(String ciudad, Float precioMin, Float precioMax, Integer capacidad, Pageable pageable);
+    @Query("select a.id, a.titulo, a.precioPorNoche, a.direccion, a.imagenes, a.servicios from Alojamiento a where a.anfitrion.id = :idUsuario")
+    Page<ItemAlojamientoDTO> getAlojamientos(String idUser, Pageable pageable);
 }

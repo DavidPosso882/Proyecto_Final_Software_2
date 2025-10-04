@@ -21,9 +21,6 @@ public interface UsuarioMapper {
 
     UsuarioDTO toUserDTO(Usuario user);
 
-    @org.mapstruct.Mapping(target = "fechaNacimiento", nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.IGNORE)
-    @org.mapstruct.Mapping(target = "telefono", nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.IGNORE)
-    @org.mapstruct.Mapping(target = "foto", nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.IGNORE)
     void updateUsuarioFromDTO(EdicionUsuarioDTO dto, @MappingTarget Usuario usuario);
 
 }

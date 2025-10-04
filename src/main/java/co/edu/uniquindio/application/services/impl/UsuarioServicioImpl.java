@@ -1,5 +1,6 @@
 package co.edu.uniquindio.application.services.impl;
 
+import co.edu.uniquindio.application.dtos.EmailDTO;
 import co.edu.uniquindio.application.dtos.usuario.*;
 import co.edu.uniquindio.application.exceptions.NoFoundException;
 import co.edu.uniquindio.application.exceptions.ValidationException;
@@ -13,13 +14,18 @@ import co.edu.uniquindio.application.models.enums.Rol;
 import co.edu.uniquindio.application.repositories.ContrasenaCodigoReinicioRepositorio;
 import co.edu.uniquindio.application.repositories.PerfilAnfitrionRepositorio;
 import co.edu.uniquindio.application.repositories.UsuarioRepositorio;
+import co.edu.uniquindio.application.services.AuthServicio;
+import co.edu.uniquindio.application.services.EmailServicio;
+import co.edu.uniquindio.application.services.ImagenServicio;
 import co.edu.uniquindio.application.services.UsuarioServicio;
+import org.springframework.security.access.AccessDeniedException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -30,6 +36,10 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     private final UsuarioMapper usuarioMapper;
     private final ContrasenaCodigoReinicioRepositorio contrasenaCodigoReinicioRepositorio;
     private final PerfilAnfitrionRepositorio perfilAnfitrionRepositorio;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthServicio authServicio;
+    private final EmailServicio emailServicio;
+    private final ImagenServicio imagenServicio;
 
 
     @Override
@@ -39,17 +49,75 @@ public class UsuarioServicioImpl implements UsuarioServicio {
             throw new ValueConflictException("El email ya existe");
         }
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Usuario nuevoUsuario = usuarioMapper.toEntity(usuarioDTO);
         nuevoUsuario.setContrasena(passwordEncoder.encode(usuarioDTO.contrasena()));
         usuarioRepositorio.save(nuevoUsuario);
+
+        emailServicio.enviarEmail(new EmailDTO("Registro Exitoso", "El usuario se ha registrado correctamente", nuevoUsuario.getEmail()));
     }
 
     @Override
-    public void editar(String id, EdicionUsuarioDTO usuarioDTO) throws Exception {
-        Usuario usuario = obtenerUsuarioId(id);
-        usuarioMapper.updateUsuarioFromDTO(usuarioDTO, usuario);
-        usuarioRepositorio.save(usuario);
+    public void editar(String id, EdicionUsuarioDTO usuarioDTO, MultipartFile file) throws Exception {
+
+        if(!authServicio.obtnerIdAutenticado(id)){
+            throw new AccessDeniedException("No tiene permisos para editar de este usuario.");
+        }
+
+        String actualizadaPublicId = null;
+        String viejaPublicId = null; // Para almacenar el public_id anterior
+
+        try {
+            // Obtener el usuario actual ANTES de cualquier operación
+            Usuario usuario = obtenerUsuarioId(id);
+
+            // Guardar el public_id anterior si existe
+            if (usuario.getFoto() != null) {
+                // Extraer el public_id de la URL de Cloudinary
+                // Asumiendo que la URL es algo como: https://res.cloudinary.com/.../Vivi_Go/Perfiles/abc123.jpg
+                // Necesitamos extraer "Vivi_Go/Perfiles/abc123"
+                String fotoUrl = usuario.getFoto();
+                viejaPublicId = imagenServicio.extraerPublicIdDelUrl(fotoUrl);
+            }
+
+            // Subir imagen si fue proporcionada
+            if (file != null && !file.isEmpty()) {
+                Map uploadResp = imagenServicio.actualizar(file, "Vivi_Go/Perfiles");
+                actualizadaPublicId = (String) uploadResp.get("public_id");
+                String secureUrl = (String) uploadResp.get("secure_url");
+
+                // Clonar el DTO con la nueva URL de imagen
+                usuarioDTO = new EdicionUsuarioDTO(
+                        usuarioDTO.nombre(),
+                        usuarioDTO.telefono(),
+                        secureUrl,
+                        usuarioDTO.fechaNacimiento()
+                );
+
+                // Eliminar la foto anterior SI existe y SI se subió una nueva exitosamente
+                if (viejaPublicId != null) {
+                    try {
+                        imagenServicio.eliminar(viejaPublicId);
+                    } catch (Exception e) {
+                        System.out.println("Advertencia: No se pudo eliminar la foto anterior: " + viejaPublicId);
+                        // logear este error
+                    }
+                }
+            }
+
+            usuarioMapper.updateUsuarioFromDTO(usuarioDTO, usuario);
+            usuarioRepositorio.save(usuario);
+
+        } catch (Exception ex) {
+            // Si ocurre un error, eliminar la imagen recién subida (si se subió)
+            if (actualizadaPublicId != null) {
+                try {
+                    imagenServicio.eliminar(actualizadaPublicId);
+                } catch (Exception ignored) {
+                    // loggear este fallo
+                }
+            }
+            throw ex;
+        }
     }
 
     @Override
@@ -69,9 +137,13 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public void cambiarContrasena(String id, CambioContrasenaDTO cambioContrasenaDTO) throws Exception {
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
         Usuario usuario = obtenerUsuarioId(id);
+
+        if(!authServicio.obtnerIdAutenticado(id)){
+            // Si el usuario no está autorizado a cambiar la contraseña de otro usuario,
+            // lanzamos AccessDeniedException para que se traduzca a 403 Forbidden.
+            throw new AccessDeniedException("No tiene permisos para cambiar la contraseña de este usuario.");
+        }
 
         // Verificar que la contraseña actual coincida
         if(!passwordEncoder.matches(cambioContrasenaDTO.contrasenaActual(), usuario.getContrasena())){
@@ -90,7 +162,6 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public void reiniciarContrasena(ReinicioContrasenaDTO reinicioContrasenaDTO) throws Exception {
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Optional<ContrasenaCodigoReinicio> contrasenaCodigoReinicio = contrasenaCodigoReinicioRepositorio.findByUsuario_Email(reinicioContrasenaDTO.email());
 
         if(contrasenaCodigoReinicio.isEmpty()){
@@ -114,25 +185,46 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public void crearAnfitrion(String usuarioId, CreacionAnfitrionDTO dto) throws Exception {
-        Usuario usuario = obtenerUsuarioId(usuarioId);
-
-        // Validar que es huésped
-        if (!usuario.getRol().equals(Rol.Huesped)) {
-            throw new ValidationException("Solo usuarios con rol Huésped pueden convertirse en Anfitriones");
+    public void crearAnfitrion(CreacionAnfitrionDTO dto) throws Exception {
+        // Obtener usuario autenticado desde el contexto de seguridad
+        String usuarioId = authServicio.obtnerIdUsuarioAutenticado();
+        
+        if (usuarioId == null) {
+            throw new AccessDeniedException("No hay un usuario autenticado");
         }
 
-        // Actualizar rol a anfitrión
-        usuario.setRol(Rol.Anfitrion);
-        usuarioRepositorio.save(usuario);
+        Usuario usuario = obtenerUsuarioId(usuarioId);
+
+        // Verificar que el usuario sea huésped
+        if (usuario.getRol() != Rol.Huesped) {
+            throw new ValueConflictException("El usuario ya es un anfitrión");
+        }
+
+        // Verificar que no tenga ya un perfil de anfitrión
+        if (usuario.getPerfilAnfitrion() != null) {
+            throw new ValueConflictException("El usuario ya tiene un perfil de anfitrión");
+        }
 
         // Crear perfil de anfitrión
-        PerfilAnfitrion perfil = new PerfilAnfitrion(null, dto.sobreMi(), dto.DocumentoLegal(), usuario);
-        perfilAnfitrionRepositorio.save(perfil);
-    
-        // Actualizar la relación bidireccional
-        usuario.setPerfilAnfitrion(perfil);
+        PerfilAnfitrion perfilAnfitrion = new PerfilAnfitrion();
+        perfilAnfitrion.setSobreMi(dto.descripcion());
+        perfilAnfitrion.setDocumentoLegal(dto.documentoLegal());
+        perfilAnfitrion.setUsuario(usuario);
+
+        // Guardar perfil de anfitrión
+        perfilAnfitrionRepositorio.save(perfilAnfitrion);
+
+        // Actualizar usuario a anfitrión
+        usuario.setRol(Rol.Anfitrion);
+        usuario.setEsAnfitrion(true);
         usuarioRepositorio.save(usuario);
+
+        // Enviar email de confirmación
+        emailServicio.enviarEmail(new EmailDTO(
+            "¡Felicidades! Ahora eres Anfitrión en ViviGo",
+            "Tu perfil de anfitrión ha sido creado exitosamente. Ahora puedes publicar tus alojamientos y comenzar a recibir reservas.",
+            usuario.getEmail()
+        ));
     }
 
     public boolean existePorEmail(String email){

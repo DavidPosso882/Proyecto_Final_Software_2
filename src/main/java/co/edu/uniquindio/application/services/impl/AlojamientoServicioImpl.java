@@ -4,61 +4,83 @@ import co.edu.uniquindio.application.dtos.alojamiento.*;
 import co.edu.uniquindio.application.dtos.resena.CreacionResenaDTO;
 import co.edu.uniquindio.application.dtos.resena.ItemResenaDTO;
 import co.edu.uniquindio.application.dtos.usuario.EdicionUsuarioDTO;
+import co.edu.uniquindio.application.exceptions.NoFoundException;
 import co.edu.uniquindio.application.models.entitys.Alojamiento;
 import co.edu.uniquindio.application.models.entitys.Usuario;
+import co.edu.uniquindio.application.models.enums.Estado;
+import co.edu.uniquindio.application.models.vo.Direccion;
+import co.edu.uniquindio.application.models.vo.Localizacion;
 import co.edu.uniquindio.application.repositories.AlojamientoRepositorio;
 import co.edu.uniquindio.application.repositories.UsuarioRepositorio;
 import co.edu.uniquindio.application.services.AlojamientoServicio;
-import co.edu.uniquindio.application.mappers.AlojamientoMapper;
+import co.edu.uniquindio.application.services.AuthServicio;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AlojamientoServicioImpl implements AlojamientoServicio {
 
     private final AlojamientoRepositorio alojamientoRepositorio;
     private final UsuarioRepositorio usuarioRepositorio;
-    private final AlojamientoMapper alojamientoMapper;
-
-    public AlojamientoServicioImpl(AlojamientoRepositorio alojamientoRepositorio, UsuarioRepositorio usuarioRepositorio, AlojamientoMapper alojamientoMapper) {
-        this.alojamientoRepositorio = alojamientoRepositorio;
-        this.usuarioRepositorio = usuarioRepositorio;
-        this.alojamientoMapper = alojamientoMapper;
-    }
+    private final AuthServicio authServicio;
 
     @Override
     public void crear(CreacionAlojamientoDTO alojamientoDTO) throws Exception {
-        Alojamiento entity = alojamientoMapper.toEntity(alojamientoDTO);
-        // Obtener usuario autenticado - temporalmente usamos el usuario convertido a anfitrión
-        Usuario anfitrion = usuarioRepositorio.findById("c6cb2b45-0b5d-4f24-ab99-2c3b21b39b73")
-                .orElseThrow(() -> new Exception("Usuario anfitrión no encontrado"));
-        entity.setAnfitrion(anfitrion);
-        alojamientoRepositorio.save(entity);
+        // Obtener usuario autenticado
+        String usuarioId = authServicio.obtnerIdUsuarioAutenticado();
+        Usuario usuario = usuarioRepositorio.findById(usuarioId)
+                .orElseThrow(() -> new NoFoundException("Usuario no encontrado"));
+
+        // Crear entidad Alojamiento primero sin colecciones
+        Alojamiento alojamiento = new Alojamiento();
+        alojamiento.setTitulo(alojamientoDTO.titulo());
+        alojamiento.setDescripcion(alojamientoDTO.descripcion());
+        alojamiento.setDireccion(new Direccion(
+                alojamientoDTO.ubicacion().ciudad(),
+                alojamientoDTO.ubicacion().direccion(),
+                new Localizacion(
+                        alojamientoDTO.ubicacion().coordenadas().latitud().floatValue(),
+                        alojamientoDTO.ubicacion().coordenadas().longitud().floatValue()
+                )
+        ));
+        alojamiento.setMaxHuespedes(alojamientoDTO.capacidad());
+        alojamiento.setPrecioPorNoche(alojamientoDTO.precioNoche());
+        alojamiento.setEstado(Estado.ACTIVO);
+        alojamiento.setAnfitrion(usuario);
+        alojamiento.setCreadoEn(LocalDateTime.now());
+
+        // Guardar primero el alojamiento para obtener el ID
+        Alojamiento alojamientoGuardado = alojamientoRepositorio.save(alojamiento);
+        
+        // Ahora agregar las colecciones
+        alojamientoGuardado.setImagenes(alojamientoDTO.imagenes());
+        alojamientoGuardado.setServicios(new HashSet<>(alojamientoDTO.servicios()));
+        
+        // Guardar nuevamente con las colecciones
+        alojamientoRepositorio.save(alojamientoGuardado);
     }
 
     @Override
-    public void editar(Long id, EdicionAlojamientoDTO edicionAlojamientoDTO) throws Exception {
-        Alojamiento alojamiento = obtenerAlojamientoId(id);
-        alojamientoMapper.updateAlojamientoFromDto(edicionAlojamientoDTO, alojamiento);
-        alojamientoRepositorio.save(alojamiento);
+    public void editar (Long id, EdicionUsuarioDTO edicionUsuarioDTO) throws Exception {
+
     }
 
     @Override
     public void eliminar(Long id) throws Exception {
-        Alojamiento alojamiento = obtenerAlojamientoId(id);
-        // Aquí podrías cambiar el estado o eliminar físicamente
-        alojamientoRepositorio.delete(alojamiento);
+
     }
 
     @Override
     public Alojamiento obtenerAlojamientoId(Long id) throws Exception {
-        return alojamientoRepositorio.findById(id)
-                .orElseThrow(() -> new Exception("Alojamiento no encontrado"));
+        return null;
     }
 
     @Override
@@ -67,25 +89,16 @@ public class AlojamientoServicioImpl implements AlojamientoServicio {
     }
 
     @Override
-    public Page<ItemAlojamientoDTO> obtenerAlojamiento(AlojamientoFiltroDTO filtros, Pageable pageable) throws Exception {
-        Page<Alojamiento> alojamientosPage = alojamientoRepositorio.buscarConFiltros(
-                filtros.ciudad(),
-                filtros.precioMin(),
-                filtros.precioMax(),
-                filtros.capacidad(),
-                pageable
-        );
-        return alojamientosPage.map(alojamientoMapper::toItemDTO);
+    public List<ItemAlojamientoDTO> obtenerAlojamiento(AlojamientoFiltroDTO filtros) throws Exception {
+        return null;
     }
 
     @Override
     public List<ItemAlojamientoDTO> obtenerAlojamientoUsuario(String id, int pagina) throws Exception {
 
         Pageable pageable = PageRequest.of(pagina, 5);
-        Page<Alojamiento> alojamientos = alojamientoRepositorio.getAlojamientos(id, pageable);
+        Page<ItemAlojamientoDTO> alojamientos = alojamientoRepositorio.getAlojamientos(id, pageable);
 
-        return alojamientos.stream()
-                .map(alojamientoMapper::toItemDTO)
-                .toList();
+        return alojamientos.toList();
     }
 }

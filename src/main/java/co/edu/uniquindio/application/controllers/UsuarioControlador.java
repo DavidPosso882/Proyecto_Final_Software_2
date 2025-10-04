@@ -3,18 +3,22 @@ package co.edu.uniquindio.application.controllers;
 
 import co.edu.uniquindio.application.dtos.alojamiento.ItemAlojamientoDTO;
 import co.edu.uniquindio.application.dtos.reserva.ItemReservaDTO;
-import co.edu.uniquindio.application.dtos.usuario.CreacionAnfitrionDTO;
 import co.edu.uniquindio.application.dtos.usuario.CreacionUsuarioDTO;
+import co.edu.uniquindio.application.dtos.usuario.CreacionAnfitrionDTO;
 import co.edu.uniquindio.application.dtos.usuario.EdicionUsuarioDTO;
 import co.edu.uniquindio.application.dtos.RespuestaDTO;
 import co.edu.uniquindio.application.dtos.usuario.CambioContrasenaDTO;
 import co.edu.uniquindio.application.dtos.usuario.UsuarioDTO;
-import co.edu.uniquindio.application.services.AlojamientoServicio;
 import co.edu.uniquindio.application.services.UsuarioServicio;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestPart;
+
+import java.util.Map;
+import co.edu.uniquindio.application.services.ImagenServicio;
 
 import java.util.List;
 
@@ -25,17 +29,17 @@ import java.util.List;
 public class UsuarioControlador {
 
     private final UsuarioServicio usuarioServicio;
-    private final AlojamientoServicio alojamientoServicio;
+    private final ImagenServicio imagenServicio;
 
-    @PostMapping("/{id}/anfitrion")
-    public ResponseEntity<RespuestaDTO<String>> crearAnfitrion(@PathVariable String id, @Valid @RequestBody CreacionAnfitrionDTO dto) throws Exception {
-        usuarioServicio.crearAnfitrion(id, dto);
-        return ResponseEntity.ok(new RespuestaDTO<>(false, "Usuario convertido a anfitrión exitosamente"));
+    @PostMapping("/anfitrion")
+    public ResponseEntity<RespuestaDTO<String>> crearAnfitrion(@Valid @RequestBody CreacionAnfitrionDTO dto) throws Exception {
+        usuarioServicio.crearAnfitrion(dto);
+        return ResponseEntity.ok(new RespuestaDTO<>(false, "¡Felicidades! Ahora eres anfitrión en ViviGo"));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<RespuestaDTO<String>> editar(@PathVariable String id, @Valid @RequestBody EdicionUsuarioDTO edicionUsuarioDTO) throws Exception {
-        usuarioServicio.editar(id , edicionUsuarioDTO);
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
+    public ResponseEntity<RespuestaDTO<String>> editar(@PathVariable String id, @RequestPart("usuario") @Valid EdicionUsuarioDTO edicionUsuarioDTO, @RequestPart(value = "foto", required = false) MultipartFile file) throws Exception {
+        usuarioServicio.editar(id, edicionUsuarioDTO, file);
         return ResponseEntity.ok(new RespuestaDTO<>(false, "El usuario ha sido actualizado"));
     }
 
@@ -59,13 +63,12 @@ public class UsuarioControlador {
 
     @GetMapping("/{id}/alojamientos")
     public ResponseEntity<RespuestaDTO<List<ItemAlojamientoDTO>>> obtenerAlojamientosUsuario(@PathVariable String id) throws Exception {
-        List<ItemAlojamientoDTO> alojamientos = alojamientoServicio.obtenerAlojamientoUsuario(id, 0);
-        return ResponseEntity.ok(new RespuestaDTO<>(false, alojamientos));
+        return ResponseEntity.ok(new RespuestaDTO<>(false, List.of()));
     }
 
     @GetMapping("/{id}/reservas")
     public ResponseEntity<RespuestaDTO<List<ItemReservaDTO>>> obtenerReservasUsuario(@PathVariable String id) throws Exception {
-        return ResponseEntity.ok(new RespuestaDTO(false, List.of()));
+        return ResponseEntity.ok(new RespuestaDTO<>(false, List.of()));
     }
 
 }

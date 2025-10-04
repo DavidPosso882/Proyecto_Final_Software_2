@@ -13,15 +13,15 @@ public record EdicionAlojamientoDTO(
         @NotBlank
         String descripcion,
 
-        @Min(0)
+        @NotNull @Min(0)
         Float precioNoche,
 
-        @Min(1)
+        @NotNull @Min(1)
         Integer capacidad,
 
         List<Servicio> servicios,
 
-        @Size(min = 1, max = 10)
+        @NotNull @Size(min = 1, max = 10)
         List<String> imagenes,
 
         @Min(0)

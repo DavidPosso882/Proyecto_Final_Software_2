@@ -7,10 +7,8 @@ import co.edu.uniquindio.application.dtos.alojamiento.EdicionAlojamientoDTO;
 import co.edu.uniquindio.application.dtos.alojamiento.ItemAlojamientoDTO;
 import co.edu.uniquindio.application.dtos.alojamiento.LocalizacionDTO;
 import co.edu.uniquindio.application.models.entitys.Alojamiento;
-import co.edu.uniquindio.application.models.enums.Estado;
 import co.edu.uniquindio.application.models.enums.Servicio;
 import co.edu.uniquindio.application.models.vo.Direccion;
-import co.edu.uniquindio.application.models.vo.Localizacion;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -20,8 +18,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-09-27T18:42:29-0500",
-    comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.14.jar, environment: Java 21.0.8 (Eclipse Adoptium)"
+    date = "2025-10-04T10:50:23-0500",
+    comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.14.jar, environment: Java 21.0.8 (Ubuntu)"
 )
 @Component
 public class AlojamientoMapperImpl implements AlojamientoMapper {
@@ -36,9 +34,6 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
 
         alojamiento.titulo( dto.titulo() );
         alojamiento.descripcion( dto.descripcion() );
-        alojamiento.direccion( direccionDTOToDireccion( dto.direccion() ) );
-        alojamiento.maxHuespedes( dto.maxHuespedes() );
-        alojamiento.precioPorNoche( dto.precioPorNoche() );
         List<String> list = dto.imagenes();
         if ( list != null ) {
             alojamiento.imagenes( new ArrayList<String>( list ) );
@@ -47,9 +42,6 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
         if ( list1 != null ) {
             alojamiento.servicios( new LinkedHashSet<Servicio>( list1 ) );
         }
-
-        alojamiento.creadoEn( java.time.LocalDateTime.now() );
-        alojamiento.estado( Estado.ACTIVO );
 
         return alojamiento.build();
     }
@@ -60,20 +52,17 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
             return null;
         }
 
-        DireccionDTO ubicacion = null;
-        Float precioNoche = null;
-        Integer capacidad = null;
         Long id = null;
         String titulo = null;
 
-        ubicacion = direccionToDireccionDTO( alojamiento.getDireccion() );
-        precioNoche = alojamiento.getPrecioPorNoche();
-        capacidad = alojamiento.getMaxHuespedes();
         id = alojamiento.getId();
         titulo = alojamiento.getTitulo();
 
-        String imagenPrincipal = alojamiento.getImagenes() != null && !alojamiento.getImagenes().isEmpty() ? alojamiento.getImagenes().get(0) : null;
+        String imagenPrincipal = null;
+        Float precioNoche = null;
+        DireccionDTO ubicacion = null;
         Float promedioCalificaciones = null;
+        Integer capacidad = null;
 
         ItemAlojamientoDTO itemAlojamientoDTO = new ItemAlojamientoDTO( id, titulo, imagenPrincipal, precioNoche, ubicacion, promedioCalificaciones, capacidad );
 
@@ -96,7 +85,7 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
 
         titulo = alojamiento.getTitulo();
         descripcion = alojamiento.getDescripcion();
-        direccion = direccionToDireccionDTO1( alojamiento.getDireccion() );
+        direccion = direccionToDireccionDTO( alojamiento.getDireccion() );
         precioPorNoche = alojamiento.getPrecioPorNoche();
         maxHuespedes = alojamiento.getMaxHuespedes();
         Set<Servicio> set = alojamiento.getServicios();
@@ -108,7 +97,7 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
             imagenes = new ArrayList<String>( list );
         }
 
-        Integer imagenPrincipal = alojamiento.getImagenes() != null && !alojamiento.getImagenes().isEmpty() ? 0 : null;
+        Integer imagenPrincipal = null;
 
         AlojamientoDTO alojamientoDTO = new AlojamientoDTO( titulo, descripcion, direccion, precioPorNoche, maxHuespedes, servicios, imagenes, imagenPrincipal );
 
@@ -121,18 +110,6 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
             return;
         }
 
-        if ( edicionAlojamientoDTO.precioNoche() != null ) {
-            alojamiento.setPrecioPorNoche( edicionAlojamientoDTO.precioNoche() );
-        }
-        if ( edicionAlojamientoDTO.capacidad() != null ) {
-            alojamiento.setMaxHuespedes( edicionAlojamientoDTO.capacidad() );
-        }
-        if ( edicionAlojamientoDTO.ubicacion() != null ) {
-            if ( alojamiento.getDireccion() == null ) {
-                alojamiento.setDireccion( new Direccion() );
-            }
-            direccionDTOToDireccion1( edicionAlojamientoDTO.ubicacion(), alojamiento.getDireccion() );
-        }
         alojamiento.setTitulo( edicionAlojamientoDTO.titulo() );
         alojamiento.setDescripcion( edicionAlojamientoDTO.descripcion() );
         if ( alojamiento.getImagenes() != null ) {
@@ -169,133 +146,21 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
         }
     }
 
-    protected Localizacion localizacionDTOToLocalizacion(LocalizacionDTO localizacionDTO) {
-        if ( localizacionDTO == null ) {
-            return null;
-        }
-
-        Localizacion localizacion = new Localizacion();
-
-        if ( localizacionDTO.latitud() != null ) {
-            localizacion.setLatitud( localizacionDTO.latitud().floatValue() );
-        }
-        if ( localizacionDTO.longitud() != null ) {
-            localizacion.setLongitud( localizacionDTO.longitud().floatValue() );
-        }
-
-        return localizacion;
-    }
-
-    protected Direccion direccionDTOToDireccion(DireccionDTO direccionDTO) {
-        if ( direccionDTO == null ) {
-            return null;
-        }
-
-        Direccion direccion = new Direccion();
-
-        direccion.setCiudad( direccionDTO.ciudad() );
-        direccion.setDireccion( direccionDTO.direccion() );
-        direccion.setUbicacion( localizacionDTOToLocalizacion( direccionDTO.ubicacion() ) );
-
-        return direccion;
-    }
-
-    protected LocalizacionDTO localizacionToLocalizacionDTO(Localizacion localizacion) {
-        if ( localizacion == null ) {
-            return null;
-        }
-
-        Double latitud = null;
-        Double longitud = null;
-
-        latitud = (double) localizacion.getLatitud();
-        longitud = (double) localizacion.getLongitud();
-
-        LocalizacionDTO localizacionDTO = new LocalizacionDTO( latitud, longitud );
-
-        return localizacionDTO;
-    }
-
     protected DireccionDTO direccionToDireccionDTO(Direccion direccion) {
         if ( direccion == null ) {
             return null;
         }
 
-        LocalizacionDTO ubicacion = null;
         String ciudad = null;
         String direccion1 = null;
 
-        ubicacion = localizacionToLocalizacionDTO( direccion.getUbicacion() );
         ciudad = direccion.getCiudad();
         direccion1 = direccion.getDireccion();
 
-        DireccionDTO direccionDTO = new DireccionDTO( ciudad, direccion1, ubicacion );
+        LocalizacionDTO coordenadas = null;
+
+        DireccionDTO direccionDTO = new DireccionDTO( ciudad, direccion1, coordenadas );
 
         return direccionDTO;
-    }
-
-    protected LocalizacionDTO localizacionToLocalizacionDTO1(Localizacion localizacion) {
-        if ( localizacion == null ) {
-            return null;
-        }
-
-        Double latitud = null;
-        Double longitud = null;
-
-        latitud = (double) localizacion.getLatitud();
-        longitud = (double) localizacion.getLongitud();
-
-        LocalizacionDTO localizacionDTO = new LocalizacionDTO( latitud, longitud );
-
-        return localizacionDTO;
-    }
-
-    protected DireccionDTO direccionToDireccionDTO1(Direccion direccion) {
-        if ( direccion == null ) {
-            return null;
-        }
-
-        String ciudad = null;
-        String direccion1 = null;
-        LocalizacionDTO ubicacion = null;
-
-        ciudad = direccion.getCiudad();
-        direccion1 = direccion.getDireccion();
-        ubicacion = localizacionToLocalizacionDTO1( direccion.getUbicacion() );
-
-        DireccionDTO direccionDTO = new DireccionDTO( ciudad, direccion1, ubicacion );
-
-        return direccionDTO;
-    }
-
-    protected void localizacionDTOToLocalizacion1(LocalizacionDTO localizacionDTO, Localizacion mappingTarget) {
-        if ( localizacionDTO == null ) {
-            return;
-        }
-
-        if ( localizacionDTO.latitud() != null ) {
-            mappingTarget.setLatitud( localizacionDTO.latitud().floatValue() );
-        }
-        if ( localizacionDTO.longitud() != null ) {
-            mappingTarget.setLongitud( localizacionDTO.longitud().floatValue() );
-        }
-    }
-
-    protected void direccionDTOToDireccion1(DireccionDTO direccionDTO, Direccion mappingTarget) {
-        if ( direccionDTO == null ) {
-            return;
-        }
-
-        mappingTarget.setCiudad( direccionDTO.ciudad() );
-        mappingTarget.setDireccion( direccionDTO.direccion() );
-        if ( direccionDTO.ubicacion() != null ) {
-            if ( mappingTarget.getUbicacion() == null ) {
-                mappingTarget.setUbicacion( new Localizacion() );
-            }
-            localizacionDTOToLocalizacion1( direccionDTO.ubicacion(), mappingTarget.getUbicacion() );
-        }
-        else {
-            mappingTarget.setUbicacion( null );
-        }
     }
 }

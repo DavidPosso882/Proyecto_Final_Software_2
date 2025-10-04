@@ -11,11 +11,11 @@ public record CreacionAlojamientoDTO(
         @NotBlank
         String descripcion,
         @NotNull
-        DireccionDTO direccion,
+        DireccionDTO ubicacion,
         @NotNull @Min(0)
-        Float precioPorNoche,
+        Float precioNoche,
         @NotNull @Min(1)
-        Integer maxHuespedes,
+        Integer capacidad,
         List<Servicio> servicios,
         @NotNull @Size(min = 1, max = 10)
         List<String> imagenes,
