@@ -7,8 +7,10 @@ import co.edu.uniquindio.application.dtos.alojamiento.EdicionAlojamientoDTO;
 import co.edu.uniquindio.application.dtos.alojamiento.ItemAlojamientoDTO;
 import co.edu.uniquindio.application.dtos.alojamiento.LocalizacionDTO;
 import co.edu.uniquindio.application.models.entitys.Alojamiento;
+import co.edu.uniquindio.application.models.enums.Estado;
 import co.edu.uniquindio.application.models.enums.Servicio;
 import co.edu.uniquindio.application.models.vo.Direccion;
+import co.edu.uniquindio.application.models.vo.Localizacion;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -18,7 +20,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-10-04T10:50:23-0500",
+    date = "2025-10-06T23:42:03-0500",
     comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.14.jar, environment: Java 21.0.8 (Ubuntu)"
 )
 @Component
@@ -34,6 +36,9 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
 
         alojamiento.titulo( dto.titulo() );
         alojamiento.descripcion( dto.descripcion() );
+        alojamiento.direccion( direccionDTOToDireccion( dto.direccion() ) );
+        alojamiento.maxHuespedes( dto.maxHuespedes() );
+        alojamiento.precioPorNoche( dto.precioPorNoche() );
         List<String> list = dto.imagenes();
         if ( list != null ) {
             alojamiento.imagenes( new ArrayList<String>( list ) );
@@ -42,6 +47,9 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
         if ( list1 != null ) {
             alojamiento.servicios( new LinkedHashSet<Servicio>( list1 ) );
         }
+
+        alojamiento.estado( Estado.ACTIVO );
+        alojamiento.creadoEn( java.time.LocalDateTime.now() );
 
         return alojamiento.build();
     }
@@ -54,17 +62,21 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
 
         Long id = null;
         String titulo = null;
+        Double precioPorNoche = null;
+        DireccionDTO direccion = null;
+        Double promedioCalificaciones = null;
 
         id = alojamiento.getId();
         titulo = alojamiento.getTitulo();
+        if ( alojamiento.getPrecioPorNoche() != null ) {
+            precioPorNoche = alojamiento.getPrecioPorNoche().doubleValue();
+        }
+        direccion = direccionToDireccionDTO( alojamiento.getDireccion() );
+        promedioCalificaciones = alojamiento.getPromedioCalificaciones();
 
-        String imagenPrincipal = null;
-        Float precioNoche = null;
-        DireccionDTO ubicacion = null;
-        Float promedioCalificaciones = null;
-        Integer capacidad = null;
+        String imagenPrincipal = getImagenPrincipal(alojamiento.getImagenes());
 
-        ItemAlojamientoDTO itemAlojamientoDTO = new ItemAlojamientoDTO( id, titulo, imagenPrincipal, precioNoche, ubicacion, promedioCalificaciones, capacidad );
+        ItemAlojamientoDTO itemAlojamientoDTO = new ItemAlojamientoDTO( id, titulo, imagenPrincipal, precioPorNoche, direccion, promedioCalificaciones );
 
         return itemAlojamientoDTO;
     }
@@ -75,6 +87,7 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
             return null;
         }
 
+        Long id = null;
         String titulo = null;
         String descripcion = null;
         DireccionDTO direccion = null;
@@ -83,6 +96,7 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
         List<Servicio> servicios = null;
         List<String> imagenes = null;
 
+        id = alojamiento.getId();
         titulo = alojamiento.getTitulo();
         descripcion = alojamiento.getDescripcion();
         direccion = direccionToDireccionDTO( alojamiento.getDireccion() );
@@ -97,9 +111,9 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
             imagenes = new ArrayList<String>( list );
         }
 
-        Integer imagenPrincipal = null;
+        String nombreAnfitrion = alojamiento.getAnfitrion().getNombre();
 
-        AlojamientoDTO alojamientoDTO = new AlojamientoDTO( titulo, descripcion, direccion, precioPorNoche, maxHuespedes, servicios, imagenes, imagenPrincipal );
+        AlojamientoDTO alojamientoDTO = new AlojamientoDTO( id, titulo, descripcion, direccion, precioPorNoche, maxHuespedes, servicios, imagenes, nombreAnfitrion );
 
         return alojamientoDTO;
     }
@@ -112,6 +126,17 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
 
         alojamiento.setTitulo( edicionAlojamientoDTO.titulo() );
         alojamiento.setDescripcion( edicionAlojamientoDTO.descripcion() );
+        if ( edicionAlojamientoDTO.direccion() != null ) {
+            if ( alojamiento.getDireccion() == null ) {
+                alojamiento.setDireccion( new Direccion() );
+            }
+            direccionDTOToDireccion1( edicionAlojamientoDTO.direccion(), alojamiento.getDireccion() );
+        }
+        else {
+            alojamiento.setDireccion( null );
+        }
+        alojamiento.setMaxHuespedes( edicionAlojamientoDTO.maxHuespedes() );
+        alojamiento.setPrecioPorNoche( edicionAlojamientoDTO.precioPorNoche() );
         if ( alojamiento.getImagenes() != null ) {
             List<String> list = edicionAlojamientoDTO.imagenes();
             if ( list != null ) {
@@ -146,6 +171,53 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
         }
     }
 
+    protected Localizacion localizacionDTOToLocalizacion(LocalizacionDTO localizacionDTO) {
+        if ( localizacionDTO == null ) {
+            return null;
+        }
+
+        Localizacion localizacion = new Localizacion();
+
+        if ( localizacionDTO.latitud() != null ) {
+            localizacion.setLatitud( localizacionDTO.latitud().floatValue() );
+        }
+        if ( localizacionDTO.longitud() != null ) {
+            localizacion.setLongitud( localizacionDTO.longitud().floatValue() );
+        }
+
+        return localizacion;
+    }
+
+    protected Direccion direccionDTOToDireccion(DireccionDTO direccionDTO) {
+        if ( direccionDTO == null ) {
+            return null;
+        }
+
+        Direccion direccion = new Direccion();
+
+        direccion.setCiudad( direccionDTO.ciudad() );
+        direccion.setDireccion( direccionDTO.direccion() );
+        direccion.setLocalizacion( localizacionDTOToLocalizacion( direccionDTO.localizacion() ) );
+
+        return direccion;
+    }
+
+    protected LocalizacionDTO localizacionToLocalizacionDTO(Localizacion localizacion) {
+        if ( localizacion == null ) {
+            return null;
+        }
+
+        Double latitud = null;
+        Double longitud = null;
+
+        latitud = (double) localizacion.getLatitud();
+        longitud = (double) localizacion.getLongitud();
+
+        LocalizacionDTO localizacionDTO = new LocalizacionDTO( latitud, longitud );
+
+        return localizacionDTO;
+    }
+
     protected DireccionDTO direccionToDireccionDTO(Direccion direccion) {
         if ( direccion == null ) {
             return null;
@@ -153,14 +225,45 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
 
         String ciudad = null;
         String direccion1 = null;
+        LocalizacionDTO localizacion = null;
 
         ciudad = direccion.getCiudad();
         direccion1 = direccion.getDireccion();
+        localizacion = localizacionToLocalizacionDTO( direccion.getLocalizacion() );
 
-        LocalizacionDTO coordenadas = null;
-
-        DireccionDTO direccionDTO = new DireccionDTO( ciudad, direccion1, coordenadas );
+        DireccionDTO direccionDTO = new DireccionDTO( ciudad, direccion1, localizacion );
 
         return direccionDTO;
+    }
+
+    protected void localizacionDTOToLocalizacion1(LocalizacionDTO localizacionDTO, Localizacion mappingTarget) {
+        if ( localizacionDTO == null ) {
+            return;
+        }
+
+        if ( localizacionDTO.latitud() != null ) {
+            mappingTarget.setLatitud( localizacionDTO.latitud().floatValue() );
+        }
+        if ( localizacionDTO.longitud() != null ) {
+            mappingTarget.setLongitud( localizacionDTO.longitud().floatValue() );
+        }
+    }
+
+    protected void direccionDTOToDireccion1(DireccionDTO direccionDTO, Direccion mappingTarget) {
+        if ( direccionDTO == null ) {
+            return;
+        }
+
+        mappingTarget.setCiudad( direccionDTO.ciudad() );
+        mappingTarget.setDireccion( direccionDTO.direccion() );
+        if ( direccionDTO.localizacion() != null ) {
+            if ( mappingTarget.getLocalizacion() == null ) {
+                mappingTarget.setLocalizacion( new Localizacion() );
+            }
+            localizacionDTOToLocalizacion1( direccionDTO.localizacion(), mappingTarget.getLocalizacion() );
+        }
+        else {
+            mappingTarget.setLocalizacion( null );
+        }
     }
 }

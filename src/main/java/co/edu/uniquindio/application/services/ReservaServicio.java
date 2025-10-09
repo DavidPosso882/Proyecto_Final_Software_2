@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ReservaServicio {
     ReservaDTO crearReserva(CreacionReservaDTO dto) throws Exception;
-    Page<ItemReservaDTO> listarReservas(Long id, String estado, String fechaInicio, String fechaFin, Pageable pageable) throws Exception;
+    Page<ItemReservaDTO> listarReservas(String estado, String fechaInicio, String fechaFin, Pageable pageable) throws Exception;
+    ItemReservaDTO obtenerReservaPorUsuarioYAlojamiento(String usuarioId, Long alojamientoId) throws Exception;
     void cancelarReserva(Long id) throws Exception;
 }

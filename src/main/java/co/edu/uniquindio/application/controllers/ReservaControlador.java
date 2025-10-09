@@ -29,13 +29,20 @@ public class ReservaControlador {
 
     @GetMapping
     public ResponseEntity<RespuestaDTO<Page<ItemReservaDTO>>> listarReservas(
-            @RequestParam Long id,
             @RequestParam(required = false) String estado,
             @RequestParam(required = false) String fechaInicio,
             @RequestParam(required = false) String fechaFin,
             @ParameterObject Pageable pageable) throws Exception {
-        Page<ItemReservaDTO> reservas = reservaServicio.listarReservas(id, estado, fechaInicio, fechaFin, pageable);
+        Page<ItemReservaDTO> reservas = reservaServicio.listarReservas(estado, fechaInicio, fechaFin, pageable);
         return ResponseEntity.ok(new RespuestaDTO<>(false, reservas));
+    }
+
+    @GetMapping("/usuario/{usuarioId}/alojamiento/{alojamientoId}")
+    public ResponseEntity<RespuestaDTO<ItemReservaDTO>> obtenerReservaUsuarioAlojamiento(
+            @PathVariable String usuarioId,
+            @PathVariable Long alojamientoId) throws Exception {
+        ItemReservaDTO reserva = reservaServicio.obtenerReservaPorUsuarioYAlojamiento(usuarioId, alojamientoId);
+        return ResponseEntity.ok(new RespuestaDTO<>(false, reserva));
     }
 
     @PatchMapping("/{id}/estado")

@@ -45,6 +45,12 @@ public class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body( new RespuestaDTO<>(true, ex.getMessage()) );
     }
 
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<RespuestaDTO<String>> validationExceptionHandler(ValidationException ex) {
+        // 400 Bad Request: errores de validación
+        return ResponseEntity.badRequest().body( new RespuestaDTO<>(true, ex.getMessage()) );
+    }
+
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<RespuestaDTO<String>> accessDeniedExceptionHandler(AccessDeniedException ex){
         // 403 Prohibido: usuario autenticado pero sin permisos suficientes
