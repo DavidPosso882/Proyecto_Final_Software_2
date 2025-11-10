@@ -9,10 +9,11 @@ import java.time.LocalDate;
 public record ReservaDTO(
         Long id,
         AlojamientoDTO alojamiento,
-        UsuarioDTO usuario,
+        UsuarioDTO huesped,
         LocalDate fechaEntrada,
         LocalDate fechaSalida,
-        Integer numeroHuespedes,
+        Integer cantidadHuespedes,
+        Double precio,
         ReservaEstado estado
 ) {
 }

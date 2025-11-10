@@ -1,38 +1,23 @@
 package co.edu.uniquindio.application.services.impl;
 
 import co.edu.uniquindio.application.dtos.EmailDTO;
-import co.edu.uniquindio.application.dtos.alojamiento.ItemAlojamientoDTO;
 import co.edu.uniquindio.application.dtos.usuario.*;
 import co.edu.uniquindio.application.exceptions.NoFoundException;
 import co.edu.uniquindio.application.exceptions.ValidationException;
 import co.edu.uniquindio.application.exceptions.ValueConflictException;
-import co.edu.uniquindio.application.mappers.AlojamientoMapper;
 import co.edu.uniquindio.application.mappers.UsuarioMapper;
 import co.edu.uniquindio.application.mappers.PerfilAnfitrionMapper;
-import co.edu.uniquindio.application.models.entitys.ContrasenaCodigoReinicio;
 import co.edu.uniquindio.application.models.entitys.PerfilAnfitrion;
 import co.edu.uniquindio.application.models.entitys.Usuario;
 import co.edu.uniquindio.application.models.enums.Estado;
 import co.edu.uniquindio.application.models.enums.Rol;
-import co.edu.uniquindio.application.repositories.AlojamientoRepositorio;
-import co.edu.uniquindio.application.repositories.ContrasenaCodigoReinicioRepositorio;
-import co.edu.uniquindio.application.repositories.UsuarioRepositorio;
+import co.edu.uniquindio.application.repositories.*;
 import co.edu.uniquindio.application.services.*;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import co.edu.uniquindio.application.repositories.PerfilAnfitrionRepositorio;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -41,15 +26,14 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     private final UsuarioRepositorio usuarioRepositorio;
     private final UsuarioMapper usuarioMapper;
-    private final ContrasenaCodigoReinicioRepositorio contrasenaCodigoReinicioRepositorio;
     private final PasswordEncoder passwordEncoder;
     private final AuthServicio authServicio;
     private final EmailServicio emailServicio;
     private final ImagenServicio imagenServicio;
     private final PerfilAnfitrionRepositorio perfilAnfitrionRepositorio;
     private final PerfilAnfitrionMapper perfilAnfitrionMapper;
-    private final AlojamientoRepositorio alojamientoRepositorio;
-    private final AlojamientoMapper alojamientoMapper;
+
+
 
 
     @Override
@@ -67,67 +51,43 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public void editar(String id, EdicionUsuarioDTO usuarioDTO, MultipartFile file) throws Exception {
+    public void editar(String id, EdicionUsuarioDTO usuarioDTO) {
 
         if(!authServicio.obtnerIdAutenticado(id)){
             throw new AccessDeniedException("No tiene permisos para editar de este usuario.");
         }
 
-        String actualizadaPublicId = null;
-        String viejaPublicId = null; // Para almacenar el public_id anterior
+        // Obtener el usuario actual
+        Usuario usuario = obtenerUsuarioId(id);
 
-        try {
-            // Obtener el usuario actual
-            Usuario usuario = obtenerUsuarioId(id);
+        // Guardar la URL de la foto *antigua* ANTES de mapear
+        String urlFotoActual = usuario.getFoto();
+        String urlFotoNueva = usuarioDTO.foto(); // URL que envía el front
 
-            // Guardar el public_id anterior si existe
-            if (usuario.getFoto() != null) {
-                // Extraer el public_id de la URL de Cloudinary
-                // Asumiendo que la URL es algo como: https://res.cloudinary.com/.../Vivi_Go/Perfiles/abc123.jpg
-                // Necesitamos extraer "Vivi_Go/Perfiles/abc123"
-                String fotoUrl = usuario.getFoto();
-                viejaPublicId = imagenServicio.extraerPublicIdDelUrl(fotoUrl);
-            }
+        // Aplicar los cambios del DTO al 'usuario'
+        // Esto incluye la nueva URL de la foto
+        usuarioMapper.updateUsuarioFromDTO(usuarioDTO, usuario);
 
-            // Subir imagen si fue proporcionada
-            if (file != null && !file.isEmpty()) {
-                Map uploadResp = imagenServicio.actualizar(file, "Vivi_Go/Perfiles");
-                actualizadaPublicId = (String) uploadResp.get("public_id");
-                String secureUrl = (String) uploadResp.get("secure_url");
+        // Guardar el usuario en la BD
+        usuarioRepositorio.save(usuario);
 
-                // Clonar el DTO con la nueva URL de imagen
-                usuarioDTO = new EdicionUsuarioDTO(
-                        usuarioDTO.nombre(),
-                        usuarioDTO.telefono(),
-                        secureUrl,
-                        usuarioDTO.fechaNacimiento()
-                );
+        // Lógica de limpieza (POST-guardado)
+        // Si la foto cambió Y había una foto antigua, eliminar la antigua de Cloudinary
+        boolean fotoCambio = (urlFotoActual != null && !urlFotoActual.equals(urlFotoNueva)) ||
+                (urlFotoActual == null && urlFotoNueva != null); // Caso: no tenía foto y ahora sí
 
-                // Eliminar la foto anterior SI existe y SI se subió una nueva exitosamente
-                if (viejaPublicId != null) {
-                    try {
-                        imagenServicio.eliminar(viejaPublicId);
-                    } catch (Exception e) {
-                        System.out.println("Advertencia: No se pudo eliminar la foto anterior: " + viejaPublicId);
-                        // logear este error
-                    }
+        if (fotoCambio && urlFotoActual != null) {
+            try {
+                String viejaPublicId = imagenServicio.extraerPublicIdDelUrl(urlFotoActual);
+                if (viejaPublicId != null && !viejaPublicId.isBlank()) {
+                    imagenServicio.eliminar(viejaPublicId);
                 }
+            } catch (Exception e) {
+                // Loggear este error, pero no fallar la transacción, ya que el usuario SÍ se actualizó
+                System.err.println("Advertencia: No se pudo eliminar la foto anterior: " + urlFotoActual + ". Error: " + e.getMessage());
             }
-
-            usuarioMapper.updateUsuarioFromDTO(usuarioDTO, usuario);
-            usuarioRepositorio.save(usuario);
-
-        } catch (Exception ex) {
-            // Si ocurre un error, eliminar la imagen recién subida (si se subió)
-            if (actualizadaPublicId != null) {
-                try {
-                    imagenServicio.eliminar(actualizadaPublicId);
-                } catch (Exception ignored) {
-                    // loggear este fallo
-                }
-            }
-            throw ex;
         }
+
     }
 
     @Override
@@ -169,31 +129,6 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public void reiniciarContrasena(ReinicioContrasenaDTO reinicioContrasenaDTO) throws Exception {
-
-        Optional<ContrasenaCodigoReinicio> contrasenaCodigoReinicio = contrasenaCodigoReinicioRepositorio.findByUsuario_Email(reinicioContrasenaDTO.email());
-
-        if(contrasenaCodigoReinicio.isEmpty()){
-            throw new NoFoundException("El usuario no existe");
-        }
-
-        ContrasenaCodigoReinicio contrasenaCodigoReinicioActualizado = contrasenaCodigoReinicio.get();
-
-        if(!contrasenaCodigoReinicioActualizado.getCodigo().equals(reinicioContrasenaDTO.codigoVerificacion())){
-            throw new Exception("El codigo no es válido");
-        }
-
-        if ( contrasenaCodigoReinicioActualizado.getCreadoEn().plusMinutes(15).isBefore(LocalDateTime.now())){
-            throw new Exception("El codigo ya vencio, solicite otro");
-        }
-
-        Usuario usuario = contrasenaCodigoReinicioActualizado.getUsuario();
-        usuario.setContrasena(passwordEncoder.encode(reinicioContrasenaDTO.nuevaContrasena()));
-        usuarioRepositorio.save(usuario);
-
-    }
-
-    @Override
     public void crearAnfitrion(CreacionAnfitrionDTO dto) throws Exception {
 
         // Verificar que el usuario autenticado coincide con el id del DTO (permiso)
@@ -229,46 +164,9 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public void actualizarPerfilAnfitrion(String id, AnfitrionPerfilDTO dto) throws Exception {
-        
-        // Verificar que el usuario autenticado coincide con el id (permiso)
-        if (!authServicio.obtnerIdAutenticado(id)) {
-            throw new AccessDeniedException("No tiene permisos para actualizar el perfil de anfitrión de este usuario.");
-        }
-
+    public AnfitrionPerfilDTO obtenerAnfitrion(String id) throws Exception {
         Usuario usuario = obtenerUsuarioId(id);
-
-        // Verificar que el usuario sea anfitrión
-        if (usuario.getEsAnfitrion() == null || !usuario.getEsAnfitrion()) {
-            throw new ValueConflictException("El usuario no es anfitrión");
-        }
-
-        // Obtener el perfil de anfitrión existente
-        PerfilAnfitrion perfil = usuario.getPerfilAnfitrion();
-        if (perfil == null) {
-            throw new NoFoundException("No se encontró el perfil de anfitrión para este usuario");
-        }
-
-        // Actualizar los campos del perfil
-        perfil.setSobreMi(dto.descripcion());
-        
-        // Nota: Los documentos se manejarían en una implementación más completa
-        // Por ahora, solo actualizamos la descripción
-        
-        perfilAnfitrionRepositorio.save(perfil);
-    }
-
-    @Override
-    public List<ItemAlojamientoDTO> obtenerAlojamientosUsuario(String id, int pagina) throws Exception {
-
-        if(!authServicio.obtnerIdAutenticado(id)){
-            throw new AccessDeniedException("No tiene permisos para editar de este usuario.");
-        }
-
-        Pageable pageable = PageRequest.of(pagina, 5);
-        Page<ItemAlojamientoDTO> alojamientos = alojamientoRepositorio.getAlojamientos(id, Estado.ACTIVO, pageable).map(alojamientoMapper::toItemDTO);
-
-        return alojamientos.toList();
+        return perfilAnfitrionMapper.toAnfitrionPerfilDTO(usuario.getPerfilAnfitrion());
     }
 
     public boolean existePorEmail(String email){
@@ -278,7 +176,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         return optionalUsuario.isPresent();
     }
 
-    private Usuario obtenerUsuarioId(String id) throws Exception {
+    private Usuario obtenerUsuarioId(String id) {
         Optional<Usuario> optionalUsuario =  usuarioRepositorio.findById(id);
 
         if(optionalUsuario.isEmpty()){
@@ -287,4 +185,5 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
         return optionalUsuario.get();
     }
+
 }

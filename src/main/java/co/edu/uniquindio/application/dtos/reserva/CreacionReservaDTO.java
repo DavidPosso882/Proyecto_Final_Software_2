@@ -1,6 +1,6 @@
 package co.edu.uniquindio.application.dtos.reserva;
 
-import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
@@ -9,12 +9,13 @@ import java.time.LocalDate;
 public record CreacionReservaDTO(
         @NotNull
         Long alojamientoId,
-        Long usuarioId,
-        @NotNull @FutureOrPresent
+        @NotNull
+        String usuarioId,
+        @NotNull @Future
         LocalDate fechaEntrada,
-        @NotNull @FutureOrPresent
+        @NotNull @Future
         LocalDate fechaSalida,
         @NotNull @Min(1)
-        Integer numeroHuespedes
+        Integer cantidadHuespedes
 ) {
 }

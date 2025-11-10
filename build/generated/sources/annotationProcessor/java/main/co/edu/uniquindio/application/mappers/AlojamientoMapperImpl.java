@@ -7,6 +7,7 @@ import co.edu.uniquindio.application.dtos.alojamiento.EdicionAlojamientoDTO;
 import co.edu.uniquindio.application.dtos.alojamiento.ItemAlojamientoDTO;
 import co.edu.uniquindio.application.dtos.alojamiento.LocalizacionDTO;
 import co.edu.uniquindio.application.models.entitys.Alojamiento;
+import co.edu.uniquindio.application.models.enums.Ciudad;
 import co.edu.uniquindio.application.models.enums.Estado;
 import co.edu.uniquindio.application.models.enums.Servicio;
 import co.edu.uniquindio.application.models.vo.Direccion;
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-10-09T11:39:18-0500",
+    date = "2025-11-09T23:27:10-0500",
     comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.14.jar, environment: Java 21.0.8 (Ubuntu)"
 )
 @Component
@@ -112,8 +113,9 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
         }
 
         String nombreAnfitrion = alojamiento.getAnfitrion().getNombre();
+        String anfitrionId = alojamiento.getAnfitrion().getId();
 
-        AlojamientoDTO alojamientoDTO = new AlojamientoDTO( id, titulo, descripcion, direccion, precioPorNoche, maxHuespedes, servicios, imagenes, nombreAnfitrion );
+        AlojamientoDTO alojamientoDTO = new AlojamientoDTO( id, titulo, descripcion, direccion, precioPorNoche, maxHuespedes, servicios, imagenes, nombreAnfitrion, anfitrionId );
 
         return alojamientoDTO;
     }
@@ -195,7 +197,9 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
 
         Direccion direccion = new Direccion();
 
-        direccion.setCiudad( direccionDTO.ciudad() );
+        if ( direccionDTO.ciudad() != null ) {
+            direccion.setCiudad( direccionDTO.ciudad().name() );
+        }
         direccion.setDireccion( direccionDTO.direccion() );
         direccion.setLocalizacion( localizacionDTOToLocalizacion( direccionDTO.localizacion() ) );
 
@@ -223,11 +227,13 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
             return null;
         }
 
-        String ciudad = null;
+        Ciudad ciudad = null;
         String direccion1 = null;
         LocalizacionDTO localizacion = null;
 
-        ciudad = direccion.getCiudad();
+        if ( direccion.getCiudad() != null ) {
+            ciudad = Enum.valueOf( Ciudad.class, direccion.getCiudad() );
+        }
         direccion1 = direccion.getDireccion();
         localizacion = localizacionToLocalizacionDTO( direccion.getLocalizacion() );
 
@@ -254,7 +260,12 @@ public class AlojamientoMapperImpl implements AlojamientoMapper {
             return;
         }
 
-        mappingTarget.setCiudad( direccionDTO.ciudad() );
+        if ( direccionDTO.ciudad() != null ) {
+            mappingTarget.setCiudad( direccionDTO.ciudad().name() );
+        }
+        else {
+            mappingTarget.setCiudad( null );
+        }
         mappingTarget.setDireccion( direccionDTO.direccion() );
         if ( direccionDTO.localizacion() != null ) {
             if ( mappingTarget.getLocalizacion() == null ) {

@@ -3,6 +3,7 @@ package co.edu.uniquindio.application.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -22,7 +23,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<RespuestaDTO<String>> noResourceFoundExceptionHandler(NoResourceFoundException ex){
-        return ResponseEntity.status(404).body( new RespuestaDTO<>(true, "El recurso solicitado no existe") );
+        return ResponseEntity.status(404).body( new RespuestaDTO<>(true, ex.getMessage()) );
     }
 
     @ExceptionHandler(Exception.class)
@@ -45,15 +46,15 @@ public class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body( new RespuestaDTO<>(true, ex.getMessage()) );
     }
 
-    @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<RespuestaDTO<String>> validationExceptionHandler(ValidationException ex) {
-        // 400 Bad Request: errores de validación
-        return ResponseEntity.badRequest().body( new RespuestaDTO<>(true, ex.getMessage()) );
-    }
-
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<RespuestaDTO<String>> accessDeniedExceptionHandler(AccessDeniedException ex){
         // 403 Prohibido: usuario autenticado pero sin permisos suficientes
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body( new RespuestaDTO<>(true, ex.getMessage()) );
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<RespuestaDTO<String>> badCredentialsExceptionHandler(BadCredentialsException ex){
+        // 400
+        return ResponseEntity.status(400).body( new RespuestaDTO<>(true, ex.getMessage()) );
     }
 }

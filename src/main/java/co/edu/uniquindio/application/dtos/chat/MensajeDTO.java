@@ -8,13 +8,14 @@ import java.time.LocalDateTime;
 
 public record MensajeDTO(
         @NotNull
-        Integer remitenteId,
+        Long id,
         @NotNull
-        Integer destinatarioId,
+        String remitenteId,
         @NotNull
-        Integer reservaId,
-        @NotBlank @Length(max = 1000)
-        String contenido,
+        String destinatarioId,
+        @NotNull
+        Long chatId,
+        @NotBlank @Length(max = 1000) String contenido,
         LocalDateTime fechaEnvio,
         boolean leido
 ) {

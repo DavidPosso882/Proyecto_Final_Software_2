@@ -39,7 +39,9 @@ public class SeguridadConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/api/auth/**","/swagger-ui/**", "/v3/api-docs/**", "/api/imagenes/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/usuarios/**", "/api/alojamientos/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/usuarios/**", "/api/alojamientos/**", "/api/servicios", "/api/ciudades").permitAll()
+                        .requestMatchers("/ws/**").permitAll()
+                        .requestMatchers("/api/alojamientos/{id}/metricas").authenticated()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(new JWTAuthenticationEntryPoint()))
@@ -52,13 +54,8 @@ public class SeguridadConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         // Configura las políticas de CORS para permitir solicitudes desde el frontend
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(
-            "http://localhost:3000", 
-            "http://127.0.0.1:3000",
-            "http://127.0.0.1:5500",
-            "http://localhost:5500"
-        ));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        config.setAllowedOrigins(List.of("http://localhost:63342", "http://localhost:4200"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
 

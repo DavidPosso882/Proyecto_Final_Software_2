@@ -32,12 +32,19 @@ public class AuthControlador {
 
     @PostMapping("/forgot-password")
     public ResponseEntity<RespuestaDTO<String>> solicitarRecuperacion(@Valid @RequestBody OlvidoContrasenaDTO olvidoContrasenaDTO) throws Exception {
+        authServicio.solicitarRecuperacion(olvidoContrasenaDTO);
         return ResponseEntity.ok(new RespuestaDTO<>(false, "Código de recuperación enviado al correo."));
     }
 
     @PatchMapping("/reset-password")
     public ResponseEntity<RespuestaDTO<String>> restablecerContrasena(@Valid @RequestBody ReinicioContrasenaDTO reinicioContrasenaDTO) throws Exception {
-        usuarioServicio.reiniciarContrasena(reinicioContrasenaDTO);
+        authServicio.reiniciarContrasena(reinicioContrasenaDTO);
         return ResponseEntity.ok(new RespuestaDTO<>(false, "Contraseña restablecida correctamente."));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<RespuestaDTO<TokenDTO>> refresh(@Valid @RequestBody RefreshTokenDTO refreshTokenDTO) throws Exception {
+        TokenDTO token = authServicio.refrescarToken(refreshTokenDTO);
+        return ResponseEntity.ok(new RespuestaDTO<>(false, token));
     }
 }

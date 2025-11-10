@@ -12,25 +12,25 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-10-09T11:39:18-0500",
+    date = "2025-11-09T23:27:11-0500",
     comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.14.jar, environment: Java 21.0.8 (Ubuntu)"
 )
 @Component
 public class UsuarioMapperImpl implements UsuarioMapper {
 
     @Override
-    public Usuario toEntity(CreacionUsuarioDTO userDTO) {
-        if ( userDTO == null ) {
+    public Usuario toEntity(CreacionUsuarioDTO usuarioDTO) {
+        if ( usuarioDTO == null ) {
             return null;
         }
 
         Usuario.UsuarioBuilder usuario = Usuario.builder();
 
-        usuario.nombre( userDTO.nombre() );
-        usuario.email( userDTO.email() );
-        usuario.contrasena( userDTO.contrasena() );
-        usuario.telefono( userDTO.telefono() );
-        usuario.fechaNacimiento( userDTO.fechaNacimiento() );
+        usuario.nombre( usuarioDTO.nombre() );
+        usuario.email( usuarioDTO.email() );
+        usuario.contrasena( usuarioDTO.contrasena() );
+        usuario.telefono( usuarioDTO.telefono() );
+        usuario.fechaNacimiento( usuarioDTO.fechaNacimiento() );
 
         usuario.id( java.util.UUID.randomUUID().toString() );
         usuario.estado( Estado.ACTIVO );
@@ -41,27 +41,28 @@ public class UsuarioMapperImpl implements UsuarioMapper {
     }
 
     @Override
-    public Usuario toEntity(UsuarioDTO userDTO) {
-        if ( userDTO == null ) {
+    public Usuario toEntity(UsuarioDTO usuarioDTO) {
+        if ( usuarioDTO == null ) {
             return null;
         }
 
         Usuario.UsuarioBuilder usuario = Usuario.builder();
 
-        usuario.id( userDTO.id() );
-        usuario.nombre( userDTO.nombre() );
-        usuario.email( userDTO.email() );
-        usuario.telefono( userDTO.telefono() );
-        usuario.rol( userDTO.rol() );
-        usuario.fechaNacimiento( userDTO.fechaNacimiento() );
-        usuario.foto( userDTO.foto() );
+        usuario.id( usuarioDTO.id() );
+        usuario.nombre( usuarioDTO.nombre() );
+        usuario.email( usuarioDTO.email() );
+        usuario.telefono( usuarioDTO.telefono() );
+        usuario.rol( usuarioDTO.rol() );
+        usuario.fechaNacimiento( usuarioDTO.fechaNacimiento() );
+        usuario.foto( usuarioDTO.foto() );
+        usuario.esAnfitrion( usuarioDTO.esAnfitrion() );
 
         return usuario.build();
     }
 
     @Override
-    public UsuarioDTO toUserDTO(Usuario user) {
-        if ( user == null ) {
+    public UsuarioDTO toUserDTO(Usuario usuario) {
+        if ( usuario == null ) {
             return null;
         }
 
@@ -72,16 +73,18 @@ public class UsuarioMapperImpl implements UsuarioMapper {
         Rol rol = null;
         LocalDate fechaNacimiento = null;
         String foto = null;
+        Boolean esAnfitrion = null;
 
-        id = user.getId();
-        nombre = user.getNombre();
-        email = user.getEmail();
-        telefono = user.getTelefono();
-        rol = user.getRol();
-        fechaNacimiento = user.getFechaNacimiento();
-        foto = user.getFoto();
+        id = usuario.getId();
+        nombre = usuario.getNombre();
+        email = usuario.getEmail();
+        telefono = usuario.getTelefono();
+        rol = usuario.getRol();
+        fechaNacimiento = usuario.getFechaNacimiento();
+        foto = usuario.getFoto();
+        esAnfitrion = usuario.getEsAnfitrion();
 
-        UsuarioDTO usuarioDTO = new UsuarioDTO( id, nombre, email, telefono, rol, fechaNacimiento, foto );
+        UsuarioDTO usuarioDTO = new UsuarioDTO( id, nombre, email, telefono, rol, fechaNacimiento, foto, esAnfitrion );
 
         return usuarioDTO;
     }

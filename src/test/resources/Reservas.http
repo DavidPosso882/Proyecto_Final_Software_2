@@ -1,0 +1,24 @@
+### Crear una nueva reserva
+POST http://localhost:8080/api/reservas
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "alojamientoId": 1,
+  "usuarioId": "6fdc6cce-508b-433d-9069-638a4283252d",
+  "fechaEntrada": "2025-10-08",
+  "fechaSalida": "2025-10-09",
+  "cantidadHuespedes": 2
+}
+
+### HUÉSPED:Cancelar una reserva
+PATCH http://localhost:8080/api/reservas/1/cancelar
+Authorization: Bearer {{auth_token}}
+
+### ANFITRIÓN: Aceptar reserva pendiente (PENDIENTE → CONFIRMADA)
+PATCH http://localhost:8080/api/reservas/2/aceptar
+Authorization: Bearer {{auth_token}}
+
+### ANFITRIÓN: Rechazar reserva pendiente (PENDIENTE → CANCELADA)
+PATCH http://localhost:8080/api/reservas/2/rechazar
+Authorization: Bearer {{auth_token}}

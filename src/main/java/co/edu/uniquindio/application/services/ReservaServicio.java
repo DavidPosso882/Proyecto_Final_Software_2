@@ -3,12 +3,16 @@ package co.edu.uniquindio.application.services;
 import co.edu.uniquindio.application.dtos.reserva.CreacionReservaDTO;
 import co.edu.uniquindio.application.dtos.reserva.ItemReservaDTO;
 import co.edu.uniquindio.application.dtos.reserva.ReservaDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import co.edu.uniquindio.application.models.enums.ReservaEstado;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public interface ReservaServicio {
-    ReservaDTO crearReserva(CreacionReservaDTO dto) throws Exception;
-    Page<ItemReservaDTO> listarReservas(String estado, String fechaInicio, String fechaFin, Pageable pageable) throws Exception;
-    ItemReservaDTO obtenerReservaPorUsuarioYAlojamiento(String usuarioId, Long alojamientoId) throws Exception;
+    void crear(CreacionReservaDTO dto) throws Exception;
+    void aceptarReserva(Long id) throws Exception;
+    void rechazarReserva(Long id) throws Exception;
     void cancelarReserva(Long id) throws Exception;
+    List<ItemReservaDTO> obtenerReservasUsuario(String id, ReservaEstado estado, LocalDate fechaEntrada, LocalDate fechaSalida, int pagina) throws Exception;
+    List<ReservaDTO> obtenerReservasAlojamiento(Long id, ReservaEstado estado, LocalDate fechaEntrada, LocalDate fechaSalida, int pagina) throws Exception;
 }

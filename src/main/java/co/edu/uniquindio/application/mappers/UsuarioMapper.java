@@ -16,12 +16,11 @@ public interface UsuarioMapper {
     @Mapping(target = "estado", constant = "ACTIVO")
     @Mapping(target = "creadoEn", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "rol", constant = "Huesped")
+    Usuario toEntity(CreacionUsuarioDTO usuarioDTO);
 
-    Usuario toEntity(CreacionUsuarioDTO userDTO);
+    Usuario toEntity(UsuarioDTO usuarioDTO);
 
-    Usuario toEntity(UsuarioDTO userDTO);
-
-    UsuarioDTO toUserDTO(Usuario user);
+    UsuarioDTO toUserDTO(Usuario usuario);
 
     void updateUsuarioFromDTO(EdicionUsuarioDTO dto, @MappingTarget Usuario usuario);
 

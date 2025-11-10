@@ -3,12 +3,14 @@ GET http://localhost:8080/api/usuarios/797d814a-5fd0-4953-810d-f593ff73928f
 Accept: application/json
 
 ### Eliminar usuario (DELETE) (204)
-DELETE http://localhost:8080/api/usuarios/1
+DELETE http://localhost:8080/api/usuarios/797d814a-5fd0-4953-810d-f593ff73928f
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 ### Cambiar contraseña (PATCH) (200) — usa CambioContrasenaDTO
 PATCH http://localhost:8080/api/usuarios/1ccd6ad2-6ab3-4987-996c-99bdffd2905d/contrasena
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImRhdmlkLnBvc3NvQGV4YW1wbGUuY29tIiwicm9sZSI6IlJPTF9IdWVzcGVkIiwibmFtZSI6IkRhdmlkIFBvc3NvIiwic3ViIjoiMWNjZDZhZDItNmFiMy00OTg3LTk5NmMtOTliZGZmZDI5MDVkIiwiaWF0IjoxNzU5NjIzMzMwLCJleHAiOjE3NTk2MjY5MzB9.3rtGWaRc2AgLU8hHAIb4Not5SOOcLyFrZc-Mtzvryb8
+Authorization: Bearer {{auth_token}}
 
 {
   "contrasenaActual": "Passw0rd1",
@@ -44,7 +46,21 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-  "usuarioId": "6fdc6cce-508b-433d-9069-638a4283252d",
-  "sobreMi": "Me gusta el baloncesto",
-  "documentoLegal": "documento.pdf"
+  "usuarioId": "f92090e2-4b35-4971-a656-ab73545fac73",
+  "sobreMi": "Me gusta el futbol",
+  "documentoLegal": "documento123.pdf"
 }
+
+### Obtener Alojamiento del Usuario
+GET http://localhost:8080/api/usuarios/4c4e2933-899e-469a-b883-7ab9fe75a641/alojamientos?pagina=0
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+### Obtener Reservas del Usuario
+GET http://localhost:8080/api/usuarios/f92090e2-4b35-4971-a656-ab73545fac73/reservas?pagina=0
+Authorization: Bearer {{auth_token}}
+
+### Obtener Perfil anfitrion del Usuario
+GET http://localhost:8080/api/usuarios/967754cc-2266-4aa7-a1cb-c6044cca47d4/anfitrion
+Authorization: Bearer {{auth_token}}
+
